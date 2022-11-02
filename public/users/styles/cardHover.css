@@ -1,0 +1,15 @@
+.card:hover {
+  transform: scale(1.1);
+}
+
+.card {
+  transition: all 0.5s ease;
+}
+
+/* .card img {
+    transition: all 0.5s ease;
+  }
+
+  .card:hover img {
+    transform: scale(1.15);
+  } */

@@ -1,0 +1,58 @@
+<section>
+  <div
+    class="container mt-5 bg-dark text-white w-50 m-auto"
+    style="border-radius: 25px"
+  >
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-6">
+        <div>&nbsp;</div>
+        <h2 class="text-center">Add Product</h2>
+        <form
+          action="/admin/add-product"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <label for="">Name</label>
+          <input type="text" name="Name" class="form-control" />
+
+          <label for="" class="mt-2">Category</label>
+          <select
+            class="form-select"
+            name="Category"
+            aria-label="Default select example"
+          >
+            <option>Men</option>
+            <option>Women</option>
+          </select>
+
+          <label for="" class="mt-2">Sub-Category</label>
+          <select
+            class="form-select"
+            name="Subcategory"
+            aria-label="Default select example"
+            value=""
+          >
+            <option>Shirt</option>
+            <option>T-shirt</option>
+            <option>Hoodie</option>
+            <option>Skirt</option>
+            <option>Gown</option>
+            <option>Kurti</option>
+          </select>
+
+          <label for="" class="mt-2">Price</label>
+          <input type="text" name="Price" class="form-control" />
+
+          <label for="" class="mt-2">Description</label>
+          <input type="text" name="Description" class="form-control" />
+
+          <label for="" class="mt-2">Image</label>
+          <input type="file" name="Image" class="form-control" multiple />
+
+          <button type="submit" class="btn btn-success mt-4">Submit</button>
+          <div>&nbsp;</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
