@@ -46,7 +46,9 @@
                     >
                   </div>
 
-                  <!-- <p class="text-danger m-auto">loginerror here</p> -->
+                  <% if (locals.loginErr){ %>
+                  <p class="text-danger m-auto"><%= locals.loginErr %></p>
+                  <% } %>
 
                   <div class="pt-1 mb-4">
                     <button class="btn btn-dark btn-lg btn-block" type="submit">

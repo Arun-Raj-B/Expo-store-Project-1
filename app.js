@@ -7,7 +7,9 @@ const express = require("express");
 const app = express();
 const expressLayouts = require("express-ejs-layouts");
 const logger = require("morgan");
+const session = require("express-session");
 const fileUpload = require("express-fileupload");
+const nocache = require("nocache");
 
 const db = require("./config/connection");
 
@@ -21,6 +23,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(expressLayouts);
 app.use(express.static("public"));
 app.use(fileUpload());
+app.use(
+  session({
+    secret: "Key",
+    cookie: { maxAge: 600000 },
+  })
+);
+app.use(nocache());
+
 //db connection
 db.connect((err) => {
   if (err) {

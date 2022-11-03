@@ -3,7 +3,7 @@ const productHelper = require("../helpers/productHelpers");
 module.exports = {
   getAdminHome: (req, res) => {
     productHelper.getAllProducts().then((products) => {
-      console.log(products);
+      // console.log(products);
       res.render("admin/viewProducts", { products, admin: true });
     });
   },
@@ -74,6 +74,31 @@ module.exports = {
       //     }
       //   }
       // );
+    });
+  },
+
+  getDeleteProduct: (req, res) => {
+    let proId = req.params.id;
+    console.log(proId);
+    productHelper.deleteProduct(proId).then((response) => {
+      res.redirect("/admin");
+    });
+  },
+
+  getEditProduct: async (req, res) => {
+    let proId = req.params.id;
+    let product = await productHelper.getOneProduct(proId);
+    res.render("admin/editProduct", { admin: true, product });
+  },
+
+  postEditProduct: (req, res) => {
+    let proId = req.params.id;
+    productHelper.updateProduct(proId, req.body).then((response) => {
+      res.redirect("/admin");
+      if (req.files.Image) {
+        let image = req.files.Image;
+        image.mv("./public/users/productImages/" + proId + ".jpg");
+      }
     });
   },
 };

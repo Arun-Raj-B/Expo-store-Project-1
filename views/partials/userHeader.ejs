@@ -26,11 +26,13 @@
             <a class="nav-link" href="/">Products</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Cart</a>
+            <a class="nav-link" href="/cart">Cart</a>
           </li>
+          <% if(locals.user){ %>
           <li class="nav-item">
             <a class="nav-link" href="#">Orders</a>
           </li>
+          <% } %>
         </ul>
         <div class="dropdown me-2">
           <a
@@ -43,7 +45,8 @@
             aria-expanded="false"
           >
             <i class="fa-regular fa-user"></i>
-            Account
+            &nbsp; <% if (locals.user){ %> <%= locals.user.username %> <%
+            }else{%> Account <% } %>
           </a>
 
           <ul
@@ -51,9 +54,15 @@
             aria-labelledby="dropdownMenuLink"
           >
             <li>
+              <%if (locals.user){%>
+              <a class="dropdown-item" style="color: #b0aeae" href="/logout"
+                >Logout</a
+              >
+              <%}else{%>
               <a class="dropdown-item" style="color: #b0aeae" href="/login"
                 >Login</a
               >
+              <%}%>
             </li>
             <!-- <li>
               <a class="dropdown-item" style="color: #b0aeae" href="#"
