@@ -1,5 +1,6 @@
 const productHelper = require("../helpers/productHelpers");
 const userHelper = require("../helpers/userHelpers");
+const otpHelper = require("../helpers/otpHelper");
 
 module.exports = {
   getHome: (req, res) => {
@@ -58,12 +59,23 @@ module.exports = {
   },
 
   getSignup: (req, res) => {
-    res.render("users/signup");
+    if (req.session.loggedIn) {
+      res.redirect("/");
+    } else {
+      res.render("users/signup");
+    }
   },
 
   postSignup: (req, res) => {
     userHelper.doSignup(req.body).then((response) => {
       console.log(response);
+      const mobile = req.body.mobilenumber;
+      const last4digits = mobile.slice(6, 10);
+      req.session.last4digits = last4digits;
+      console.log(mobile);
+      otpHelper.sendMessage(mobile);
+      // res.redirect("/login");
+      res.redirect("/otp");
     });
   },
 
@@ -87,5 +99,25 @@ module.exports = {
 
   getCart: (req, res) => {
     res.render("users/cart");
+  },
+
+  getOTP: (req, res) => {
+    const last4digits = req.session.last4digits;
+    if (!req.session.OTPerr) {
+      res.render("users/otp", { last4digits });
+    } else {
+      const OTPerr = req.session.OTPerr;
+      res.render("users/otp", { last4digits, OTPerr });
+    }
+  },
+
+  postOTP: (req, res) => {
+    const OTP = otpHelper.randomOTP;
+    if (req.body.otp == OTP) {
+      res.redirect("/login");
+    } else {
+      req.session.OTPerr = "Entered a valid OTP";
+      res.redirect("/otp");
+    }
   },
 };

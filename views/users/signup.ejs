@@ -3,25 +3,26 @@
       <div class="row d-flex justify-content-center align-items-center h-100">
         <div class="col">
           <div class="card card-registration my-4">
-            <div class="row g-0">
+            <div class="row g-0 " style="background-color: #ede2c8">
               <div class="col-xl-6 d-none d-xl-block" style="background-color: #ede2c8">
                 <img
                   src="users/images/gallery-02.jpg"
                   alt="Sample photo"
-                  class="img-fluid"
+                  class="img-fluid w-100"
                   style="
                     border-top-left-radius: 0.25rem;
                     border-bottom-left-radius: 0.25rem;
+                    background-color: #ede2c8
                   "
                 />
               </div>
   
               <div class="col-xl-6">
-                <div class="card-body p-md-5 text-black" style="background-color: #ede2c8">
+                <div class="card-body text-black" style="background-color: #ede2c8">
                   <h3 class="mb-5 text-uppercase">SIGNUP FORM</h3>
                   <form
                     action="/signup"
-                    id="form"
+                    id="formValidation"
                     method="post"
                     class="mx-1 mx-md-4"
                   >
@@ -35,6 +36,7 @@
                             id="firstname"
                             style="background-color: #f0e9d9"
                             placeholder="First name"
+                            required
                           />
                           <!-- <p class="text-danger">locals.nameMsg</p> -->
                         </div>
@@ -48,6 +50,7 @@
                             id="lastname"
                             style="background-color: #f0e9d9"
                             placeholder="last name"
+                            required
                           />
                         </div>
                       </div>
@@ -61,6 +64,7 @@
                         id="username"
                         style="background-color: #f0e9d9"
                         placeholder="Username"
+                        required
                       />
                       <!-- <p class="text-danger">locals.usernameMsg</p> -->
                     </div>
@@ -73,6 +77,7 @@
                         id="email"
                         style="background-color: #f0e9d9"
                         placeholder="Email ID"
+                        required
                       />
                       <!-- <p class="text-danger">locals.emailMsg</p> -->
                     </div>
@@ -85,6 +90,7 @@
                         id="password"
                         style="background-color: #f0e9d9"
                         placeholder="Password"
+                        required
                       />
                       <!-- <p class="text-danger">locals.pwdMsg</p> -->
                     </div>
@@ -94,11 +100,12 @@
                         type="password"
                         class="form-control form-control-lg"
                         name="confirmpassword"
-                        id="password"
+                        id="confirmpassword"
                         style="background-color: #f0e9d9"
-                        placeholder="Confirm Password"
+                        placeholder="Confirm password"
+                        required 
                       />
-                      <!-- <p class="text-danger">locals.confirmpwdMsg</p> -->
+                      <!-- <p class="text-danger">locals.mobileMsg</p> -->
                     </div>
   
                     <div class="form-outline mb-4">
@@ -109,6 +116,7 @@
                         id="mobilenumber"
                         style="background-color: #f0e9d9"
                         placeholder="Mobile Number"
+                        required 
                       />
                       <!-- <p class="text-danger">locals.mobileMsg</p> -->
                     </div>
@@ -128,4 +136,9 @@
       </div>
     </div>
   </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+  <script text="text/javascript" src="/users/javascript/validation.js"></script>
   

@@ -1,0 +1,7 @@
+label.error {
+  font-weight: 400;
+  display: block;
+  color: #f00;
+  font-size: 14px;
+  padding-left: 10px;
+}
