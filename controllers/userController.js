@@ -73,7 +73,7 @@ module.exports = {
       const last4digits = mobile.slice(6, 10);
       req.session.last4digits = last4digits;
       console.log(mobile);
-      otpHelper.sendMessage(mobile);
+      otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
       // res.redirect("/login");
       res.redirect("/otp");
     });
@@ -102,17 +102,22 @@ module.exports = {
   },
 
   getOTP: (req, res) => {
-    const last4digits = req.session.last4digits;
-    if (!req.session.OTPerr) {
-      res.render("users/otp", { last4digits });
+    if (req.session.loggedIn) {
+      res.redirect("/");
     } else {
-      const OTPerr = req.session.OTPerr;
-      res.render("users/otp", { last4digits, OTPerr });
+      const last4digits = req.session.last4digits;
+      console.log(otpHelper.obj);
+      if (!req.session.OTPerr) {
+        res.render("users/otp", { last4digits });
+      } else {
+        const OTPerr = req.session.OTPerr;
+        res.render("users/otp", { last4digits, OTPerr });
+      }
     }
   },
 
   postOTP: (req, res) => {
-    const OTP = otpHelper.randomOTP;
+    const OTP = otpHelper.obj.OTP;
     if (req.body.otp == OTP) {
       res.redirect("/login");
     } else {
