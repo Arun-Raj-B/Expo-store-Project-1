@@ -19,5 +19,7 @@ router.get("/logout", userController.getLogout);
 router.get("/cart", verifyLogin, userController.getCart);
 router.get("/otp", userController.getOTP);
 router.post("/otp", userController.postOTP);
+router.get("/loginOTP", userController.getLoginOTP);
+router.post("/loginOTP", userController.postLoginOTP);
 
 module.exports = router;

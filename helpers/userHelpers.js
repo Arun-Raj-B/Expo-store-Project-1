@@ -59,4 +59,22 @@ module.exports = {
       }
     });
   },
+
+  doVerify: (mobile) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          { mobilenumber: mobile },
+          {
+            $set: {
+              isVerified: true,
+            },
+          }
+        )
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
 };

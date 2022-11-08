@@ -75,6 +75,7 @@ module.exports = {
         const last4digits = mobile.slice(6, 10);
         req.session.last4digits = last4digits;
         console.log(mobile);
+        req.session.mobile = mobile;
         otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
         // res.redirect("/login");
         res.redirect("/otp");
@@ -87,7 +88,14 @@ module.exports = {
   postLogin: (req, res) => {
     userHelper.doLogin(req.body).then((response) => {
       if (response.status) {
-        if (!response.user.access) {
+        if (!response.user.isVerified) {
+          const mobile = response.user.mobilenumber;
+          const last4digits = mobile.slice(6, 10);
+          req.session.last4digits = last4digits;
+          otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
+          req.session.mobile = mobile;
+          res.redirect("/loginOTP");
+        } else if (!response.user.access) {
           blockedMessage = "You are blocked";
           res.render("users/login", { access: false, blockedMessage });
         } else {
@@ -129,10 +137,44 @@ module.exports = {
   postOTP: (req, res) => {
     const OTP = otpHelper.obj.OTP;
     if (req.body.otp == OTP) {
-      res.redirect("/login");
+      mobile = req.session.mobile;
+      userHelper.doVerify(mobile).then((response) => {
+        req.session.OTPerr = null;
+        res.redirect("/login");
+      });
     } else {
       req.session.OTPerr = "Entered a valid OTP";
       res.redirect("/otp");
+    }
+  },
+
+  getLoginOTP: (req, res) => {
+    if (req.session.loggedIn) {
+      res.redirect("/");
+    } else {
+      const last4digits = req.session.last4digits;
+      console.log(otpHelper.obj);
+      if (!req.session.OTPerr) {
+        res.render("users/loginOTP", { last4digits });
+      } else {
+        const OTPerr = req.session.OTPerr;
+        res.render("users/loginOTP", { last4digits, OTPerr });
+      }
+    }
+  },
+
+  postLoginOTP: (req, res) => {
+    const OTP = otpHelper.obj.OTP;
+    if (req.body.otp == OTP) {
+      mobile = req.session.mobile;
+      console.log(mobile);
+      userHelper.doVerify(mobile).then((response) => {
+        res.redirect("/login");
+        req.session.OTPerr = null;
+      });
+    } else {
+      req.session.OTPerr = "Entered a valid OTP";
+      res.redirect("/loginOTP");
     }
   },
 };
