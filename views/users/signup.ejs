@@ -79,7 +79,9 @@
                         placeholder="Email ID"
                         required
                       />
-                      <!-- <p class="text-danger">locals.emailMsg</p> -->
+                      <% if(locals.emailExistErr){ %> 
+                        <p class="text-danger ps-3"><%= locals.emailExistErr  %> </p>
+                        <% } %> 
                     </div>
   
                     <div class="form-outline mb-4">

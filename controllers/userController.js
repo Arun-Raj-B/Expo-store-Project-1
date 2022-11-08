@@ -67,24 +67,34 @@ module.exports = {
   },
 
   postSignup: (req, res) => {
-    userHelper.doSignup(req.body).then((response) => {
-      console.log(response);
-      const mobile = req.body.mobilenumber;
-      const last4digits = mobile.slice(6, 10);
-      req.session.last4digits = last4digits;
-      console.log(mobile);
-      otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
-      // res.redirect("/login");
-      res.redirect("/otp");
-    });
+    userHelper
+      .doSignup(req.body)
+      .then((response) => {
+        console.log(response);
+        const mobile = req.body.mobilenumber;
+        const last4digits = mobile.slice(6, 10);
+        req.session.last4digits = last4digits;
+        console.log(mobile);
+        otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
+        // res.redirect("/login");
+        res.redirect("/otp");
+      })
+      .catch((emailExistErr) => {
+        res.render("users/signup", { emailExistErr });
+      });
   },
 
   postLogin: (req, res) => {
     userHelper.doLogin(req.body).then((response) => {
       if (response.status) {
-        req.session.loggedIn = true;
-        req.session.user = response.user;
-        res.redirect("/");
+        if (!response.user.access) {
+          blockedMessage = "You are blocked";
+          res.render("users/login", { access: false, blockedMessage });
+        } else {
+          req.session.loggedIn = true;
+          req.session.user = response.user;
+          res.redirect("/");
+        }
       } else {
         req.session.loginErr = "Invalid email address or password";
         res.redirect("/login");

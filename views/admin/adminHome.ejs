@@ -1,0 +1,107 @@
+<section>
+  <div class="container shadow-lg rounded mb-5 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="d-flex justify-content-evenly">
+          <div
+            class="card text-dark bg-primary mt-5 mb-3 p-5 bg-opacity-25 shadow"
+            style="max-width: 18rem"
+          >
+            <div class="card-body">
+              <h5 class="card-title">Total Revenue</h5>
+              <p class="card-text text-center" style="font-size: 2rem">4000₹</p>
+            </div>
+          </div>
+          <div
+            class="card text-dark bg-primary mt-5 mb-3 p-5 bg-opacity-25 shadow"
+            class="card text-dark bg-secondary mb-3 p-5 bg-opacity-25 shadow"
+            style="max-width: 18rem"
+          >
+            <div class="card-body">
+              <h5 class="card-title">Total Orders</h5>
+              <p class="card-text text-center" style="font-size: 2rem">300</p>
+            </div>
+          </div>
+          <div
+            class="card text-dark bg-success mt-5 mb-3 p-5 bg-opacity-25 shadow"
+            style="max-width: 18rem"
+          >
+            <div class="card-body">
+              <h5 class="card-title">Total Users</h5>
+              <p class="card-text text-center" style="font-size: 2rem">234</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row p-5 text-center">
+        <div class="col card h-25" style="margin-right: 50px">
+          <div class="card-body">
+            <h1 class="p-2" style="color: rgb(255, 99, 132)">User Data</h1>
+            <canvas id="userChart"></canvas>
+          </div>
+        </div>
+        <div class="col card">
+          <div class="card-body" style="margin-left: 50px">
+            <h1 class="p-2" style="color: rgb(255, 99, 132)">Sales Data</h1>
+            <canvas id="salesChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // user datas
+  const userData = {
+    labels: ["January", "February", "March", "April", "May", "June"],
+    datasets: [
+      {
+        label: "New users",
+        backgroundColor: "rgb(255, 99, 132)",
+        borderColor: "rgb(255, 99, 132)",
+        data: [10, 15, 32, 40, 50, 60],
+      },
+    ],
+  };
+
+  const configLineGraph = {
+    type: "line",
+    data: userData,
+    options: {},
+  };
+
+  const userChart = new Chart(
+    document.getElementById("userChart"),
+    configLineGraph
+  );
+
+  //Sales in last 3 months
+  const salesData = {
+    labels: ["April", "May", "June"],
+    datasets: [
+      {
+        label: "Sales in last 3 months",
+        data: [300, 50, 100],
+        backgroundColor: [
+          "rgb(255, 99, 132)",
+          "rgb(54, 162, 235)",
+          "rgb(255, 205, 86)",
+        ],
+        hoverOffset: 4,
+      },
+    ],
+  };
+
+  const configDoughnut = {
+    type: "doughnut",
+    data: salesData,
+  };
+  const salesChart = new Chart(
+    document.getElementById("salesChart"),
+    configDoughnut
+  );
+</script>

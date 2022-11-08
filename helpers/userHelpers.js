@@ -4,23 +4,33 @@ const bcrypt = require("bcrypt");
 module.exports = {
   doSignup: (userData) => {
     return new Promise(async (resolve, reject) => {
-      userData.password = await bcrypt.hash(userData.password, 10);
-      db.get()
+      let user = await db
+        .get()
         .collection(collection.USER_COLLECTION)
-        .insertOne({
-          firstname: userData.firstname,
-          lastname: userData.lastname,
-          username: userData.username,
-          email: userData.email,
-          password: userData.password,
-          mobilenumber: userData.mobilenumber,
-          role: "user",
-          access: true,
-        })
-        .then((data) => {
-          console.log(data);
-          resolve(data.insertedId);
-        });
+        .findOne({ email: userData.email });
+      if (!user) {
+        userData.password = await bcrypt.hash(userData.password, 10);
+        db.get()
+          .collection(collection.USER_COLLECTION)
+          .insertOne({
+            firstname: userData.firstname,
+            lastname: userData.lastname,
+            username: userData.username,
+            email: userData.email,
+            password: userData.password,
+            mobilenumber: userData.mobilenumber,
+            role: "user",
+            access: true,
+            isVerified: false,
+          })
+          .then((data) => {
+            console.log(data);
+            resolve(data.insertedId);
+          });
+      } else {
+        let errMsg = "Email already exists";
+        reject(errMsg);
+      }
     });
   },
 

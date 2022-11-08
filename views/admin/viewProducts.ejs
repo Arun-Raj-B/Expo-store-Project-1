@@ -9,58 +9,25 @@
         </div>
       </div>
     </div>
-    <div class="container">
-      <div class="row">
-        <div class="d-flex justify-content-evenly">
-          <div
-            class="card text-dark bg-primary mb-3 p-5 bg-opacity-25 shadow"
-            style="max-width: 18rem"
-          >
-            <div class="card-body">
-              <h5 class="card-title">Total Revenue</h5>
-              <p class="card-text text-center" style="font-size: 2rem">4000₹</p>
-            </div>
-          </div>
-          <div
-            class="card text-dark bg-secondary mb-3 p-5 bg-opacity-25 shadow"
-            style="max-width: 18rem"
-          >
-            <div class="card-body">
-              <h5 class="card-title">Total Orders</h5>
-              <p class="card-text text-center" style="font-size: 2rem">300</p>
-            </div>
-          </div>
-          <div
-            class="card text-dark bg-success mb-3 p-5 bg-opacity-25 shadow"
-            style="max-width: 18rem"
-          >
-            <div class="card-body">
-              <h5 class="card-title">Total Users</h5>
-              <p class="card-text text-center" style="font-size: 2rem">234</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
     <table
       class="table table-fluid table-hover table-bordered mt-5 pt-2"
-      style="text-align: center"
       id="myTable"
     >
+      <!-- style="text-align: center" -->
       <thead>
         <tr class="bg-dark text-white">
-          <th scope="col">No</th>
-          <th scope="col">Title</th>
-          <th scope="col">Price</th>
-          <th scope="col">Category</th>
-          <th scope="col">Sub Category</th>
-          <th scope="col">Description</th>
-          <th scope="col">Image</th>
-          <th scope="col">Edit/Delete</th>
+          <th scope="col" style="text-align: center">No</th>
+          <th scope="col" style="text-align: center">Title</th>
+          <th scope="col" style="text-align: center">Price</th>
+          <th scope="col" style="text-align: center">Category</th>
+          <th scope="col" style="text-align: center">Sub Category</th>
+          <th scope="col" style="text-align: center">Description</th>
+          <th scope="col" style="text-align: center">Image</th>
+          <th scope="col" style="text-align: center">Edit/Delete</th>
         </tr>
       </thead>
       <% var No=1 %>
-      <tbody>
+      <tbody style="text-align: center">
         <% locals.products.forEach(product=>{%>
         <tr>
           <th scope="row"><%=No++ %></th>

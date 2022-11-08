@@ -1,0 +1,47 @@
+<section class="pt-5">
+  <div class="container shadow-lg rounded mb-5">
+    <div class="pb-3"></div>
+    <table
+      class="table table-fluid table-hover table-bordered pt-3"
+      id="myTable"
+      style="text-align: center"
+    >
+      <!-- style="text-align: center" -->
+      <thead>
+        <tr class="bg-dark text-white">
+          <th scope="col" style="text-align: center">No</th>
+          <th scope="col" style="text-align: center">Name</th>
+          <th scope="col" style="text-align: center">Email</th>
+          <th scope="col" style="text-align: center">Action</th>
+        </tr>
+      </thead>
+      <% var No=1 %>
+      <tbody>
+        <% locals.users.forEach(user=>{%>
+        <tr>
+          <th scope="row"><%=No++ %></th>
+          <td><%=user.firstname %> <%=user.lastname %></td>
+          <td><%=user.email %></td>
+          <td>
+            <% if (user.access) {%>
+            <a
+              href="/admin/block-user/<%= user._id %>"
+              class="btn btn-outline-danger"
+              onclick="return confirm('Do you want to Block <%=user.firstname %> <%=user.lastname %> ?')"
+              >Block</a
+            >
+            <%} else {%>
+            <a
+              href="/admin/unblock-user/<%= user._id %>"
+              class="btn btn-outline-success"
+              onclick="return confirm('Do you want to Unblock <%=user.firstname %> <%=user.lastname %> ?')"
+              >Unblock</a
+            >
+            <% } %>
+          </td>
+        </tr>
+        <%})%>
+      </tbody>
+    </table>
+  </div>
+</section>

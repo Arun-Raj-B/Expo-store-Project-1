@@ -1,10 +1,24 @@
 const productHelper = require("../helpers/productHelpers");
+const adminUserHelper = require("../helpers/adminUserHelpers");
 
 module.exports = {
   getAdminHome: (req, res) => {
     productHelper.getAllProducts().then((products) => {
       // console.log(products);
+      res.render("admin/adminHome", { products, admin: true });
+    });
+  },
+
+  getViewProduct: (req, res) => {
+    productHelper.getAllProducts().then((products) => {
+      // console.log(products);
       res.render("admin/viewProducts", { products, admin: true });
+    });
+  },
+
+  getViewUser: (req, res) => {
+    adminUserHelper.getAllUsers().then((users) => {
+      res.render("admin/viewUsers", { users, admin: true });
     });
   },
 
@@ -99,6 +113,20 @@ module.exports = {
         let image = req.files.Image;
         image.mv("./public/users/productImages/" + proId + ".jpg");
       }
+    });
+  },
+
+  updateToBlockUser: (req, res) => {
+    let proId = req.params.id;
+    adminUserHelper.blockUser(proId).then((response) => {
+      res.redirect("/admin/view-users");
+    });
+  },
+
+  updateToUnblockUser: (req, res) => {
+    let proId = req.params.id;
+    adminUserHelper.unblockUser(proId).then((response) => {
+      res.redirect("/admin/view-users");
     });
   },
 };
