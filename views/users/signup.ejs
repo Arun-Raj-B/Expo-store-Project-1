@@ -79,9 +79,6 @@
                         placeholder="Email ID"
                         required
                       />
-                      <% if(locals.emailExistErr){ %> 
-                        <p class="text-danger ps-3"><%= locals.emailExistErr  %> </p>
-                        <% } %> 
                     </div>
   
                     <div class="form-outline mb-4">
@@ -120,6 +117,9 @@
                         placeholder="Mobile Number"
                         required 
                       />
+                      <% if(locals.Err){ %> 
+                        <p class="text-danger ps-3"><%= locals.Err  %> </p>
+                        <% } %> 
                       <!-- <p class="text-danger">locals.mobileMsg</p> -->
                     </div>
                       <!-- <p class="text-danger m-auto">locals.err</p> -->

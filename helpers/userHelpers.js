@@ -4,11 +4,15 @@ const bcrypt = require("bcrypt");
 module.exports = {
   doSignup: (userData) => {
     return new Promise(async (resolve, reject) => {
-      let user = await db
+      const checkMail = await db
         .get()
         .collection(collection.USER_COLLECTION)
         .findOne({ email: userData.email });
-      if (!user) {
+      const checkMobile = await db
+        .get()
+        .collection(collection.USER_COLLECTION)
+        .findOne({ mobilenumber: userData.mobilenumber });
+      if (!checkMail && !checkMobile) {
         userData.password = await bcrypt.hash(userData.password, 10);
         db.get()
           .collection(collection.USER_COLLECTION)
@@ -28,8 +32,13 @@ module.exports = {
             resolve(data.insertedId);
           });
       } else {
-        let errMsg = "Email already exists";
-        reject(errMsg);
+        if (checkMail) {
+          let mailExistsErr = "Email already exists";
+          reject(mailExistsErr);
+        } else {
+          let mobileExistsErr = "This mobile number is already in use";
+          reject(mobileExistsErr);
+        }
       }
     });
   },

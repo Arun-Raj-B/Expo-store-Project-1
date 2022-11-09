@@ -80,8 +80,8 @@ module.exports = {
         // res.redirect("/login");
         res.redirect("/otp");
       })
-      .catch((emailExistErr) => {
-        res.render("users/signup", { emailExistErr });
+      .catch((Err) => {
+        res.render("users/signup", { Err });
       });
   },
 
@@ -111,7 +111,8 @@ module.exports = {
   },
 
   getLogout: (req, res) => {
-    req.session.destroy();
+    // req.session.destroy();
+    req.session.user = null;
     res.redirect("/");
   },
 

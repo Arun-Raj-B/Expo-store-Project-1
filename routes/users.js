@@ -3,7 +3,7 @@ const router = express.Router();
 const userController = require("../controllers/userController");
 
 const verifyLogin = (req, res, next) => {
-  if (req.session.loggedIn) {
+  if (req.session.user) {
     next();
   } else {
     res.redirect("/login");

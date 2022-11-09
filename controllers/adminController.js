@@ -1,24 +1,29 @@
 const productHelper = require("../helpers/productHelpers");
 const adminUserHelper = require("../helpers/adminUserHelpers");
+const adminHelper = require("../helpers/adminHelpers");
 
 module.exports = {
   getAdminHome: (req, res) => {
-    productHelper.getAllProducts().then((products) => {
-      // console.log(products);
-      res.render("admin/adminHome", { products, admin: true });
-    });
+    let adminData = req.session.admin;
+    if (!adminData) {
+      res.render("admin/adminLogin", { admin: true });
+    } else {
+      res.render("admin/adminHome", { admin: true, adminData });
+    }
   },
 
   getViewProduct: (req, res) => {
+    let adminData = req.session.admin;
     productHelper.getAllProducts().then((products) => {
       // console.log(products);
-      res.render("admin/viewProducts", { products, admin: true });
+      res.render("admin/viewProducts", { products, admin: true, adminData });
     });
   },
 
   getViewUser: (req, res) => {
+    let adminData = req.session.admin;
     adminUserHelper.getAllUsers().then((users) => {
-      res.render("admin/viewUsers", { users, admin: true });
+      res.render("admin/viewUsers", { users, admin: true, adminData });
     });
   },
 
@@ -128,5 +133,47 @@ module.exports = {
     adminUserHelper.unblockUser(proId).then((response) => {
       res.redirect("/admin/view-users");
     });
+  },
+
+  getAdminSignup: (req, res) => {
+    res.render("admin/adminSignup", { admin: true });
+  },
+
+  getAdminLogin: (req, res) => {
+    if (req.session.loggedIn) {
+      res.redirect("/admin");
+    } else {
+      res.render("admin/adminlogin", {
+        admin: true,
+        loginErr: req.session.loginErr,
+      });
+      req.session.loginErr = false;
+    }
+  },
+
+  postAdminSignup: (req, res) => {
+    adminHelper.adminSignup(req.body).then((response) => {
+      console.log(response);
+      res.redirect("/admin/login");
+    });
+  },
+
+  postAdminLogin: (req, res) => {
+    adminHelper.adminLogin(req.body).then((response) => {
+      if (response.status) {
+        req.session.admin = response.admin;
+        req.session.loggedIn = true;
+        console.log(req.session.admin);
+        res.redirect("/admin");
+      } else {
+        req.session.loginErr = "Invalid username or password";
+        res.redirect("/admin/login");
+      }
+    });
+  },
+
+  getAdminLogout: (req, res) => {
+    req.session.admin = null;
+    res.redirect("/admin");
   },
 };
