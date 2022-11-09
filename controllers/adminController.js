@@ -28,7 +28,8 @@ module.exports = {
   },
 
   getAddProduct: (req, res) => {
-    res.render("admin/addProduct", { admin: true });
+    let adminData = req.session.admin;
+    res.render("admin/addProduct", { admin: true, adminData });
   },
 
   postAddProduct: (req, res) => {
@@ -105,9 +106,10 @@ module.exports = {
   },
 
   getEditProduct: async (req, res) => {
+    let adminData = req.session.admin;
     let proId = req.params.id;
     let product = await productHelper.getOneProduct(proId);
-    res.render("admin/editProduct", { admin: true, product });
+    res.render("admin/editProduct", { admin: true, product, adminData });
   },
 
   postEditProduct: (req, res) => {
@@ -136,7 +138,8 @@ module.exports = {
   },
 
   getAdminSignup: (req, res) => {
-    res.render("admin/adminSignup", { admin: true });
+    let adminData = req.session.admin;
+    res.render("admin/adminSignup", { admin: true, adminData });
   },
 
   getAdminLogin: (req, res) => {
@@ -175,5 +178,34 @@ module.exports = {
   getAdminLogout: (req, res) => {
     req.session.admin = null;
     res.redirect("/admin");
+  },
+
+  getViewCategory: (req, res) => {
+    let adminData = req.session.admin;
+    productHelper.getAllCategories().then((categories) => {
+      console.log(categories);
+      res.render("admin/viewCategory", { admin: true, adminData, categories });
+    });
+  },
+
+  getAddCategory: (req, res) => {
+    let adminData = req.session.admin;
+    res.render("admin/addCategory", { admin: true, adminData });
+  },
+
+  postAddCategory: (req, res) => {
+    console.log(req.body);
+    productHelper.addCategory(req.body).then((result) => {
+      console.log("Category Added");
+      res.redirect("/admin/view-category");
+    });
+  },
+
+  getDeleteCategory: (req, res) => {
+    let catId = req.params.id;
+    console.log(catId);
+    productHelper.deleteCategory(catId).then((response) => {
+      res.redirect("/admin/view-category");
+    });
   },
 };

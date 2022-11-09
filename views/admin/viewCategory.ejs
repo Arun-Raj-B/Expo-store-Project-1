@@ -1,0 +1,70 @@
+<section class="pt-5">
+  <div class="container shadow-lg rounded mb-5">
+    <div class="row mt-4">
+      <div class="d-flex flex-row-reverse">
+        <div>
+          <a href="/admin/add-category" class="btn btn-outline-success m-3"
+            >Add Category</a
+          >
+        </div>
+      </div>
+    </div>
+    <table
+      class="table table-fluid table-hover table-bordered pt-3"
+      id="myTable"
+      style="text-align: center"
+    >
+      <!-- style="text-align: center" -->
+      <thead>
+        <tr class="bg-dark text-white">
+          <th scope="col" style="text-align: center">No</th>
+          <th scope="col" style="text-align: center">Category</th>
+          <th scope="col" style="text-align: center">Subcategory</th>
+          <th scope="col" style="text-align: center">Edit/Delete</th>
+        </tr>
+      </thead>
+      <% var No=1 %>
+      <tbody>
+        <% locals.categories.forEach(categories=>{%>
+        <tr>
+          <th scope="row"><%=No++ %></th>
+          <td><%=categories.category%></td>
+          <td>
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-success">
+                Show All
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <% categories.subcategory.forEach(sub=>{%>
+                <li><a class="dropdown-item" href="#"><%= sub %> </a></li>
+                <%})%>
+              </ul>
+            </div>
+          </td>
+          <td>
+            <a
+              href="/admin/edit-category/<%=categories._id %>"
+              class="btn btn-outline-primary"
+              >Update</a
+            >
+            <a
+              href="/admin/delete-category/<%=categories._id %>"
+              class="btn btn-outline-danger"
+              onclick="return confirm('Do you want to delete <%=categories.category%> ?')"
+              >Delete</a
+            >
+          </td>
+        </tr>
+        <%})%>
+      </tbody>
+    </table>
+  </div>
+</section>

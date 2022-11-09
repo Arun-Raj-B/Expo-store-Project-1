@@ -50,7 +50,7 @@ module.exports = {
   },
 
   getLogin: (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session.user) {
       res.redirect("/");
     } else {
       res.render("users/login", { loginErr: req.session.loginErr });
@@ -59,7 +59,7 @@ module.exports = {
   },
 
   getSignup: (req, res) => {
-    if (req.session.loggedIn) {
+    if (req.session.user) {
       res.redirect("/");
     } else {
       res.render("users/signup");

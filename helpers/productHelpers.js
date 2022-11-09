@@ -14,7 +14,7 @@ module.exports = {
 
   getAllProducts: () => {
     return new Promise(async (resolve, reject) => {
-      let products = await db
+      const products = await db
         .get()
         .collection(collection.PRODUCT_COLLECTION)
         .find()
@@ -64,6 +64,45 @@ module.exports = {
           }
         )
         .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+
+  addCategory: (cat) => {
+    return new Promise((resolve, reject) => {
+      const category = cat.category;
+      const subcategory = cat.subcategory.split(",");
+      db.get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .insertOne({
+          category: category,
+          subcategory: subcategory,
+        })
+        .then((result) => {
+          resolve(result);
+        });
+    });
+  },
+
+  getAllCategories: () => {
+    return new Promise(async (resolve, reject) => {
+      const categories = await db
+        .get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .find()
+        .toArray();
+      resolve(categories);
+    });
+  },
+
+  deleteCategory: (catId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .deleteOne({ _id: objectId(catId) })
+        .then((response) => {
+          console.log(response);
           resolve(response);
         });
     });
