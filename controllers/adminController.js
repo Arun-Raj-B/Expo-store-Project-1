@@ -1,6 +1,7 @@
 const productHelper = require("../helpers/productHelpers");
 const adminUserHelper = require("../helpers/adminUserHelpers");
 const adminHelper = require("../helpers/adminHelpers");
+const { response } = require("express");
 
 module.exports = {
   getAdminHome: (req, res) => {
@@ -183,7 +184,6 @@ module.exports = {
   getViewCategory: (req, res) => {
     let adminData = req.session.admin;
     productHelper.getAllCategories().then((categories) => {
-      console.log(categories);
       res.render("admin/viewCategory", { admin: true, adminData, categories });
     });
   },
@@ -202,9 +202,18 @@ module.exports = {
   },
 
   getDeleteCategory: (req, res) => {
-    let catId = req.params.id;
+    const catId = req.params.id;
     console.log(catId);
     productHelper.deleteCategory(catId).then((response) => {
+      res.redirect("/admin/view-category");
+    });
+  },
+
+  getDeleteSubcategory: (req, res) => {
+    const cat = req.params.ctgry;
+    const sub = req.params.subctgry;
+    console.log(cat, sub);
+    productHelper.deleteSubcategory(cat, sub).then((response) => {
       res.redirect("/admin/view-category");
     });
   },

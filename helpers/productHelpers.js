@@ -107,4 +107,21 @@ module.exports = {
         });
     });
   },
+
+  deleteSubcategory: (cat, sub) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .updateOne(
+          {
+            category: cat,
+          },
+          { $pull: { subcategory: sub } }
+        )
+        .then((response) => {
+          console.log("category deleted successfully");
+          resolve(response);
+        });
+    });
+  },
 };

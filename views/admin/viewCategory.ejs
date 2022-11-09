@@ -44,7 +44,15 @@
               </button>
               <ul class="dropdown-menu">
                 <% categories.subcategory.forEach(sub=>{%>
-                <li><a class="dropdown-item" href="#"><%= sub %> </a></li>
+                <li class="dropdown-item">
+                  <%= sub %>
+                  <a
+                    href="/admin/delete-subcategory/<%=sub %>/<%=categories.category%>"
+                    class="btn btn-outline-danger"
+                    onclick="return confirm('Do you want to delete the sub-category <%=sub %> in <%=categories.category%> category ?')"
+                    >Delete</a
+                  >
+                </li>
                 <%})%>
               </ul>
             </div>
