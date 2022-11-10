@@ -202,7 +202,8 @@ module.exports = {
         res.redirect("/admin/view-category");
       })
       .catch((err) => {
-        res.render("admin/addCategory", { err, admin: true });
+        let adminData = req.session.admin;
+        res.render("admin/addCategory", { err, admin: true, adminData });
       });
   },
 
@@ -223,7 +224,18 @@ module.exports = {
     });
   },
 
-  getEditCategory: (req, res) => {
-    res.render("admin/editCategory", { admin: true });
+  getEditCategory: async (req, res) => {
+    const adminData = req.session.admin;
+    const catId = req.params.id;
+    const category = await productHelper.getOneCategory(catId);
+    res.render("admin/editCategory", { admin: true, adminData, category });
+  },
+
+  postEditCategory: (req, res) => {
+    const catId = req.params.id;
+    productHelper.updateCategory(catId, req.body).then((response) => {
+      let adminData = req.session.admin;
+      res.redirect("/admin/view-category");
+    });
   },
 };

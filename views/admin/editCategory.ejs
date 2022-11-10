@@ -8,7 +8,7 @@
         <div>&nbsp;</div>
         <h2 class="text-center">Update Category</h2>
         <form
-          action="/admin/edit-category"
+          action="/admin/edit-category/<%=locals.category._id%> "
           method="post"
           id="formValidation"
           enctype="multipart/form-data"
@@ -17,7 +17,7 @@
             type="text"
             name="category"
             class="form-control mt-5"
-            placeholder="Category"
+            value="<%=locals.category.category%>"
             required
           />
 
@@ -25,7 +25,7 @@
             type="text"
             name="subcategory"
             class="form-control mt-3"
-            placeholder="Sub-categories"
+            value="<%=locals.category.subcategory%>"
           />
           <p>
             * add Sub-categories separated by commas (eg. Shirt,T-shirt,Hoodie)

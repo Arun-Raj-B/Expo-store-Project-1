@@ -137,4 +137,36 @@ module.exports = {
         });
     });
   },
+
+  getOneCategory: (catId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .findOne({ _id: objectId(catId) })
+        .then((category) => {
+          console.log(category);
+          resolve(category);
+        });
+    });
+  },
+
+  updateCategory: (catId, cat) => {
+    return new Promise((resolve, reject) => {
+      const subctgry = cat.subcategory.split(",");
+      db.get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .updateOne(
+          { _id: objectId(catId) },
+          {
+            $set: {
+              category: cat.category,
+              subcategory: subctgry,
+            },
+          }
+        )
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
 };
