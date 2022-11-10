@@ -222,4 +222,8 @@ module.exports = {
       res.redirect("/admin/view-category");
     });
   },
+
+  getEditCategory: (req, res) => {
+    res.render("admin/editCategory", { admin: true });
+  },
 };

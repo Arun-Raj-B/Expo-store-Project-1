@@ -1,0 +1,64 @@
+<section>
+  <div
+    class="container mt-5 bg-dark text-white w-50 m-auto"
+    style="border-radius: 25px"
+  >
+    <div class="row justify-content-center align-items-center">
+      <div class="col-md-6">
+        <div>&nbsp;</div>
+        <h2 class="text-center">Update Category</h2>
+        <form
+          action="/admin/edit-category"
+          method="post"
+          id="formValidation"
+          enctype="multipart/form-data"
+        >
+          <input
+            type="text"
+            name="category"
+            class="form-control mt-5"
+            placeholder="Category"
+            required
+          />
+
+          <input
+            type="text"
+            name="subcategory"
+            class="form-control mt-3"
+            placeholder="Sub-categories"
+          />
+          <p>
+            * add Sub-categories separated by commas (eg. Shirt,T-shirt,Hoodie)
+          </p>
+          <% if (locals.err) {%>
+          <p class="text-danger"><%= locals.err %></p>
+          <% } %>
+          <button type="submit" class="btn btn-success mt-4">Submit</button>
+          <div>&nbsp;</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+></script>
+
+<script
+  text="text/javascript"
+  src="/users/javascript/categoryValidation.js"
+></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+></script>
+
+<script
+  text="text/javascript"
+  src="/users/javascript/categoryValidation.js"
+></script>

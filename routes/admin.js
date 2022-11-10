@@ -28,7 +28,12 @@ router.get("/logout", adminController.getAdminLogout);
 router.get("/view-category", verifyLogin, adminController.getViewCategory);
 router.get("/add-category", verifyLogin, adminController.getAddCategory);
 router.post("/add-category", adminController.postAddCategory);
+router.get("/edit-category/:id", adminController.getEditCategory);
+// router.post("/edit-category/:id", adminController.postEditCategory);
 router.get("/delete-category/:id", adminController.getDeleteCategory);
-router.get("/delete-subcategory/:subctgry/:ctgry", adminController.getDeleteSubcategory);
+router.get(
+  "/delete-subcategory/:subctgry/:ctgry",
+  adminController.getDeleteSubcategory
+);
 
 module.exports = router;
