@@ -86,4 +86,17 @@ module.exports = {
         });
     });
   },
+
+  checkNoExist: (mobile) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .findOne({
+          mobilenumber: mobile,
+        })
+        .then((user) => {
+          resolve(user);
+        });
+    });
+  },
 };

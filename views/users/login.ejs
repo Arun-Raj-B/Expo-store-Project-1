@@ -57,22 +57,17 @@
                   <p class="text-danger m-auto"><%= locals.loginErr %></p>
                   <% } %>
 
-                  <div class="pt-1 mb-4">
+                  <div class=" mb-4 d-flex justify-content-between">
                     <button
-                      class="btn btn-dark btn-lg btn-block"
+                      class="btn btn-dark btn-block"
                       id="popupBtn"
                       type="submit"
                     >
                       Login
                     </button>
+                    <a class="btn btn-outline-secondary d-block" href="/getMobile" role="button">Login with OTP</a>
                   </div>
-
-                  <a
-                    class="small text-muted"
-                    href="#!"
-                    style="text-decoration: none"
-                    >Forgot password?</a
-                  >
+                  
                   <p class="mb-5 pb-lg-2" style="color: #393f81">
                     NewBee?
                     <a
@@ -80,6 +75,14 @@
                       style="color: #393f81; text-decoration: none"
                       >Register here</a
                     >
+                    <a
+                    class="small d-block"
+                    href="#!"
+                    style="text-decoration: none"
+                    >Forgot password?</a
+                  >
+                    <div>
+                    </div>
                   </p>
                   <!-- <a href="#!" class="small text-muted">Terms of use.</a>
                   <a href="#!" class="small text-muted">Privacy policy</a> -->

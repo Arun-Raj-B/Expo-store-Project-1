@@ -94,7 +94,7 @@ module.exports = {
           req.session.last4digits = last4digits;
           otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
           req.session.mobile = mobile;
-          res.redirect("/loginOTP");
+          res.redirect("/verifyNo");
         } else if (!response.user.access) {
           blockedMessage = "You are blocked";
           res.render("users/login", { access: false, blockedMessage });
@@ -149,22 +149,22 @@ module.exports = {
     }
   },
 
-  getLoginOTP: (req, res) => {
+  getVerifyNo: (req, res) => {
     if (req.session.loggedIn) {
       res.redirect("/");
     } else {
       const last4digits = req.session.last4digits;
       console.log(otpHelper.obj);
       if (!req.session.OTPerr) {
-        res.render("users/loginOTP", { last4digits });
+        res.render("users/verifyNo", { last4digits });
       } else {
         const OTPerr = req.session.OTPerr;
-        res.render("users/loginOTP", { last4digits, OTPerr });
+        res.render("users/verifyNo", { last4digits, OTPerr });
       }
     }
   },
 
-  postLoginOTP: (req, res) => {
+  postVerifyNo: (req, res) => {
     const OTP = otpHelper.obj.OTP;
     if (req.body.otp == OTP) {
       mobile = req.session.mobile;
@@ -175,7 +175,48 @@ module.exports = {
       });
     } else {
       req.session.OTPerr = "Entered a valid OTP";
-      res.redirect("/loginOTP");
+      res.redirect("/verifyNo");
+    }
+  },
+
+  getGetMobile: (req, res) => {
+    res.render("users/getMobile");
+  },
+
+  postGetMobile: (req, res) => {
+    console.log(req.body.mobilenumber);
+    userHelper.checkNoExist(req.body.mobilenumber).then((user) => {
+      if (user) {
+        const mobile = user.mobilenumber;
+        req.session.mobile = mobile;
+        req.session.tempUser = user;
+        res.redirect("/loginOTP");
+      } else {
+        const loginErr = "User does not exist";
+        res.render("users/getMobile", { loginErr });
+      }
+    });
+  },
+
+  getLoginOTP: (req, res) => {
+    const mobile = req.session.mobile;
+    otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
+    res.render("users/loginOTP", { mobile });
+  },
+
+  postLoginOTP: (req, res) => {
+    const mobile = req.session.mobile;
+    const enteredOTP = req.body.OTP;
+    const sentOTP = otpHelper.obj.OTP;
+    console.log(enteredOTP, sentOTP);
+    if (enteredOTP == sentOTP) {
+      req.session.loggedIn = true;
+      req.session.user = req.session.tempUser;
+      req.session.tempUser = null;
+      res.redirect("/");
+    } else {
+      const errMsg = "Enter a valid OTP";
+      res.render("users/loginOTP", { mobile, errMsg });
     }
   },
 };
