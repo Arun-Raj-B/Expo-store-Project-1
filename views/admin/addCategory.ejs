@@ -30,7 +30,9 @@
           <p>
             * add Sub-categories separated by commas (eg. Shirt,T-shirt,Hoodie)
           </p>
-
+          <% if (locals.err) {%>
+          <p class="text-danger"><%= locals.err %></p>
+          <% } %>
           <button type="submit" class="btn btn-success mt-4">Submit</button>
           <div>&nbsp;</div>
         </form>

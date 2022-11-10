@@ -70,18 +70,31 @@ module.exports = {
   },
 
   addCategory: (cat) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const category = cat.category;
       const subcategory = cat.subcategory.split(",");
-      db.get()
+
+      const exists = await db
+        .get()
         .collection(collection.CATEGORY_COLLECTION)
-        .insertOne({
-          category: category,
-          subcategory: subcategory,
-        })
-        .then((result) => {
-          resolve(result);
-        });
+        .findOne({ category: category });
+
+      console.log(exists);
+
+      if (!exists) {
+        db.get()
+          .collection(collection.CATEGORY_COLLECTION)
+          .insertOne({
+            category: category,
+            subcategory: subcategory,
+          })
+          .then((result) => {
+            resolve(result);
+          });
+      } else {
+        let err = "This Category already exists";
+        reject(err);
+      }
     });
   },
 

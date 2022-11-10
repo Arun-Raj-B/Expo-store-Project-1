@@ -195,10 +195,15 @@ module.exports = {
 
   postAddCategory: (req, res) => {
     console.log(req.body);
-    productHelper.addCategory(req.body).then((result) => {
-      console.log("Category Added");
-      res.redirect("/admin/view-category");
-    });
+    productHelper
+      .addCategory(req.body)
+      .then((result) => {
+        console.log("Category Added");
+        res.redirect("/admin/view-category");
+      })
+      .catch((err) => {
+        res.render("admin/addCategory", { err, admin: true });
+      });
   },
 
   getDeleteCategory: (req, res) => {
