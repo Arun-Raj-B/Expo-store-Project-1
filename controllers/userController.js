@@ -3,12 +3,14 @@ const userHelper = require("../helpers/userHelpers");
 const otpHelper = require("../helpers/otpHelper");
 
 module.exports = {
-  getHome: (req, res) => {
+  getHome: async (req, res) => {
     let user = req.session.user;
     console.log(user);
+    const category = await productHelper.getAllCategories();
+    console.log(category);
     productHelper.getAllProducts().then((products) => {
       // console.log(products);
-      res.render("users/home", { products, user });
+      res.render("users/home", { products, user, category });
     });
   },
 
@@ -186,8 +188,8 @@ module.exports = {
   getSingleProduct: (req, res) => {
     const proId = req.params.id;
     console.log(proId);
-    productHelper.getSingleProduct(proId).then((prod) => {
-      console.log(prod)
+    productHelper.getOneProduct(proId).then((prod) => {
+      console.log(prod);
       // const product = prod._id.toString();
       // console.log(product);
       res.render("users/singleProduct", { prod });

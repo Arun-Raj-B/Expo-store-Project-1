@@ -169,14 +169,4 @@ module.exports = {
         });
     });
   },
-
-  getSingleProduct: (proId) => {
-    return new Promise(async (resolve, reject) => {
-      const product = await db
-        .get()
-        .collection(collection.PRODUCT_COLLECTION)
-        .findOne({ _id: objectId(proId) });
-      resolve(product);
-    });
-  },
 };
