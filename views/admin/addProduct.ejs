@@ -46,8 +46,66 @@
           <label for="" class="mt-2">Description</label>
           <input type="text" name="Description" class="form-control" />
 
-          <label for="" class="mt-2">Image</label>
-          <input type="file" name="Image" class="form-control" multiple />
+          <!-- <label for="" class="mt-2">Image</label>
+          <input type="file" name="Image" class="form-control" multiple /> -->
+          <div class="d-flex justify-content-evenly">
+            <img
+              src=""
+              alt="Image"
+              style="width: 100px; height: auto"
+              class="rounded p-1"
+              id="imgView1"
+            />
+            <img
+              src=""
+              alt="Image"
+              style="width: 100px; height: auto"
+              class="rounded p-1"
+              id="imgView2"
+            />
+            <img
+              src=""
+              alt="Image"
+              style="width: 100px; height: auto"
+              class="rounded p-1"
+              id="imgView3"
+            />
+            <img
+              src=""
+              alt="Image"
+              style="width: 100px; height: auto"
+              class="rounded p-1"
+              id="imgView4"
+            />
+          </div>
+
+          <input
+            type="file"
+            name="Image1"
+            class="form-control"
+            onchange="viewImage1(event)"
+          />
+
+          <input
+            type="file"
+            name="Image2"
+            class="form-control mt-3"
+            onchange="viewImage2(event)"
+          />
+
+          <input
+            type="file"
+            name="Image3"
+            class="form-control mt-3"
+            onchange="viewImage3(event)"
+          />
+
+          <input
+            type="file"
+            name="Image4"
+            class="form-control mt-3"
+            onchange="viewImage4(event)"
+          />
 
           <button type="submit" class="btn btn-success mt-4">Submit</button>
           <div>&nbsp;</div>
@@ -56,3 +114,26 @@
     </div>
   </div>
 </section>
+
+<script>
+  function viewImage1(event) {
+    document.getElementById("imgView1").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  }
+  function viewImage2(event) {
+    document.getElementById("imgView2").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  }
+  function viewImage3(event) {
+    document.getElementById("imgView3").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  }
+  function viewImage4(event) {
+    document.getElementById("imgView4").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  }
+</script>

@@ -55,11 +55,13 @@
       <div class="col-md-3 col-sm-6 p-3 d-flex justify-content-center">
         <div class="card shadow rounded" style="width: 16rem">
           <div>
-            <img
-              src="users/productImages/<%= product._id %>.jpg"
-              class="card-img-top"
-              alt="image"
-            />
+            <a href="/singleProduct/<%= product._id %>">
+              <img
+                src="users/productImages/<%= product._id %>.jpg"
+                class="card-img-top"
+                alt="image"
+              />
+            </a>
           </div>
           <div class="card-body" style="background-color: #ede2c8">
             <h5 class="card-title"><%= product.Name %></h5>
@@ -68,12 +70,14 @@
             <!-- <a href="#" class="btn text-white" style="background-color: #1c3879"
               >Add to cart</a
             > -->
-            <a href="#" class="btn"
-              ><i class="fa-solid fa-cart-shopping"></i
-            ></a>
-            <a href="#" class="btn">
-              <i class="fa-solid fa-heart"></i>
-            </a>
+            <div class="d-flex justify-content-between">
+              <a href="#" class="btn btn-outline-dark"
+                ><i class="fa-solid fa-cart-shopping"></i
+              ></a>
+              <a href="#" class="btn btn-outline-dark">
+                <i class="fa-solid fa-heart"></i>
+              </a>
+            </div>
           </div>
         </div>
       </div>

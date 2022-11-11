@@ -4,43 +4,6 @@ const otpHelper = require("../helpers/otpHelper");
 
 module.exports = {
   getHome: (req, res) => {
-    // let products = [
-    //   {
-    //     name: "Jabla1",
-    //     category: "Shirt",
-    //     price: "200₹",
-    //     description: "This is a good shirt",
-    //     image: "users/images/menShirt1.jpg",
-    //   },
-    //   {
-    //     name: "Jabla2",
-    //     category: "Shirt",
-    //     price: "250₹",
-    //     description: "This is a good shirt",
-    //     image: "users/images/menShirt2.jpg",
-    //   },
-    //   {
-    //     name: "Jabla3",
-    //     category: "Shirt",
-    //     price: "210₹",
-    //     description: "This is a good shirt",
-    //     image: "users/images/menShirt3.jpg",
-    //   },
-    //   {
-    //     name: "Jabla4",
-    //     category: "Shirt",
-    //     price: "150₹",
-    //     description: "This is a good shirt",
-    //     image: "users/images/menShirt3.jpg",
-    //   },
-    //   {
-    //     name: "Jabla4",
-    //     category: "Shirt",
-    //     price: "150₹",
-    //     description: "This is a good shirt",
-    //     image: "users/images/menShirt3.jpg",
-    //   },
-    // ];
     let user = req.session.user;
     console.log(user);
     productHelper.getAllProducts().then((products) => {
@@ -218,5 +181,16 @@ module.exports = {
       const errMsg = "Enter a valid OTP";
       res.render("users/loginOTP", { mobile, errMsg });
     }
+  },
+
+  getSingleProduct: (req, res) => {
+    const proId = req.params.id;
+    console.log(proId);
+    productHelper.getSingleProduct(proId).then((prod) => {
+      console.log(prod)
+      // const product = prod._id.toString();
+      // console.log(product);
+      res.render("users/singleProduct", { prod });
+    });
   },
 };

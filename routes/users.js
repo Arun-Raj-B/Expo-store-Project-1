@@ -33,5 +33,6 @@ router.get("/getMobile", redirectHome, userController.getGetMobile);
 router.post("/getMobile", userController.postGetMobile);
 router.get("/loginOTP", redirectHome, userController.getLoginOTP);
 router.post("/loginOTP", redirectHome, userController.postLoginOTP);
+router.get("/singleProduct/:id", userController.getSingleProduct);
 
 module.exports = router;

@@ -38,63 +38,81 @@ module.exports = {
     // console.log(req.files.Image);
 
     productHelper.addProduct(req.body, (id) => {
-      let image = req.files.Image;
+      let image1 = req.files.Image1;
+      let image2 = req.files.Image2;
+      let image3 = req.files.Image3;
+      let image4 = req.files.Image4;
 
-      let image1 = id;
-      let image2 = id + "a";
-      let image3 = id + "b";
-      let image4 = id + "c";
+      let id1 = id;
+      let id2 = id + "a";
+      let id3 = id + "b";
+      let id4 = id + "c";
 
-      console.log(`${image1}\n${image2}\n${image3}\n${image4}`);
+      console.log(`${id1}\n${id2}\n${id3}\n${id4}`);
 
-      image.mv(
-        "./public/users/productImages/" + image1 + ".jpg",
-        (err, done) => {
-          if (!err) {
-            res.redirect("/admin");
-          } else {
-            console.log(err);
-          }
-        }
-      );
-
-      // image[0].mv(
-      //   "./public/users/productImages/" + image1 + ".jpg",
-      //   (err, done) => {
-      //     if (!err) {
-      //       image[1].mv(
-      //         "./public/users/productImages/" + image2 + ".jpg",
-      //         (err, done) => {
-      //           if (!err) {
-      //             image[2].mv(
-      //               "./public/users/productImages/" + image3 + ".jpg",
-      //               (err, done) => {
-      //                 if (!err) {
-      //                   image[3].mv(
-      //                     "./public/users/productImages/" + image4 + ".jpg",
-      //                     (err, done) => {
-      //                       if (!err) {
-      //                         res.redirect("/admin");
-      //                       } else {
-      //                         console.log(err);
-      //                       }
-      //                     }
-      //                   );
-      //                 } else {
-      //                   console.log(err);
-      //                 }
-      //               }
-      //             );
-      //           } else {
-      //             console.log(err);
-      //           }
-      //         }
-      //       );
-      //     } else {
-      //       console.log(err);
-      //     }
+      // image1.mv("./public/users/productImages/" + id1 + ".jpg", (err, done) => {
+      //   if (!err) {
+      //     res.redirect("/admin");
+      //   } else {
+      //     console.log(err);
       //   }
-      // );
+      // });
+      // image2.mv("./public/users/productImages/" + id2 + ".jpg", (err, done) => {
+      //   if (!err) {
+      //     res.redirect("/admin");
+      //   } else {
+      //     console.log(err);
+      //   }
+      // });
+      // image3.mv("./public/users/productImages/" + id3 + ".jpg", (err, done) => {
+      //   if (!err) {
+      //     res.redirect("/admin");
+      //   } else {
+      //     console.log(err);
+      //   }
+      // });
+      // image4.mv("./public/users/productImages/" + id4 + ".jpg", (err, done) => {
+      //   if (!err) {
+      //     res.redirect("/admin");
+      //   } else {
+      //     console.log(err);
+      //   }
+      // });
+
+      image1.mv("./public/users/productImages/" + id1 + ".jpg", (err, done) => {
+        if (!err) {
+          image2.mv(
+            "./public/users/productImages/" + id2 + ".jpg",
+            (err, done) => {
+              if (!err) {
+                image3.mv(
+                  "./public/users/productImages/" + id3 + ".jpg",
+                  (err, done) => {
+                    if (!err) {
+                      image4.mv(
+                        "./public/users/productImages/" + id4 + ".jpg",
+                        (err, done) => {
+                          if (!err) {
+                            res.redirect("/admin/view-product");
+                          } else {
+                            console.log(err);
+                          }
+                        }
+                      );
+                    } else {
+                      console.log(err);
+                    }
+                  }
+                );
+              } else {
+                console.log(err);
+              }
+            }
+          );
+        } else {
+          console.log(err);
+        }
+      });
     });
   },
 
@@ -116,10 +134,22 @@ module.exports = {
   postEditProduct: (req, res) => {
     let proId = req.params.id;
     productHelper.updateProduct(proId, req.body).then((response) => {
-      res.redirect("/admin");
-      if (req.files.Image) {
-        let image = req.files.Image;
-        image.mv("./public/users/productImages/" + proId + ".jpg");
+      const id1 = proId;
+      const id2 = proId + "a";
+      const id3 = proId + "b";
+      const id4 = proId + "c";
+      try {
+        let image1 = req.files.Image1;
+        image1.mv("./public/users/productImages/" + id1 + ".jpg");
+        let image2 = req.files.Image2;
+        image2.mv("./public/users/productImages/" + id2 + ".jpg");
+        let image3 = req.files.Image3;
+        image3.mv("./public/users/productImages/" + id3 + ".jpg");
+        let image4 = req.files.Image4;
+        image4.mv("./public/users/productImages/" + id4 + ".jpg");
+        res.redirect("/admin/view-product");
+      } catch (err) {
+        res.redirect("/admin/view-product");
       }
     });
   },

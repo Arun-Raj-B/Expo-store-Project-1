@@ -1,6 +1,6 @@
 <section>
   <div
-    class="container mt-5 bg-dark text-white w-50 m-auto mb-5"
+    class="container mt-5 bg-dark text-white w-75 m-auto mb-5"
     style="border-radius: 25px"
   >
     <div class="row justify-content-center align-items-center">
@@ -53,21 +53,63 @@
             class="form-control"
             value="<%= product.Description  %> "
           />
+          <% const id1 = product._id %> <% const id2 = product._id+"a" %> <%
+          const id3 = product._id+"b" %> <% const id4 = product._id+"c" %>
 
           <!-- <label for="" class="mt-2">Image</label> -->
-          <img
-            src="/users/productImages/<%= product._id  %>.jpg"
-            alt="Image"
-            style="width: 100px; height: auto"
-            class="rounded p-1"
-            id="imgView"
+          <div class="d-flex justify-content-evenly">
+            <img
+              src="/users/productImages/<%= id1  %>.jpg"
+              alt="Image"
+              style="width: 100px; height: auto"
+              class="rounded p-1"
+              id="imgView1"
+            />
+            <img
+              src="/users/productImages/<%= id2  %>.jpg"
+              alt="Image"
+              style="width: 100px; height: auto"
+              class="rounded p-1"
+              id="imgView2"
+            />
+            <img
+              src="/users/productImages/<%= id3  %>.jpg"
+              alt="Image"
+              style="width: 100px; height: auto"
+              class="rounded p-1"
+              id="imgView3"
+            />
+            <img
+              src="/users/productImages/<%= id4  %>.jpg"
+              alt="Image"
+              style="width: 100px; height: auto"
+              class="rounded p-1"
+              id="imgView4"
+            />
+          </div>
+          <input
+            type="file"
+            name="Image1"
+            class="form-control"
+            onchange="viewImage1(event)"
           />
           <input
             type="file"
-            name="Image"
-            class="form-control"
-            multiple
-            onchange="viewImage(event)"
+            name="Image2"
+            class="form-control mt-3"
+            onchange="viewImage2(event)"
+          />
+          <input
+            type="file"
+            name="Image3"
+            class="form-control mt-3"
+            onchange="viewImage3(event)"
+          />
+          <input
+            type="file"
+            name="Image4"
+            class="form-control mt-3"
+            onchange="viewImage4(event)"
           />
 
           <button type="submit" class="btn btn-success mt-4">Submit</button>
@@ -79,8 +121,23 @@
 </section>
 
 <script>
-  function viewImage(event) {
-    document.getElementById("imgView").src = URL.createObjectURL(
+  function viewImage1(event) {
+    document.getElementById("imgView1").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  }
+  function viewImage2(event) {
+    document.getElementById("imgView2").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  }
+  function viewImage3(event) {
+    document.getElementById("imgView3").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  }
+  function viewImage4(event) {
+    document.getElementById("imgView4").src = URL.createObjectURL(
       event.target.files[0]
     );
   }
