@@ -25,7 +25,7 @@ module.exports = {
       const products = await db
         .get()
         .collection(collection.PRODUCT_COLLECTION)
-        .find()
+        .find({ Deleted: false })
         .toArray();
       resolve(products);
     });
@@ -35,7 +35,14 @@ module.exports = {
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
-        .deleteOne({ _id: objectId(prodId) })
+        .updateOne(
+          { _id: objectId(prodId) },
+          {
+            $set: {
+              Deleted: true,
+            },
+          }
+        )
         .then((response) => {
           console.log(response);
           resolve(response);
