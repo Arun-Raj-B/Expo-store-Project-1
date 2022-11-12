@@ -29,7 +29,6 @@ router.get("/view-category", verifyLogin, adminController.getViewCategory);
 router.get("/add-category", verifyLogin, adminController.getAddCategory);
 router.post("/add-category", adminController.postAddCategory);
 router.get("/edit-category/:id", verifyLogin, adminController.getEditCategory);
-router.get("/edit-category/:id", adminController.postEditCategory);
 router.post("/edit-category/:id", adminController.postEditCategory);
 router.get("/delete-category/:id", adminController.getDeleteCategory);
 router.get(

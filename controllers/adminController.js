@@ -79,40 +79,79 @@ module.exports = {
       //   }
       // });
 
-      image1.mv("./public/users/productImages/" + id1 + ".jpg", (err, done) => {
-        if (!err) {
-          image2.mv(
-            "./public/users/productImages/" + id2 + ".jpg",
-            (err, done) => {
-              if (!err) {
-                image3.mv(
-                  "./public/users/productImages/" + id3 + ".jpg",
-                  (err, done) => {
-                    if (!err) {
-                      image4.mv(
-                        "./public/users/productImages/" + id4 + ".jpg",
-                        (err, done) => {
-                          if (!err) {
-                            res.redirect("/admin/view-product");
-                          } else {
-                            console.log(err);
-                          }
-                        }
-                      );
-                    } else {
-                      console.log(err);
-                    }
-                  }
-                );
-              } else {
-                console.log(err);
-              }
-            }
-          );
-        } else {
-          console.log(err);
-        }
-      });
+      // try {
+      //   image1.mv(
+      //     "./public/users/productImages/" + id1 + ".jpg",
+      //     (err, done) => {
+      //       try {
+      //         if (!err) {
+      //           image2.mv(
+      //             "./public/users/productImages/" + id2 + ".jpg",
+      //             (err, done) => {
+      //               try {
+      //                 if (!err) {
+      //                   image3.mv(
+      //                     "./public/users/productImages/" + id3 + ".jpg",
+      //                     (err, done) => {
+      //                       try {
+      //                         if (!err) {
+      //                           image4.mv(
+      //                             "./public/users/productImages/" +
+      //                               id4 +
+      //                               ".jpg",
+      //                             (err, done) => {
+      //                               try {
+      //                                 if (!err) {
+      //                                   res.redirect("/admin/view-product");
+      //                                 } else {
+      //                                   console.log(err);
+      //                                 }
+      //                               } catch (err) {
+      //                                 if (!err) {
+      //                                   res.redirect("/admin/view-product");
+      //                                 } else {
+      //                                   console.log(err);
+      //                                 }
+      //                               }
+      //                             }
+      //                           );
+      //                         } else {
+      //                           console.log(err);
+      //                         }
+      //                       } catch (err) {
+      //                         res.redirect("/admin/view-product");
+      //                       }
+      //                     }
+      //                   );
+      //                 } else {
+      //                   console.log(err);
+      //                 }
+      //               } catch {
+      //                 res.redirect("/admin/view-product");
+      //               }
+      //             }
+      //           );
+      //         } else {
+      //           console.log(err);
+      //         }
+      //       } catch (err) {
+      //         res.redirect("/admin/view-product");
+      //       }
+      //     }
+      //   );
+      // } catch (err) {
+      //   res.redirect("/admin/view-product");
+      // }
+
+      try {
+        image1.mv("./public/users/productImages/" + id1 + ".jpg");
+        image2.mv("./public/users/productImages/" + id2 + ".jpg");
+        image3.mv("./public/users/productImages/" + id3 + ".jpg");
+        image4.mv("./public/users/productImages/" + id4 + ".jpg");
+        res.redirect("/admin/view-product");
+      } catch (err) {
+        res.redirect("/admin/view-product");
+      }
     });
   },
 
@@ -120,7 +159,7 @@ module.exports = {
     let proId = req.params.id;
     console.log(proId);
     productHelper.deleteProduct(proId).then((response) => {
-      res.redirect("/admin");
+      res.redirect("/admin/view-product");
     });
   },
 

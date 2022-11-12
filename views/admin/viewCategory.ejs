@@ -48,8 +48,7 @@
                   <%= sub %>
                   <a
                     href="/admin/delete-subcategory/<%=sub %>/<%=categories.category%>"
-                    class="btn btn-outline-danger"
-                    onclick="return confirm('Do you want to delete the sub-category <%=sub %> in <%=categories.category%> category ?')"
+                    class="btn btn-outline-danger deleteCategory"
                     >Delete</a
                   >
                 </li>
@@ -61,12 +60,11 @@
             <a
               href="/admin/edit-category/<%=categories._id %>"
               class="btn btn-outline-primary"
-              >Update</a
+              >Edit</a
             >
             <a
               href="/admin/delete-category/<%=categories._id %>"
-              class="btn btn-outline-danger"
-              onclick="return confirm('Do you want to delete <%=categories.category%> ?')"
+              class="btn btn-outline-danger deleteCategory"
               >Delete</a
             >
           </td>
@@ -76,3 +74,25 @@
     </table>
   </div>
 </section>
+
+<script>
+  $(".deleteCategory").on("click", function (e) {
+    e.preventDefault();
+    var self = $(this);
+    console.log(self.data("title"));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", ` Product has been deleted`, "success");
+        location.href = self.attr("href");
+      }
+    });
+  });
+</script>

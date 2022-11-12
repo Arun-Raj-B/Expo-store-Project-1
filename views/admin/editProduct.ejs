@@ -8,7 +8,7 @@
         <div>&nbsp;</div>
         <h2 class="text-center">Update Product</h2>
         <form
-          action="/admin/edit-product/<%= product._id  %>"
+          action="/admin/edit-product/<%=product._id%>"
           method="post"
           enctype="multipart/form-data"
         >
@@ -17,19 +17,19 @@
             type="text"
             name="Name"
             class="form-control"
-            value="<%= product.Name  %> "
+            value="<%=product.Name%>"
           />
 
           <label for="" class="mt-2">Category</label>
           <select class="form-select" name="Category">
-            <option hidden><%= product.Category %></option>
+            <option hidden><%=product.Category%></option>
             <option>Men</option>
             <option>Women</option>
           </select>
 
           <label for="" class="mt-2">Sub-Category</label>
           <select class="form-select" name="Subcategory">
-            <option hidden><%= product.Subcategory %></option>
+            <option hidden><%=product.Subcategory%></option>
             <option>Shirt</option>
             <option>T-shirt</option>
             <option>Hoodie</option>
@@ -40,10 +40,10 @@
 
           <label for="" class="mt-2">Price</label>
           <input
-            type="text"
+            type="number"
             name="Price"
             class="form-control"
-            value="<%= product.Price  %> "
+            value="<%=product.Price%>"
           />
 
           <label for="" class="mt-2">Description</label>
@@ -51,8 +51,17 @@
             type="text"
             name="Description"
             class="form-control"
-            value="<%= product.Description  %> "
+            value="<%=product.Description%>"
           />
+
+          <label for="" class="mt-2">Quantity</label>
+          <input
+            type="text"
+            name="Quantity"
+            class="form-control"
+            value="<%=product.Quantity%>"
+          />
+
           <% const id1 = product._id %> <% const id2 = product._id+"a" %> <%
           const id3 = product._id+"b" %> <% const id4 = product._id+"c" %>
 

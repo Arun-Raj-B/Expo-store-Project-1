@@ -6,7 +6,15 @@ module.exports = {
     console.log(product);
     db.get()
       .collection(collection.PRODUCT_COLLECTION)
-      .insertOne(product)
+      .insertOne({
+        Name: product.Name,
+        Category: product.Category,
+        Subcategory: product.Subcategory,
+        Quantity: product.Quantity,
+        Price: product.Price,
+        Description: product.Description,
+        Deleted: false,
+      })
       .then((data) => {
         callback(data.insertedId);
       });
@@ -49,6 +57,8 @@ module.exports = {
 
   updateProduct: (proId, product) => {
     return new Promise((resolve, reject) => {
+      product.Quantity = Number(product.Quantity);
+      product.Price = Number(product.Price);
       db.get()
         .collection(collection.PRODUCT_COLLECTION)
         .updateOne(
@@ -58,6 +68,7 @@ module.exports = {
               Name: product.Name,
               Category: product.Category,
               Subcategory: product.Subcategory,
+              Quantity: product.Quantity,
               Price: product.Price,
               Description: product.Description,
             },
