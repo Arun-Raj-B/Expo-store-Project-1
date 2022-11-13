@@ -17,9 +17,10 @@
             </thead>
             <% var No=1 %>
             <tbody style="text-align: center">
-              <% locals.wishlistItems.forEach(item=>{%>
+              <% locals.products.forEach(wishlistItem=>{%>
               <tr>
                 <th scope="row"><%=No++ %></th>
+                <% wishlistItem.product.forEach(item=>{ %> 
                 <td>
                   <img
                     style="width: 40px; height: 50px"
@@ -28,11 +29,12 @@
                   />
                 </td>
                 <td><%=item.Name %></td>
-                <td><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=item.Quantity %><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-plus"></i>
+                <% }) %> 
+                <td><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=wishlistItem.quantity %><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-plus"></i>
                 </button></td>
                 <td>
                   <a
-                    href="/remove-product/<%=item._id %>"
+                    href="/remove-product/<%=wishlistItem._id %>"
                     class="btn btn-outline-danger removeProduct"
                     ><i class="fa-solid fa-trash"></i></a>
                 </td>

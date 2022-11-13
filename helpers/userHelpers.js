@@ -2,6 +2,7 @@ const db = require("../config/connection");
 const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
 const { response } = require("express");
+const { ObjectId } = require("mongodb");
 var objectId = require("mongodb").ObjectId;
 module.exports = {
   doSignup: (userData) => {
@@ -103,8 +104,10 @@ module.exports = {
   },
 
   addToCart: (proId, userId) => {
-
-
+    let proObj = {
+      item: ObjectId(proId),
+      quantity: 1,
+    };
 
     return new Promise(async (resolve, reject) => {
       const userCart = await db
@@ -112,24 +115,41 @@ module.exports = {
         .collection(collection.CART_COLLECTION)
         .findOne({ user: objectId(userId) });
       if (userCart) {
-        db.get()
-          .collection(collection.CART_COLLECTION)
-          .updateOne(
-            {
-              user: objectId(userId),
-            },
-            {
-              $addToSet: { products: objectId(proId) },
-            }
-          )
-          .then((response) => {
-            console.log("item added to cart");
-            resolve();
-          });
+        let prodExist = userCart.products.findIndex(
+          (product) => product.item == proId
+        );
+        if (prodExist != -1) {
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .updateOne(
+              { "products.item": objectId(proId) },
+              {
+                $inc: { "products.$.quantity": 1 },
+              }
+            )
+            .then(() => {
+              resolve();
+            });
+        } else {
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .updateOne(
+              {
+                user: objectId(userId),
+              },
+              {
+                $push: { products: proObj },
+              }
+            )
+            .then((response) => {
+              console.log("item added to cart");
+              resolve();
+            });
+        }
       } else {
         let cartObj = {
           user: objectId(userId),
-          products: [objectId(proId)],
+          products: [proObj],
         };
         db.get()
           .collection(collection.CART_COLLECTION)
@@ -142,30 +162,52 @@ module.exports = {
   },
 
   addToWishlist: (proId, userId) => {
-    console.log(proId, userId);
+    let proObj = {
+      item: ObjectId(proId),
+      quantity: 1,
+    };
+
     return new Promise(async (resolve, reject) => {
       const userWishlist = await db
         .get()
         .collection(collection.WISHLIST_COLLECTION)
         .findOne({ user: objectId(userId) });
       if (userWishlist) {
-        db.get()
-          .collection(collection.WISHLIST_COLLECTION)
-          .updateOne(
-            {
-              user: objectId(userId),
-            },
-            {
-              $addToSet: { products: objectId(proId) },
-            }
-          )
-          .then((response) => {
-            resolve();
-          });
+        let prodExist = userWishlist.products.findIndex(
+          (product) => product.item == proId
+        );
+        if (prodExist != -1) {
+          db.get()
+            .collection(collection.WISHLIST_COLLECTION)
+            .updateOne(
+              { "products.item": objectId(proId) },
+              {
+                $inc: { "products.$.quantity": 1 },
+              }
+            )
+            .then(() => {
+              resolve();
+            });
+        } else {
+          db.get()
+            .collection(collection.WISHLIST_COLLECTION)
+            .updateOne(
+              {
+                user: objectId(userId),
+              },
+              {
+                $push: { products: proObj },
+              }
+            )
+            .then((response) => {
+              console.log("item added to wishlist");
+              resolve();
+            });
+        }
       } else {
         let wishlistObj = {
           user: objectId(userId),
-          products: [objectId(proId)],
+          products: [proObj],
         };
         db.get()
           .collection(collection.WISHLIST_COLLECTION)
@@ -179,7 +221,7 @@ module.exports = {
 
   getCartProducts: (userId) => {
     return new Promise(async (resolve, reject) => {
-      let cartItem = await db
+      let cartItems = await db
         .get()
         .collection(collection.CART_COLLECTION)
         .aggregate([
@@ -187,32 +229,49 @@ module.exports = {
             $match: { user: objectId(userId) },
           },
           {
-            $lookup: {
-              from: collection.PRODUCT_COLLECTION,
-              // $products - inside cart
-              let: { prodList: "$products" },
-              pipeline: [
-                {
-                  $match: {
-                    $expr: {
-                      //$_id - product id inside product collection
-                      $in: ["$_id", "$$prodList"],
-                    },
-                  },
-                },
-              ],
-              as: "cartItems",
+            $unwind: "$products",
+          },
+          {
+            $project: {
+              item: "$products.item",
+              quantity: "$products.quantity",
             },
           },
+          {
+            $lookup: {
+              from: collection.PRODUCT_COLLECTION,
+              localField: "item",
+              foreignField: "_id",
+              as: "product",
+            },
+          },
+          // {
+          //   $lookup: {
+          //     from: collection.PRODUCT_COLLECTION,
+          //     // $products - inside cart
+          //     let: { prodList: "$products" },
+          //     pipeline: [
+          //       {
+          //         $match: {
+          //           $expr: {
+          //             //$_id - product id inside product collection
+          //             $in: ["$_id", "$$prodList"],
+          //           },
+          //         },
+          //       },
+          //     ],
+          //     as: "cartItems",
+          //   },
+          // },
         ])
         .toArray();
-      resolve(cartItem[0].cartItems);
+      resolve(cartItems);
     });
   },
 
   getWishlistProducts: (userId) => {
     return new Promise(async (resolve, reject) => {
-      let wishlistItem = await db
+      let wishlistItems = await db
         .get()
         .collection(collection.WISHLIST_COLLECTION)
         .aggregate([
@@ -220,26 +279,43 @@ module.exports = {
             $match: { user: objectId(userId) },
           },
           {
-            $lookup: {
-              from: collection.PRODUCT_COLLECTION,
-              // $products - inside wishlist
-              let: { prodList: "$products" },
-              pipeline: [
-                {
-                  $match: {
-                    $expr: {
-                      //$_id - product id inside product collection
-                      $in: ["$_id", "$$prodList"],
-                    },
-                  },
-                },
-              ],
-              as: "wishlistItems",
+            $unwind: "$products",
+          },
+          {
+            $project: {
+              item: "$products.item",
+              quantity: "$products.quantity",
             },
           },
+          {
+            $lookup: {
+              from: collection.PRODUCT_COLLECTION,
+              localField: "item",
+              foreignField: "_id",
+              as: "product",
+            },
+          },
+          // {
+          //   $lookup: {
+          //     from: collection.PRODUCT_COLLECTION,
+          //     // $products - inside wishlist
+          //     let: { prodList: "$products" },
+          //     pipeline: [
+          //       {
+          //         $match: {
+          //           $expr: {
+          //             //$_id - product id inside product collection
+          //             $in: ["$_id", "$$prodList"],
+          //           },
+          //         },
+          //       },
+          //     ],
+          //     as: "wishlistItems",
+          //   },
+          // },
         ])
         .toArray();
-      resolve(wishlistItem[0].wishlistItems);
+      resolve(wishlistItems);
     });
   },
 

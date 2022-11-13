@@ -101,9 +101,9 @@ module.exports = {
       cartCount = await userHelper.getCartCount(req.session.user._id);
       wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
     }
-    let cartItems = await userHelper.getCartProducts(userId);
-    console.log(cartItems);
-    res.render("users/cart", { user, cartItems, cartCount, wishlistCount });
+    let products = await userHelper.getCartProducts(userId);
+    console.log(products);
+    res.render("users/cart", { user, products, cartCount, wishlistCount });
   },
 
   getAddToCart: (req, res) => {
@@ -125,11 +125,11 @@ module.exports = {
       cartCount = await userHelper.getCartCount(req.session.user._id);
       wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
     }
-    let wishlistItems = await userHelper.getWishlistProducts(userId);
-    console.log(wishlistItems);
+    let products = await userHelper.getWishlistProducts(userId);
+    console.log(products);
     res.render("users/wishlist", {
       user,
-      wishlistItems,
+      products,
       cartCount,
       wishlistCount,
     });
@@ -157,7 +157,7 @@ module.exports = {
         const OTPerr = req.session.OTPerr;
         res.render("users/otp", { last4digits, OTPerr });
       }
-    } 
+    }
   },
 
   postOTP: (req, res) => {

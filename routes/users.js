@@ -31,9 +31,9 @@ router.get("/logout", userController.getLogout);
 router.get("/cart", verifyLogin, userController.getCart);
 //verifyLogin required
 router.get("/addToCart/:id", userController.getAddToCart);
-router.get("/wishlist", userController.getWishlist);
+router.get("/wishlist", verifyLogin, userController.getWishlist);
 //verifyLogin required
-router.get("/addToWishlist/:id", userController.getAddToWishlist);
+router.get("/addToWishlist/:id", verifyLogin, userController.getAddToWishlist);
 router.route("/otp").get(userController.getOTP).post(userController.postOTP);
 router
   .route("/verifyNo")
