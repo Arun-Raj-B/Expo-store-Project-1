@@ -90,7 +90,13 @@ module.exports = {
   addCategory: (cat) => {
     return new Promise(async (resolve, reject) => {
       const category = cat.category;
-      const subcategory = cat.subcategory.split(",");
+      const subctgryArray = cat.subcategory.split(",");
+      let subctgry = [];
+      subctgryArray.forEach((sub) => {
+        if (!subctgry.includes(sub)) {
+          subctgry.push(sub);
+        }
+      });
 
       const exists = await db
         .get()
@@ -104,7 +110,7 @@ module.exports = {
           .collection(collection.CATEGORY_COLLECTION)
           .insertOne({
             category: category,
-            subcategory: subcategory,
+            subcategory: subctgry,
           })
           .then((result) => {
             resolve(result);
@@ -125,7 +131,7 @@ module.exports = {
         .toArray();
       resolve(categories);
     });
-  },
+  },      
 
   deleteCategory: (catId) => {
     return new Promise((resolve, reject) => {
@@ -170,7 +176,13 @@ module.exports = {
 
   updateCategory: (catId, cat) => {
     return new Promise((resolve, reject) => {
-      const subctgry = cat.subcategory.split(",");
+      const subctgryArray = cat.subcategory.split(",");
+      let subctgry = [];
+      subctgryArray.forEach((sub) => {
+        if (!subctgry.includes(sub)) {
+          subctgry.push(sub);
+        }
+      });
       db.get()
         .collection(collection.CATEGORY_COLLECTION)
         .updateOne(

@@ -42,12 +42,24 @@
 
     <!-- chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      .page-fill {
+        position: relative;
+        min-height: 100vh;
+      }
+
+      #footer {
+        bottom: 0;
+        width: 100%;
+      }
+    </style>
   </head>
+
   <body>
     <% if(locals.admin){ %> <%-include("../partials/adminHeader") %> <% }else{%>
     <%-include("../partials/userHeader") %> <% } %> <%- body %>
     <!-- <div style="height: 25px" class="bg-primary"></div> -->
-    <% if(!locals.admin){ %> <%-include("../partials/userFooter") %> <% } %>
+    <% if((!locals.admin)){ %> <%-include("../partials/userFooter") %> <% } %>
     <script>
       $(document).ready(function () {
         $("#myTable").DataTable();

@@ -1,6 +1,8 @@
 const db = require("../config/connection");
 const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
+const { response } = require("express");
+var objectId = require("mongodb").ObjectId;
 module.exports = {
   doSignup: (userData) => {
     return new Promise(async (resolve, reject) => {
@@ -97,6 +99,173 @@ module.exports = {
         .then((user) => {
           resolve(user);
         });
+    });
+  },
+
+  addToCart: (proId, userId) => {
+    console.log(proId, userId);
+    return new Promise(async (resolve, reject) => {
+      const userCart = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .findOne({ user: objectId(userId) });
+      if (userCart) {
+        db.get()
+          .collection(collection.CART_COLLECTION)
+          .updateOne(
+            {
+              user: objectId(userId),
+            },
+            {
+              $addToSet: { products: objectId(proId) },
+            }
+          )
+          .then((response) => {
+            console.log("item added to cart");
+            resolve();
+          });
+      } else {
+        let cartObj = {
+          user: objectId(userId),
+          products: [objectId(proId)],
+        };
+        db.get()
+          .collection(collection.CART_COLLECTION)
+          .insertOne(cartObj)
+          .then((response) => {
+            resolve();
+          });
+      }
+    });
+  },
+
+  addToWishlist: (proId, userId) => {
+    console.log(proId, userId);
+    return new Promise(async (resolve, reject) => {
+      const userWishlist = await db
+        .get()
+        .collection(collection.WISHLIST_COLLECTION)
+        .findOne({ user: objectId(userId) });
+      if (userWishlist) {
+        db.get()
+          .collection(collection.WISHLIST_COLLECTION)
+          .updateOne(
+            {
+              user: objectId(userId),
+            },
+            {
+              $addToSet: { products: objectId(proId) },
+            }
+          )
+          .then((response) => {
+            resolve();
+          });
+      } else {
+        let wishlistObj = {
+          user: objectId(userId),
+          products: [objectId(proId)],
+        };
+        db.get()
+          .collection(collection.WISHLIST_COLLECTION)
+          .insertOne(wishlistObj)
+          .then((response) => {
+            resolve();
+          });
+      }
+    });
+  },
+
+  getCartProducts: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      let cartItem = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .aggregate([
+          {
+            $match: { user: objectId(userId) },
+          },
+          {
+            $lookup: {
+              from: collection.PRODUCT_COLLECTION,
+              // $products - inside cart
+              let: { prodList: "$products" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      //$_id - product id inside product collection
+                      $in: ["$_id", "$$prodList"],
+                    },
+                  },
+                },
+              ],
+              as: "cartItems",
+            },
+          },
+        ])
+        .toArray();
+      resolve(cartItem[0].cartItems);
+    });
+  },
+
+  getWishlistProducts: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      let wishlistItem = await db
+        .get()
+        .collection(collection.WISHLIST_COLLECTION)
+        .aggregate([
+          {
+            $match: { user: objectId(userId) },
+          },
+          {
+            $lookup: {
+              from: collection.PRODUCT_COLLECTION,
+              // $products - inside wishlist
+              let: { prodList: "$products" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: {
+                      //$_id - product id inside product collection
+                      $in: ["$_id", "$$prodList"],
+                    },
+                  },
+                },
+              ],
+              as: "wishlistItems",
+            },
+          },
+        ])
+        .toArray();
+      resolve(wishlistItem[0].wishlistItems);
+    });
+  },
+
+  getCartCount: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      let cartCount = 0;
+      let cart = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .findOne({ user: objectId(userId) });
+      if (cart) {
+        cartCount = cart.products.length;
+      }
+      resolve(cartCount);
+    });
+  },
+
+  getWishlistCount: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      let wishlistCount = 0;
+      let wishlist = await db
+        .get()
+        .collection(collection.WISHLIST_COLLECTION)
+        .findOne({ user: objectId(userId) });
+      if (wishlist) {
+        wishlistCount = wishlist.products.length;
+      }
+      resolve(wishlistCount);
     });
   },
 };

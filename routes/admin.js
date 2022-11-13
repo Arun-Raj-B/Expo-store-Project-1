@@ -12,24 +12,36 @@ const verifyLogin = (req, res, next) => {
 
 router.get("/", adminController.getAdminHome);
 router.get("/view-product", verifyLogin, adminController.getViewProduct);
-router.get("/add-product", verifyLogin, adminController.getAddProduct);
-router.post("/add-product", adminController.postAddProduct);
+router
+  .route("/add-product")
+  .get(verifyLogin, adminController.getAddProduct)
+  .post(adminController.postAddProduct);
 router.get("/delete-product/:id", adminController.getDeleteProduct);
-router.get("/edit-product/:id", adminController.getEditProduct);
-router.post("/edit-product/:id", adminController.postEditProduct);
+router
+  .route("/edit-product/:id")
+  .get(adminController.getEditProduct)
+  .post(adminController.postEditProduct);
 router.get("/view-users", verifyLogin, adminController.getViewUser);
 router.get("/block-user/:id", adminController.updateToBlockUser);
 router.get("/unblock-user/:id", adminController.updateToUnblockUser);
-router.get("/signup", adminController.getAdminSignup);
-router.post("/signup", adminController.postAdminSignup);
-router.get("/login", adminController.getAdminLogin);
-router.post("/login", adminController.postAdminLogin);
+router
+  .route("/signup")
+  .get(adminController.getAdminSignup)
+  .post(adminController.postAdminSignup);
+router
+  .route("/login")
+  .get(adminController.getAdminLogin)
+  .post(adminController.postAdminLogin);
 router.get("/logout", adminController.getAdminLogout);
 router.get("/view-category", verifyLogin, adminController.getViewCategory);
-router.get("/add-category", verifyLogin, adminController.getAddCategory);
-router.post("/add-category", adminController.postAddCategory);
-router.get("/edit-category/:id", verifyLogin, adminController.getEditCategory);
-router.post("/edit-category/:id", adminController.postEditCategory);
+router
+  .route("/add-category") 
+  .get(verifyLogin, adminController.getAddCategory)
+  .post(adminController.postAddCategory);
+router
+  .route("/edit-category/:id")
+  .get(verifyLogin, adminController.getEditCategory)
+  .post(adminController.postEditCategory);
 router.get("/delete-category/:id", adminController.getDeleteCategory);
 router.get(
   "/delete-subcategory/:subctgry/:ctgry",

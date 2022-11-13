@@ -19,20 +19,34 @@ const redirectHome = (req, res, next) => {
 };
 
 router.get("/", userController.getHome);
-router.get("/login", userController.getLogin);
-router.get("/signup", userController.getSignup);
-router.post("/signup", userController.postSignup);
-router.post("/login", userController.postLogin);
+router
+  .route("/login")
+  .get(userController.getLogin)
+  .post(userController.postLogin);
+router
+  .route("/signup")
+  .get(userController.getSignup)
+  .post(userController.postSignup);
 router.get("/logout", userController.getLogout);
 router.get("/cart", verifyLogin, userController.getCart);
-router.get("/otp", userController.getOTP);
-router.post("/otp", userController.postOTP);
-router.get("/verifyNo", userController.getVerifyNo);
-router.post("/verifyNo", userController.postVerifyNo);
-router.get("/getMobile", redirectHome, userController.getGetMobile);
-router.post("/getMobile", userController.postGetMobile);
-router.get("/loginOTP", redirectHome, userController.getLoginOTP);
-router.post("/loginOTP", redirectHome, userController.postLoginOTP);
+//verifyLogin required
+router.get("/addToCart/:id", userController.getAddToCart);
+router.get("/wishlist", userController.getWishlist);
+//verifyLogin required
+router.get("/addToWishlist/:id", userController.getAddToWishlist);
+router.route("/otp").get(userController.getOTP).post(userController.postOTP);
+router
+  .route("/verifyNo")
+  .get(userController.getVerifyNo)
+  .post(userController.postVerifyNo);
+router
+  .route("/getMobile")
+  .get(redirectHome, userController.getGetMobile)
+  .post(userController.postGetMobile);
+router
+  .route("/loginOTP")
+  .get(redirectHome, userController.getLoginOTP)
+  .post(userController.postLoginOTP);
 router.get("/singleProduct/:id", userController.getSingleProduct);
 
 module.exports = router;

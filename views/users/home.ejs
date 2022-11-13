@@ -100,11 +100,17 @@
               >Add to cart</a
             > -->
             <div class="d-flex justify-content-between">
-              <a href="#" class="btn btn-outline-dark"
+              <!-- <a href="/addToCart/ product._id" class="btn btn-outline-dark cart" 
                 ><i class="fa-solid fa-cart-shopping"></i
-              ></a>
-              <a href="#" class="btn btn-outline-dark">
-                <i class="fa-solid fa-heart"></i>
+              ></a> -->
+              <button class="btn btn-outline-dark"  onclick="addToCart('<%= product._id %>')">
+                <i class="fa-solid fa-cart-shopping"></i
+                  ></button>
+              <!-- <a href="/addToWishlist/< product._id %>" class="btn btn-outline-dark wishlist">
+                <i class="fa-solid fa-heart"></i> -->
+                <button class="btn btn-outline-dark" onclick="addToWishlist('<%= product._id %>')">
+                  <i class="fa-solid fa-heart"></i
+                    ></button>
               </a>
             </div>
           </div>
@@ -115,6 +121,7 @@
     <!-- <div id="pagination-container"></div> -->
   </div>
 </section>
+<script text="text/javascript" src="/users/javascript/countIncrement.js"></script>
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script> -->
 
@@ -137,3 +144,63 @@
     }
   })
 </script> -->
+
+<!-- < if (user){ %>
+  <script>
+    $(".wishlist").on("click", function (e) {
+      e.preventDefault();
+      var self = $(this);
+      console.log(self.data("title"));
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to add this to wishlist!",
+        icon: "question",
+        iconColor: 'red',
+        showCancelButton: true,
+        background: '#e7cf96',
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, add!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Added!",
+            text: `Product is wishlisted`,
+            icon: "success",
+            iconColor:"#097015",
+            background: '#e7cf96',
+          });
+          location.href = self.attr("href");
+        }
+      });
+    });
+  
+    $(".cart").on("click", function (e) {
+      e.preventDefault();
+      var self = $(this);
+      console.log(self.data("title"));
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to add this to cart!",
+        icon: "question",
+        iconColor: 'red',
+        showCancelButton: true,
+        background: '#e7cf96',
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, add!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Added!",
+            text: `Product is added to cart`,
+            icon: "success",
+            iconColor:"#097015",
+            background: '#e7cf96',
+          });
+          location.href = self.attr("href");
+        }
+      });
+    });
+  </script>
+  < } %>   -->

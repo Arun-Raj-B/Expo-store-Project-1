@@ -25,17 +25,28 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" aria-current="page" href="/">Home</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/">Products</a>
           </li>
           <% if(locals.user){ %>
           <li class="nav-item">
-            <a class="nav-link" href="#">Cart</a>
+            <a class="nav-link" href="/cart"
+              >Cart
+              <span class="badge bg-secondary zindex-offcanvas" id="cart-count"
+                ><%= cartCount %>
+              </span></a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Wishlist</a>
+            <a class="nav-link" href="/wishlist"
+              >Wishlist<span
+                class="badge bg-secondary zindex-offcanvas"
+                id="wishlist-count"
+                ><%= wishlistCount %></span
+              ></a
+            >
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Orders</a>

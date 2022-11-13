@@ -1,1 +1,69 @@
-<h1>Cart is empty</h1>
+<section class="page-fill" style="background-color: #eaddbf">
+  <div style="padding-top: 5%; padding-bottom: 5%;">
+    <div class="container shadow-lg rounded pb-2 pt-2">
+        <table
+          class="table table-fluid table-hover table-bordered mt-5 pt-2"
+          id="myTable"
+        >
+          <!-- style="text-align: center" -->
+          <thead>
+            <tr class="bg-dark text-white">
+              <th scope="col" style="text-align: center">No</th>
+              <th scope="col" style="text-align: center">Item</th>
+              <th scope="col" style="text-align: center">Title</th>
+              <th scope="col" style="text-align: center">Quantity</th>
+              <th scope="col" style="text-align: center">Remove</th>
+            </tr>
+          </thead>
+          <% var No=1 %>
+          <tbody style="text-align: center">
+            <% locals.cartItems.forEach(item=>{%>
+            <tr>
+              <th scope="row"><%=No++ %></th>
+              <td>
+                <img
+                  style="width: 40px; height: 50px"
+                  src="/users/productImages/<%=item._id %>.jpg "
+                  alt=""
+                />
+              </td>
+              <td><%=item.Name %></td>
+              <td><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=item.Quantity %><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-plus"></i>
+              </button></td>
+              <td>
+                <a
+                  href="/remove-product/<%=item._id %>"
+                  class="btn btn-outline-danger removeProduct"
+                  ><i class="fa-solid fa-trash"></i></a>
+              </td>
+            </tr>
+            <%})%>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</section>
+
+<!-- onclick="return confirm('Do you want to delete product.Name ?')" -->
+
+<script>
+  $(".removeProduct").on("click", function (e) {
+    e.preventDefault();
+    var self = $(this);
+    console.log(self.data("title"));
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, remove it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Deleted!", ` Product has been removed`, "success");
+        location.href = self.attr("href");
+      }
+    });
+  });
+</script>

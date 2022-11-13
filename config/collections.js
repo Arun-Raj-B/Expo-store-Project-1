@@ -3,4 +3,6 @@ module.exports = {
   USER_COLLECTION: "user",
   ADMIN_COLLECTION: "admin",
   CATEGORY_COLLECTION: "category",
+  CART_COLLECTION: "cart",
+  WISHLIST_COLLECTION: "wishlist",
 };

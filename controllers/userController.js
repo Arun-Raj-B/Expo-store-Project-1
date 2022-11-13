@@ -5,12 +5,23 @@ const otpHelper = require("../helpers/otpHelper");
 module.exports = {
   getHome: async (req, res) => {
     let user = req.session.user;
-    console.log(user);
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
     const category = await productHelper.getAllCategories();
     console.log(category);
     productHelper.getAllProducts().then((products) => {
       // console.log(products);
-      res.render("users/home", { products, user, category });
+      res.render("users/home", {
+        products,
+        user,
+        category,
+        cartCount,
+        wishlistCount,
+      });
     });
   },
 
@@ -81,8 +92,57 @@ module.exports = {
     res.redirect("/");
   },
 
-  getCart: (req, res) => {
-    res.render("users/cart");
+  getCart: async (req, res) => {
+    let userId = req.session.user._id;
+    let user = req.session.user;
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+    let cartItems = await userHelper.getCartProducts(userId);
+    console.log(cartItems);
+    res.render("users/cart", { user, cartItems, cartCount, wishlistCount });
+  },
+
+  getAddToCart: (req, res) => {
+    const proId = req.params.id;
+    const userId = req.session.user._id;
+    // console.log(id, userId);
+    userHelper.addToCart(proId, userId).then(() => {
+      res.json({ status: true });
+      // res.redirect("/");
+    });
+  },
+
+  getWishlist: async (req, res) => {
+    let userId = req.session.user._id;
+    let user = req.session.user;
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+    let wishlistItems = await userHelper.getWishlistProducts(userId);
+    console.log(wishlistItems);
+    res.render("users/wishlist", {
+      user,
+      wishlistItems,
+      cartCount,
+      wishlistCount,
+    });
+  },
+
+  getAddToWishlist: (req, res) => {
+    const proId = req.params.id;
+    const userId = req.session.user._id;
+    // console.log(id, userId);
+    userHelper.addToWishlist(proId, userId).then(() => {
+      res.json({ status: true });
+      // res.redirect("/");
+    });
   },
 
   getOTP: (req, res) => {
