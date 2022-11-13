@@ -103,7 +103,9 @@ module.exports = {
   },
 
   addToCart: (proId, userId) => {
-    console.log(proId, userId);
+
+
+
     return new Promise(async (resolve, reject) => {
       const userCart = await db
         .get()

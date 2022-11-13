@@ -46,6 +46,9 @@ const adminRouter = require("./routes/admin");
 
 app.use("/", usersRouter);
 app.use("/admin", adminRouter);
+app.all("*", (req, res) => {
+  res.render("users/404", { layout: "layouts/404Layout" });
+});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server listening to port 3000");

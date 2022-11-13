@@ -157,7 +157,7 @@ module.exports = {
         const OTPerr = req.session.OTPerr;
         res.render("users/otp", { last4digits, OTPerr });
       }
-    }
+    } 
   },
 
   postOTP: (req, res) => {
