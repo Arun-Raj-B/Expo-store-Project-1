@@ -107,13 +107,17 @@ module.exports = {
   },
 
   getAddToCart: (req, res) => {
-    const proId = req.params.id;
-    const userId = req.session.user._id;
-    // console.log(id, userId);
-    userHelper.addToCart(proId, userId).then(() => {
-      res.json({ status: true });
-      // res.redirect("/");
-    });
+    try {
+      const proId = req.params.id;
+      const userId = req.session.user._id;
+      // console.log(id, userId);
+      userHelper.addToCart(proId, userId).then(() => {
+        res.json({ status: true });
+        // res.redirect("/");
+      });
+    } catch (err) {
+      res.json({ status: false });
+    }
   },
 
   getWishlist: async (req, res) => {
@@ -136,13 +140,17 @@ module.exports = {
   },
 
   getAddToWishlist: (req, res) => {
-    const proId = req.params.id;
-    const userId = req.session.user._id;
-    // console.log(id, userId);
-    userHelper.addToWishlist(proId, userId).then(() => {
-      res.json({ status: true });
-      // res.redirect("/");
-    });
+    try {
+      const proId = req.params.id;
+      const userId = req.session.user._id;
+      // console.log(id, userId);
+      userHelper.addToWishlist(proId, userId).then(() => {
+        res.json({ status: true });
+        // res.redirect("/");
+      });
+    } catch (err) {
+      res.json({ status: false });
+    }
   },
 
   getOTP: (req, res) => {
@@ -256,15 +264,15 @@ module.exports = {
     });
   },
 
-  postChangeCartProductQuantity:(req,res,next)=>{
-    userHelper.ChangeCartProductQuantity(req.body).then(()=>{
-
-    })
+  postChangeCartProductQuantity: (req, res, next) => {
+    userHelper.ChangeCartProductQuantity(req.body).then((response) => {
+      res.json(response);
+    });
   },
 
-  postChangeWishlistProductQuantity:(req,res,next)=>{
-    userHelper.ChangeWishlistProductQuantity(req.body).then(()=>{
-      
-    })
-  }
+  postChangeWishlistProductQuantity: (req, res, next) => {
+    userHelper.ChangeWishlistProductQuantity(req.body).then((response) => {
+      res.json(response);
+    });
+  },
 };

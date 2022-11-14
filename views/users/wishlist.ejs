@@ -12,7 +12,8 @@
                 <th scope="col" style="text-align: center">Item</th>
                 <th scope="col" style="text-align: center">Title</th>
                 <th scope="col" style="text-align: center">Quantity</th>
-                <th scope="col" style="text-align: center">Remove</th>
+                <th scope="col" style="text-align: center">Add to Cart</th>
+                <th scope="col" style="text-align: center">Remove</th>               
               </tr>
             </thead>
             <% var No=1 %>
@@ -20,6 +21,7 @@
               <% locals.products.forEach(wishlistItem=>{%>
               <tr>
                 <th scope="row"><%=No++ %></th>
+
                 <td>
                   <img
                     style="width: 40px; height: 50px"
@@ -28,8 +30,15 @@
                   />
                 </td>
                 <td><%=wishlistItem.product.Name %></td> 
-                <td><button class="card-item-count btn btn-outline-dark m-1" onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=wishlistItem.quantity %><button class="card-item-count btn btn-outline-dark m-1" onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
+
+                <td><button class="card-item-count btn btn-outline-secondary m-1"onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<%=wishlistItem.product._id %>"><%=wishlistItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
                 </button></td>
+                <td>
+                  <a
+                    href="/addToCart/<%=wishlistItem.product._id %>"
+                    class="btn btn-outline-success removeProduct"
+                    ><i class="fa-solid fa-cart-shopping"></i></i></a>
+                </td>
                 <td>
                   <a
                     href="/remove-product/<%=wishlistItem.product._id %>"
@@ -70,16 +79,46 @@
 
 <script>
   function changeWishlistQuantity(wishlstId,proId,count){
+    let quantity=parseInt(document.getElementById(proId).innerHTML)
+ 
     $.ajax({
       url:'/changeWishlistProductQuantity',
       data:{
         wishlist:wishlstId,
         product:proId,
-        count:count
+        count:count,
+        quantity:quantity
       },
       method:'post',
       success:(response)=>{
-        alert(response)
+        if(response.removeProduct){
+          let timerInterval
+Swal.fire({
+  title: 'Removing product from wishlist',
+  html: 'Removing in <b></b> milliseconds.',
+  timer: 500,
+  background: "#ded2af",
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading()
+    const b = Swal.getHtmlContainer().querySelector('b')
+    timerInterval = setInterval(() => {
+      b.textContent = Swal.getTimerLeft()
+    }, 100)
+  },
+  willClose: () => {
+    clearInterval(timerInterval)
+  }
+}).then((result) => {
+  /* Read more about handling dismissals below */
+  if (result.dismiss === Swal.DismissReason.timer) {
+    console.log('I was closed by the timer')
+  }
+})
+          location.reload();
+        }else{
+          document.getElementById(proId).innerHTML=quantity+count
+        }
       }
     })
   }

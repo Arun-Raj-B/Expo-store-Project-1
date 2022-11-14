@@ -30,7 +30,7 @@
                 </td>
                 <td><%=cartItem.product.Name %></td>
               
-              <td><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=cartItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
+              <td><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<%=cartItem.product._id %>"><%=cartItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
               </button></td>
               <td>
                 <a
@@ -72,16 +72,47 @@
 
 <script>
   function changeCartQuantity(cartId,proId,count){
+     let quantity=parseInt(document.getElementById(proId).innerHTML)
+     count=parseInt(count)
+
     $.ajax({
       url:'/changeCartProductQuantity',
       data:{
         cart:cartId,
         product:proId,
-        count:count
+        count:count,
+        quantity:quantity
       },
       method:'post',
       success:(response)=>{
-        alert(response)
+        if(response.removeProduct){
+          let timerInterval
+Swal.fire({
+  title: 'Removing product from cart',
+  html: 'Removing in <b></b> milliseconds.',
+  timer: 500,
+  background: "#ded2af",
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading()
+    const b = Swal.getHtmlContainer().querySelector('b')
+    timerInterval = setInterval(() => {
+      b.textContent = Swal.getTimerLeft()
+    }, 100)
+  },
+  willClose: () => {
+    clearInterval(timerInterval)
+  }
+}).then((result) => {
+  /* Read more about handling dismissals below */
+  if (result.dismiss === Swal.DismissReason.timer) {
+    console.log('I was closed by the timer')
+  }
+})
+          location.reload();
+        }else{
+          document.getElementById(proId).innerHTML=quantity+count
+        }
       }
     })
   }
