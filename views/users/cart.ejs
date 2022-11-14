@@ -11,6 +11,7 @@
               <th scope="col" style="text-align: center">No</th>
               <th scope="col" style="text-align: center">Item</th>
               <th scope="col" style="text-align: center">Title</th>
+              <th scope="col" style="text-align: center">Price</th>
               <th scope="col" style="text-align: center">Quantity</th>
               <th scope="col" style="text-align: center">Remove</th>
             </tr>
@@ -29,14 +30,18 @@
                   />
                 </td>
                 <td><%=cartItem.product.Name %></td>
+                <td><%=cartItem.product.Price %> ₹</td>
               
               <td><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<%=cartItem.product._id %>"><%=cartItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
               </button></td>
               <td>
                 <a
-                  href="/remove-product/<%=cartItem.product._id %>"
+                  href="/removeCartProduct/<%=cartItem._id%>/<%=cartItem.product._id %>"
                   class="btn btn-outline-danger removeProduct"
                   ><i class="fa-solid fa-trash"></i></a>
+                <!-- <button
+                  class="btn btn-outline-danger removeProduct" onclick="removeCartProduct('<=cartItem._id%>','<=cartItem.product._id %>')"
+                  ><i class="fa-solid fa-trash"></i></button> -->
               </td>
             </tr>
             <%})%>
@@ -117,3 +122,23 @@ Swal.fire({
     })
   }
 </script>
+
+<!-- <script>
+
+  function removeCartProduct(cartId,proId){
+    $.ajax({
+    url:"/removeCartProduct",
+    data:{
+      cart:cartId,
+      product:proId,
+    },
+    method:'post',
+    success:(response)=>{
+
+    }
+
+  })
+
+  }
+ 
+</script> -->

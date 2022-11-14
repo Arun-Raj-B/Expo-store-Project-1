@@ -11,6 +11,7 @@
                 <th scope="col" style="text-align: center">No</th>
                 <th scope="col" style="text-align: center">Item</th>
                 <th scope="col" style="text-align: center">Title</th>
+                <th scope="col" style="text-align: center">Price</th>
                 <th scope="col" style="text-align: center">Quantity</th>
                 <th scope="col" style="text-align: center">Add to Cart</th>
                 <th scope="col" style="text-align: center">Remove</th>               
@@ -30,20 +31,24 @@
                   />
                 </td>
                 <td><%=wishlistItem.product.Name %></td> 
+                <td><%=wishlistItem.product.Price %></td> 
 
                 <td><button class="card-item-count btn btn-outline-secondary m-1"onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<%=wishlistItem.product._id %>"><%=wishlistItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
                 </button></td>
                 <td>
                   <a
-                    href="/addToCart/<%=wishlistItem.product._id %>"
+                    href="/addToWishlist/<%=wishlistItem.product._id %>"
                     class="btn btn-outline-success removeProduct"
                     ><i class="fa-solid fa-cart-shopping"></i></i></a>
                 </td>
                 <td>
                   <a
-                    href="/remove-product/<%=wishlistItem.product._id %>"
-                    class="btn btn-outline-danger removeProduct"
-                    ><i class="fa-solid fa-trash"></i></a>
+                  href="/removeWishlistProduct/<%=wishlistItem._id%>/<%=wishlistItem.product._id %>"
+                  class="btn btn-outline-danger removeProduct"
+                  ><i class="fa-solid fa-trash"></i></a>
+                  <!-- <button
+                    class="btn btn-outline-danger removeProduct" onclick="removeWishlistProduct('<=wishlistItem._id%>','<=wishlistItem.product._id %>')"
+                    ><i class="fa-solid fa-trash"></i></button> -->
                 </td>
               </tr>
               <%})%>
@@ -124,3 +129,22 @@ Swal.fire({
   }
 </script>
   
+<!-- <script>
+
+  function removeWishlistProduct(wishlistId,proId){
+    $.ajax({
+    url:"/removeWishlistProduct",
+    data:{
+      wishlist:wishlistId,
+      product:proId,
+    },
+    method:'post',
+    success:(response)=>{
+      
+    }
+
+  })
+
+  }
+ 
+</script> -->

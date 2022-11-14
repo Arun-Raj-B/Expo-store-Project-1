@@ -275,4 +275,20 @@ module.exports = {
       res.json(response);
     });
   },
+
+  postRemoveCartProduct: (req, res) => {
+    const cartId = req.params.cartId;
+    const prodId = req.params.prodId;
+    userHelper.removeCartProduct(cartId, prodId).then((response) => {
+      res.redirect("/cart");
+    });
+  },
+
+  postRemoveWishlistProduct: (req, res) => {
+    const wishlistId = req.params.wishlistId;
+    const prodId = req.params.prodId;
+    userHelper.removeWishlistProduct(wishlistId, prodId).then((response) => {
+      res.redirect("/wishlist");
+    });
+  },
 };

@@ -434,4 +434,40 @@ module.exports = {
       }
     });
   },
+
+  removeCartProduct: (cartId, prodId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.CART_COLLECTION)
+        .updateOne(
+          {
+            _id: objectId(cartId),
+          },
+          {
+            $pull: { products: { item: objectId(prodId) } },
+          }
+        )
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+
+  removeWishlistProduct: (wishlistId, prodId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.WISHLIST_COLLECTION)
+        .updateOne(
+          {
+            _id: objectId(wishlistId),
+          },
+          {
+            $pull: { products: { item: objectId(prodId) } },
+          }
+        )
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
 };

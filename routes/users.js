@@ -56,5 +56,12 @@ router.post(
   "/changeWishlistProductQuantity",
   userController.postChangeWishlistProductQuantity
 );
-
+router.get(
+  "/removeCartProduct/:cartId/:prodId",
+  userController.postRemoveCartProduct
+);
+router.get(
+  "/removeWishlistProduct/:wishlistId/:prodId",
+  userController.postRemoveWishlistProduct
+);
 module.exports = router;
