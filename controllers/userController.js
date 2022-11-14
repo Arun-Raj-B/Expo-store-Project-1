@@ -255,4 +255,16 @@ module.exports = {
       res.render("users/singleProduct", { prod });
     });
   },
+
+  postChangeCartProductQuantity:(req,res,next)=>{
+    userHelper.ChangeCartProductQuantity(req.body).then(()=>{
+
+    })
+  },
+
+  postChangeWishlistProductQuantity:(req,res,next)=>{
+    userHelper.ChangeWishlistProductQuantity(req.body).then(()=>{
+      
+    })
+  }
 };

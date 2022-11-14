@@ -48,5 +48,13 @@ router
   .get(redirectHome, userController.getLoginOTP)
   .post(userController.postLoginOTP);
 router.get("/singleProduct/:id", userController.getSingleProduct);
+router.post(
+  "/changeCartProductQuantity",
+  userController.postChangeCartProductQuantity
+);
+router.post(
+  "/changeWishlistProductQuantity",
+  userController.postChangeWishlistProductQuantity
+);
 
 module.exports = router;

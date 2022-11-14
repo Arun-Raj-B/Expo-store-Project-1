@@ -20,21 +20,19 @@
               <% locals.products.forEach(wishlistItem=>{%>
               <tr>
                 <th scope="row"><%=No++ %></th>
-                <% wishlistItem.product.forEach(item=>{ %> 
                 <td>
                   <img
                     style="width: 40px; height: 50px"
-                    src="/users/productImages/<%=item._id %>.jpg "
+                    src="/users/productImages/<%=wishlistItem.product._id %>.jpg "
                     alt=""
                   />
                 </td>
-                <td><%=item.Name %></td>
-                <% }) %> 
-                <td><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=wishlistItem.quantity %><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-plus"></i>
+                <td><%=wishlistItem.product.Name %></td> 
+                <td><button class="card-item-count btn btn-outline-dark m-1" onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=wishlistItem.quantity %><button class="card-item-count btn btn-outline-dark m-1" onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
                 </button></td>
                 <td>
                   <a
-                    href="/remove-product/<%=wishlistItem._id %>"
+                    href="/remove-product/<%=wishlistItem.product._id %>"
                     class="btn btn-outline-danger removeProduct"
                     ><i class="fa-solid fa-trash"></i></a>
                 </td>
@@ -69,4 +67,21 @@
       });
     });
   </script>
+
+<script>
+  function changeWishlistQuantity(wishlstId,proId,count){
+    $.ajax({
+      url:'/changeWishlistProductQuantity',
+      data:{
+        wishlist:wishlstId,
+        product:proId,
+        count:count
+      },
+      method:'post',
+      success:(response)=>{
+        alert(response)
+      }
+    })
+  }
+</script>
   

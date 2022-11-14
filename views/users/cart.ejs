@@ -20,21 +20,21 @@
             <% locals.products.forEach(cartItem=>{%>
             <tr>
               <th scope="row"><%=No++ %></th>
-              <% cartItem.product.forEach(item=>{ %> 
+              
                 <td>
                   <img
                     style="width: 40px; height: 50px"
-                    src="/users/productImages/<%=item._id %>.jpg "
+                    src="/users/productImages/<%=cartItem.product._id %>.jpg "
                     alt=""
                   />
                 </td>
-                <td><%=item.Name %></td>
-                <% }) %> 
-              <td><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=cartItem.quantity %><button class="card-item-count btn btn-outline-dark m-1"><i class="fa-solid fa-plus"></i>
+                <td><%=cartItem.product.Name %></td>
+              
+              <td><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1"><%=cartItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
               </button></td>
               <td>
                 <a
-                  href="/remove-product/<%=cartItem._id %>"
+                  href="/remove-product/<%=cartItem.product._id %>"
                   class="btn btn-outline-danger removeProduct"
                   ><i class="fa-solid fa-trash"></i></a>
               </td>
@@ -68,4 +68,21 @@
       }
     });
   });
+</script>
+
+<script>
+  function changeCartQuantity(cartId,proId,count){
+    $.ajax({
+      url:'/changeCartProductQuantity',
+      data:{
+        cart:cartId,
+        product:proId,
+        count:count
+      },
+      method:'post',
+      success:(response)=>{
+        alert(response)
+      }
+    })
+  }
 </script>
