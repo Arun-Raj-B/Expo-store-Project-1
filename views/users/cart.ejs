@@ -51,14 +51,16 @@
       </div>
   </div>
   <hr class="me-5 ms-5 mt-3">
- <div class="container">
-  <div class="row d-flex r flex-row-reverse">
-    <div class="col-2 card text-center pt-1 shadow-sm" style="background-color: #e0d0ae">
-      <h4>Total : 10000 ₹</h4>
-      <a href="/placeOrder" class="btn btn-outline-success mb-2">Place Order</a>
+ <% if(locals.totalAmount!=0) {%> 
+  <div class="container">
+    <div class="row d-flex flex-row-reverse">
+      <div class="col-md-2 col-sm-3 card text-center pt-1 shadow-sm" style="background-color: #eaddbf">
+        <h4>Total : <span id="total"><%=totalAmount  %></span>  ₹</h4>
+        <a href="/placeOrder" class="btn btn-outline-success mb-2">Place Order</a>
+     </div>
+    </div>
    </div>
-  </div>
- </div>
+  <% } %> 
 </section>
 
 <!-- onclick="return confirm('Do you want to delete product.Name ?')" -->

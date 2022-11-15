@@ -1,0 +1,72 @@
+<section class="page-fill" style="background-color: #ece6d9">
+  <div class="container" style="padding-top: 5%; padding-bottom: 5%">
+    <form action="" id="checkout-form">
+      <div class="row d-flex justify-content-center align-items-center">
+        <div class="card col-md-7 col-sm-12 shadow-sm m-3">
+          <h2 class="mt-2">Enter Delivery Details</h2>
+          <br />
+          <div>
+            <textarea
+              class="form-control mb-2"
+              name=""
+              id="address"
+              name="address"
+              cols="20"
+              rows="5"
+              placeholder="Address"
+              form="checkout-form"
+              style="background-color: #dbdbdb"
+            ></textarea>
+            <input
+              class="form-control mb-2"
+              id="pincode"
+              name="pincode"
+              placeholder="Pincode"
+              type="number"
+              style="background-color: #dbdbdb"
+            />
+            <input
+              class="form-control mb-2"
+              id="mobile"
+              name="mobile"
+              placeholder="Mobile"
+              type="number"
+              style="background-color: #dbdbdb"
+            />
+          </div>
+        </div>
+        <div
+          class="card col-md-4 col-sm-12 shadow-sm d-flex justify-content-center align-items-center m-3"
+        >
+          <div class="container mt-5 checkout mb-3">
+            <h5>Total Amount : <%=totalAmount %> ₹</h5>
+            <hr style="width: 75%; text-align: left; margin-left: 0" />
+            <div class="payment">
+              <p>Payment method</p>
+              <label class="radio-inline">
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="COD"
+                  checked
+                />COD
+              </label>
+              <label class="radio-inline">
+                <input
+                  type="radio"
+                  name="payment-method"
+                  value="ONLINE"
+                />Online payment
+              </label>
+            </div>
+            <div class="mt-2 d-flex flex-row-reverse">
+              <button type="submit" class="btn btn-outline-primary">
+                Checkout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

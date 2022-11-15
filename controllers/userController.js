@@ -103,8 +103,15 @@ module.exports = {
       wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
     }
     let products = await userHelper.getCartProducts(userId);
+    let totalAmount = await userHelper.getTotalAmount(user._id);
     console.log(products);
-    res.render("users/cart", { user, products, cartCount, wishlistCount });
+    res.render("users/cart", {
+      user,
+      products,
+      cartCount,
+      wishlistCount,
+      totalAmount,
+    });
   },
 
   getAddToCart: (req, res) => {
@@ -284,7 +291,7 @@ module.exports = {
       res.redirect("/cart");
     });
   },
-
+  
   postRemoveWishlistProduct: (req, res) => {
     const wishlistId = req.params.wishlistId;
     const prodId = req.params.prodId;
@@ -299,6 +306,24 @@ module.exports = {
     const user = req.session.user._id;
     userHelper.wishlistToCart(user, product, wishlist).then((response) => {
       res.json(response);
+    });
+  },
+
+  getplaceOrder: async (req, res) => {
+    let user = req.session.user;
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+    let totalAmount = await userHelper.getTotalAmount(user._id);
+    console.log(totalAmount);
+    res.render("users/placeOrder", {
+      user,
+      cartCount,
+      wishlistCount,
+      totalAmount,
     });
   },
 };
