@@ -12,7 +12,7 @@
                 <th scope="col" style="text-align: center">Item</th>
                 <th scope="col" style="text-align: center">Title</th>
                 <th scope="col" style="text-align: center">Price</th>
-                <th scope="col" style="text-align: center">Quantity</th>
+                <!-- <th scope="col" style="text-align: center">Quantity</th> -->
                 <th scope="col" style="text-align: center">Add to Cart</th>
                 <th scope="col" style="text-align: center">Remove</th>               
               </tr>
@@ -33,22 +33,18 @@
                 <td><%=wishlistItem.product.Name %></td> 
                 <td><%=wishlistItem.product.Price %></td> 
 
-                <td><button class="card-item-count btn btn-outline-secondary m-1"onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<%=wishlistItem.product._id %>"><%=wishlistItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeWishlistQuantity('<%=wishlistItem._id%>','<%=wishlistItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
-                </button></td>
+                <!-- <td><button class="card-item-count btn btn-outline-secondary m-1"onclick="changeWishlistQuantity('<=wishlistItem._id%>','<=wishlistItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<=wishlistItem.product._id %>"><=wishlistItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeWishlistQuantity('<=wishlistItem._id%>','<=wishlistItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
+                </button></td> -->
                 <td>
-                  <a
-                    href="/addToWishlist/<%=wishlistItem.product._id %>"
-                    class="btn btn-outline-success removeProduct"
-                    ><i class="fa-solid fa-cart-shopping"></i></i></a>
+                  <button
+                    class="btn btn-outline-success" onclick="wishlistToCart('<%=wishlistItem.product._id%>','<%=wishlistItem.product.Name %>','<%=wishlistItem._id%>')"
+                    ><i class="fa-solid fa-cart-shopping"></i></i></button>
                 </td>
                 <td>
                   <a
                   href="/removeWishlistProduct/<%=wishlistItem._id%>/<%=wishlistItem.product._id %>"
                   class="btn btn-outline-danger removeProduct"
                   ><i class="fa-solid fa-trash"></i></a>
-                  <!-- <button
-                    class="btn btn-outline-danger removeProduct" onclick="removeWishlistProduct('<=wishlistItem._id%>','<=wishlistItem.product._id %>')"
-                    ><i class="fa-solid fa-trash"></i></button> -->
                 </td>
               </tr>
               <%})%>
@@ -123,6 +119,57 @@ Swal.fire({
           location.reload();
         }else{
           document.getElementById(proId).innerHTML=quantity+count
+        }
+      }
+    })
+  }
+</script>
+
+<script>
+  function wishlistToCart(proId,prodName,wishlistId){
+
+    $.ajax({
+      url:'/wishlistToCart',
+      data:{
+        product:proId,
+        wishlist:wishlistId,
+      },
+      method:'post',
+      success:(response)=>{
+        if(response.productAdded){
+          console.log("Product added successfully")
+        //   let cartCount = $("#cart-count").html();
+        // cartCount = parseInt(cartCount) + 1;
+        // $("#cart-count").html(cartCount);
+        let wishlistCount = $("#wishlist-count").html();
+        wishlistCount = parseInt(wishlistCount) - 1;
+        $("#wishlist-count").html(wishlistCount);
+//           Swal.fire({
+//   position: 'top-end',
+//   icon: 'success',
+//   title: 'Product added to cart',
+//   showConfirmButton: false,
+//   timer: 1500
+// })
+// const timeOut = setTimeout(reload,1200);
+
+// function reload(){
+  location.reload()
+//   clearTimeout(timeOut);
+// }
+        }else{
+          console.log("Product exists but removed successfully")
+          let wishlistCount = $("#wishlist-count").html();
+        wishlistCount = parseInt(wishlistCount) - 1;
+        $("#wishlist-count").html(wishlistCount);
+           
+// Swal.fire(`${prodName} exists in cart`)
+// const timeOut = setTimeout(reload,600);
+
+// function reload(){
+  location.reload()
+//   clearTimeout(timeOut);
+// }
         }
       }
     })

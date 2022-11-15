@@ -1,6 +1,7 @@
 const productHelper = require("../helpers/productHelpers");
 const userHelper = require("../helpers/userHelpers");
 const otpHelper = require("../helpers/otpHelper");
+const { resolveInclude } = require("ejs");
 
 module.exports = {
   getHome: async (req, res) => {
@@ -289,6 +290,15 @@ module.exports = {
     const prodId = req.params.prodId;
     userHelper.removeWishlistProduct(wishlistId, prodId).then((response) => {
       res.redirect("/wishlist");
+    });
+  },
+
+  postWishlistToCart: (req, res) => {
+    const product = req.body.product;
+    const wishlist = req.body.wishlist;
+    const user = req.session.user._id;
+    userHelper.wishlistToCart(user, product, wishlist).then((response) => {
+      res.json(response);
     });
   },
 };

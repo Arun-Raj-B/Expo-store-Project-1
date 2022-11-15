@@ -470,4 +470,67 @@ module.exports = {
         });
     });
   },
+
+  wishlistToCart: (userId, proId, wishId) => {
+    let proObj = {
+      item: ObjectId(proId),
+      quantity: 1,
+    };
+    return new Promise(async (resolve, reject) => {
+      const userCart = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .findOne({ user: objectId(userId) });
+      // const cartId = userCart._id;
+      if (userCart) {
+        let prodExist = userCart.products.findIndex(
+          (product) => product.item == proId
+        );
+        console.log(prodExist);
+        console.log("Prouct exist check");
+        if (prodExist != -1) {
+          console.log("product already exists removed from wishlist");
+          db.get()
+            .collection(collection.WISHLIST_COLLECTION)
+            .updateOne(
+              {
+                _id: objectId(wishId),
+              },
+              {
+                $pull: { products: { item: objectId(proId) } },
+              }
+            );
+          resolve(true);
+          // resolve({ exists: true });
+        } else {
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .updateOne(
+              {
+                user: objectId(userId),
+              },
+              {
+                $push: { products: proObj },
+              }
+            );
+          console.log("product added to cart removed from wishlist");
+          db.get()
+            .collection(collection.WISHLIST_COLLECTION)
+            .updateOne(
+              {
+                _id: objectId(wishId),
+              },
+              {
+                $pull: { products: { item: objectId(proId) } },
+              }
+            );
+          resolve({ productAdded: true });
+          // .then((response) => {
+          //   console.log("item added from wishlist to cart");
+          //   resolve({ productAdded: true });
+          // });
+        }
+      }
+    });
+  },
 };
