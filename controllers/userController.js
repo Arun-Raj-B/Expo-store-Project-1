@@ -261,20 +261,36 @@ module.exports = {
     }
   },
 
-  getSingleProduct: (req, res) => {
+  getSingleProduct: async (req, res) => {
+    let user = req.session.user;
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+
     const proId = req.params.id;
     console.log(proId);
     productHelper.getOneProduct(proId).then((prod) => {
       console.log(prod);
       // const product = prod._id.toString();
       // console.log(product);
-      res.render("users/singleProduct", { prod });
+      res.render("users/singleProduct", {
+        user,
+        cartCount,
+        wishlistCount,
+        prod,
+      });
     });
   },
 
   postChangeCartProductQuantity: (req, res, next) => {
-    userHelper.ChangeCartProductQuantity(req.body).then((response) => {
-      res.json(response);
+    userHelper.ChangeCartProductQuantity(req.body).then(async (response) => {
+      let userId = req.body.user;
+      let total = await userHelper.getTotalAmount(userId);
+      // console.log(total);
+      res.json({ response, total });
     });
   },
 
@@ -291,7 +307,7 @@ module.exports = {
       res.redirect("/cart");
     });
   },
-  
+
   postRemoveWishlistProduct: (req, res) => {
     const wishlistId = req.params.wishlistId;
     const prodId = req.params.prodId;
@@ -325,5 +341,9 @@ module.exports = {
       wishlistCount,
       totalAmount,
     });
+  },
+
+  postplaceOrder: (req, res) => {
+    console.log(req.body.paymentMethod);
   },
 };

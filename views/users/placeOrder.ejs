@@ -1,21 +1,20 @@
 <section class="page-fill" style="background-color: #ece6d9">
   <div class="container" style="padding-top: 5%; padding-bottom: 5%">
-    <form action="" id="checkout-form">
+    <form action="/placeOrder" method="post" id="formValidation">
       <div class="row d-flex justify-content-center align-items-center">
         <div class="card col-md-7 col-sm-12 shadow-sm m-3">
-          <h2 class="mt-2">Enter Delivery Details</h2>
+          <h2 class="mt-2">Delivery Details</h2>
           <br />
           <div>
             <textarea
               class="form-control mb-2"
-              name=""
               id="address"
               name="address"
               cols="20"
               rows="5"
               placeholder="Address"
-              form="checkout-form"
               style="background-color: #dbdbdb"
+              required
             ></textarea>
             <input
               class="form-control mb-2"
@@ -24,6 +23,7 @@
               placeholder="Pincode"
               type="number"
               style="background-color: #dbdbdb"
+              required
             />
             <input
               class="form-control mb-2"
@@ -32,6 +32,7 @@
               placeholder="Mobile"
               type="number"
               style="background-color: #dbdbdb"
+              required
             />
           </div>
         </div>
@@ -46,17 +47,14 @@
               <label class="radio-inline">
                 <input
                   type="radio"
-                  name="payment-method"
+                  name="paymentMethod"
                   value="COD"
                   checked
                 />COD
               </label>
               <label class="radio-inline">
-                <input
-                  type="radio"
-                  name="payment-method"
-                  value="ONLINE"
-                />Online payment
+                <input type="radio" name="paymentMethod" value="ONLINE" />Online
+                payment
               </label>
             </div>
             <div class="mt-2 d-flex flex-row-reverse">
@@ -70,3 +68,14 @@
     </form>
   </div>
 </section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+></script>
+
+<script
+  text="text/javascript"
+  src="/users/javascript/placeOrderValidation.js"
+></script>

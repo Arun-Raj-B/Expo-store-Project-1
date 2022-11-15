@@ -33,7 +33,7 @@
                 <td><%=cartItem.product.Name %></td>
                 <td><%=cartItem.product.Price %> ₹</td>
               
-              <td><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<%=cartItem.product._id %>"><%=cartItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>',1)"><i class="fa-solid fa-plus"></i>
+              <td><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>','<%=user._id%>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<%=cartItem.product._id %>"><%=cartItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>','<%=user._id%>',1)"><i class="fa-solid fa-plus"></i>
               </button></td>
               <td>
                 <a
@@ -88,13 +88,14 @@
 </script>
 
 <script>
-  function changeCartQuantity(cartId,proId,count){
+  function changeCartQuantity(cartId,proId,userId,count){
      let quantity=parseInt(document.getElementById(proId).innerHTML)
      count=parseInt(count)
 
     $.ajax({
       url:'/changeCartProductQuantity',
       data:{
+        user:userId,
         cart:cartId,
         product:proId,
         count:count,
@@ -102,7 +103,7 @@
       },
       method:'post',
       success:(response)=>{
-        if(response.removeProduct){
+        if(response.response.removeProduct){
           let timerInterval
 Swal.fire({
   title: 'Removing product from cart',
@@ -129,6 +130,7 @@ Swal.fire({
           location.reload();
         }else{
           document.getElementById(proId).innerHTML=quantity+count
+          document.getElementById("total").innerHTML=response.total
         }
       }
     })

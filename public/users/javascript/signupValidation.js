@@ -70,7 +70,14 @@ $("#formValidation").validate({
 jQuery.validator.addMethod(
   "checkpassword",
   function (value, element) {
-    return this.optional(element) || /^[\w@-]{8,20}$/i.test(value);
+    return (
+      this.optional(element) ||
+      /^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\d]){1,})(?=(.*[\W]){1,})(?!.*\s).{8,}$/i.test(
+        value
+      )
+    );
   },
   "Password must be alphanumeric (@, _ and - are also allowed) and be 8 - 20 characters"
 );
+
+// ^[\w@-]{8,20}$

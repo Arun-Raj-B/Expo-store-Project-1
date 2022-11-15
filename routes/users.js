@@ -65,5 +65,8 @@ router.get(
   userController.postRemoveWishlistProduct
 );
 router.post("/wishlistToCart", userController.postWishlistToCart);
-router.route("/placeOrder").get(verifyLogin, userController.getplaceOrder);
+router
+  .route("/placeOrder")
+  .get(verifyLogin, userController.getplaceOrder)
+  .post(userController.postplaceOrder);
 module.exports = router;
