@@ -1,12 +1,12 @@
 <section class="page-fill" style="background-color: #ece6d9">
   <div class="container" style="padding-top: 5%; padding-bottom: 5%">
-    <form action="/placeOrder" method="post" id="formValidation">
+    <form id="checkout-form">
       <div class="row d-flex justify-content-center align-items-center">
         <div class="card col-md-7 col-sm-12 shadow-sm m-3">
           <h2 class="mt-2">Delivery Details</h2>
           <br />
           <div>
-            <textarea
+            <!-- <textarea
               class="form-control mb-2"
               id="address"
               name="address"
@@ -15,14 +15,73 @@
               placeholder="Address"
               style="background-color: #dbdbdb"
               required
-            ></textarea>
+            ></textarea> -->
+            <div class="d-flex">
+              <input
+                class="form-control mb-2 me-1"
+                id="house"
+                name="house"
+                placeholder="House"
+                type="text"
+                style="background-color: #eeeeee"
+                required
+              />
+              <input
+                class="form-control mb-2 ms-1"
+                id="street"
+                name="street"
+                placeholder="Street"
+                type="text"
+                style="background-color: #eeeeee"
+                required
+              />
+            </div>
+            <div class="d-flex">
+              <select
+                class="form-select mb-2 me-1"
+                name="district"
+                aria-label="Default select example"
+                style="background-color: #eeeeee"
+              >
+                <option>Thiruvananthapuram</option>
+                <option>Kollam</option>
+                <option>Pathanamthitta</option>
+                <option>Alappuzha</option>
+                <option>Kottayam</option>
+                <option>Idukki</option>
+                <option>Ernakulam</option>
+                <option>Thrissur</option>
+                <option>Palakkad</option>
+                <option>Malappuram</option>
+                <option>Kozhikode</option>
+                <option>Wayanad</option>
+                <option>Kannur</option>
+                <option>Kasargod</option>
+              </select>
+              <input
+                class="form-control mb-2 ms-1"
+                id="state"
+                name="state"
+                placeholder="State"
+                type="text"
+                style="background-color: #eeeeee"
+                required
+              />
+            </div>
+            <input
+              type="text"
+              name="userId"
+              class=""
+              value="<%=user._id  %>"
+              hidden
+            />
             <input
               class="form-control mb-2"
               id="pincode"
               name="pincode"
               placeholder="Pincode"
               type="number"
-              style="background-color: #dbdbdb"
+              style="background-color: #eeeeee"
               required
             />
             <input
@@ -31,7 +90,7 @@
               name="mobile"
               placeholder="Mobile"
               type="number"
-              style="background-color: #dbdbdb"
+              style="background-color: #eeeeee"
               required
             />
           </div>
@@ -79,3 +138,19 @@
   text="text/javascript"
   src="/users/javascript/placeOrderValidation.js"
 ></script>
+
+<!-- <script>
+  $("#checkout-form").submit((e) => {
+    e.preventDefault();
+    $.ajax({
+      url: "/placeOrder",
+      method: "post",
+      data: $("#checkout-form").serialize(),
+      success: (response) => {
+        alert(response);
+      },
+    });
+  });
+</script> -->
+
+<!-- witten in placeOrderValidation -->

@@ -1,6 +1,15 @@
-$("#formValidation").validate({
+$("#checkout-form").validate({
   rules: {
-    address: {
+    house: {
+      required: true,
+    },
+    street: {
+      required: true,
+    },
+    district: {
+      required: true,
+    },
+    state: {
       required: true,
     },
     pincode: {
@@ -15,8 +24,17 @@ $("#formValidation").validate({
     },
   },
   messages: {
-    address: {
-      required: "Please enter the address",
+    house: {
+      required: "Enter house name",
+    },
+    street: {
+      required: "Enter street name",
+    },
+    district: {
+      required: "Enter the district",
+    },
+    state: {
+      required: "Enter the state",
     },
 
     pincode: {
@@ -33,6 +51,15 @@ $("#formValidation").validate({
   },
 
   submitHandler: function (form) {
-    form.submit();
+    let action = "/placeOrder";
+
+    $.ajax({
+      url: action,
+      method: "post",
+      data: $(form).serialize(),
+      success: (response) => {
+        alert(response);
+      },
+    });
   },
 });

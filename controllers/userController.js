@@ -2,6 +2,7 @@ const productHelper = require("../helpers/productHelpers");
 const userHelper = require("../helpers/userHelpers");
 const otpHelper = require("../helpers/otpHelper");
 const { resolveInclude } = require("ejs");
+const { urlencoded } = require("express");
 
 module.exports = {
   getHome: async (req, res) => {
@@ -343,7 +344,12 @@ module.exports = {
     });
   },
 
-  postplaceOrder: (req, res) => {
-    console.log(req.body.paymentMethod);
+  postplaceOrder: async (req, res) => {
+    console.log(req.body);
+    let products = await userHelper.getCartProductList(req.body.userId);
+    let totalAmount = await userHelper.getTotalAmount(req.body.userId);
+    userHelper.placeOrder(req.body, products, totalAmount).then((response) => {
+      res.json({ status: true });
+    });
   },
 };
