@@ -600,6 +600,7 @@ module.exports = {
         products: products,
         totalAmount: total,
         status: status,
+        date: new Date(),
       };
       console.log(orderObj);
 
@@ -624,5 +625,5 @@ module.exports = {
       console.log(cart.products);
       resolve(cart.products);
     });
-  }, 
+  },
 };

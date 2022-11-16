@@ -51,15 +51,37 @@ $("#checkout-form").validate({
   },
 
   submitHandler: function (form) {
-    let action = "/placeOrder";
+    Swal.fire({
+      title: "Please confirm the order",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Confirm!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let action = "/placeOrder";
 
-    $.ajax({
-      url: action,
-      method: "post",
-      data: $(form).serialize(),
-      success: (response) => {
-        alert(response);
-      },
+        $.ajax({
+          url: action,
+          method: "post",
+          data: $(form).serialize(),
+          success: (response) => {
+            if (response.status) {
+              let count = $("#cart-count").html();
+              count = 0;
+              $("#cart-count").html(count);
+              Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Order has been placed",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          },
+        });
+      }
     });
   },
 });
