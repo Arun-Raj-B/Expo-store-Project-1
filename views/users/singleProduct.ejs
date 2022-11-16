@@ -74,14 +74,14 @@
             </p>
           </div>
           <div class="d-flex">
-            <a
-              href=""
+            <button
               class="fa-regular fa-heart btn btn-outline-dark btn-lg me-3"
-            ></a>
-            <a
-              href=""
+              onclick="addToWishlist('<%= prod._id %>')"
+            ></button>
+            <button
               class="fa-solid fa-cart-shopping btn btn-outline-dark btn-lg"
-            ></a>
+              onclick="addToCart('<%= prod._id %>')"
+            ></button>
           </div>
         </div>
       </div>
@@ -98,3 +98,8 @@
     new ImageZoom(document.getElementById("img-container-main"), options);
   </script>
 </section>
+
+<script
+  text="text/javascript"
+  src="/users/javascript/countIncrement.js"
+></script>
