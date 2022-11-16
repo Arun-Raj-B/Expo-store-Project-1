@@ -69,4 +69,11 @@ router
   .route("/placeOrder")
   .get(verifyLogin, userController.getplaceOrder)
   .post(userController.postplaceOrder);
+
+router.get("/orders", verifyLogin, userController.getOrders);
+router.get(
+  "/viewOrderProducts/:id",
+  verifyLogin,
+  userController.getViewOrderProducts
+);
 module.exports = router;

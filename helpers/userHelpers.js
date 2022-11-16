@@ -588,7 +588,7 @@ module.exports = {
   placeOrder: (order, products, total) => {
     return new Promise((resolve, reject) => {
       console.log(order, products, total);
-      let status = order.paymentMethod === "COD" ? "placed" : "pending";
+      let status = order.paymentMethod === "COD" ? "Placed" : "Pending";
       let orderObj = {
         deliveryDetails: {
           mobile: order.mobile,
@@ -600,7 +600,7 @@ module.exports = {
         products: products,
         totalAmount: total,
         status: status,
-        date: new Date(),
+        date: new Date().toLocaleDateString(),
       };
       console.log(orderObj);
 
@@ -624,6 +624,58 @@ module.exports = {
         .findOne({ user: objectId(userId) });
       console.log(cart.products);
       resolve(cart.products);
+    });
+  },
+
+  getUserOrders: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      let orders = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .find({ userId: objectId(userId) })
+        .toArray();
+      console.log(orders);
+      resolve(orders);
+    });
+  },
+
+  getOrderProducts: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      let orderItems = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          {
+            $match: { _id: objectId(orderId) },
+          },
+          {
+            $unwind: "$products",
+          },
+          {
+            $project: {
+              item: "$products.item",
+              quantity: "$products.quantity",
+            },
+          },
+          {
+            $lookup: {
+              from: collection.PRODUCT_COLLECTION,
+              localField: "item",
+              foreignField: "_id",
+              as: "product",
+            },
+          },
+          {
+            $project: {
+              item: 1,
+              quantity: 1,
+              product: { $arrayElemAt: ["$product", 0] },
+            },
+          },
+        ])
+        .toArray();
+      console.log(orderItems);
+      resolve(orderItems);
     });
   },
 };

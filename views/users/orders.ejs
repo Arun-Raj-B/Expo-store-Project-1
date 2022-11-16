@@ -1,0 +1,57 @@
+<section class="page-fill" style="background-color: #eaddbf">
+  <div style="padding-top: 5%">
+    <!-- padding-bottom: 5%; -->
+    <div class="container shadow-lg rounded pb-2 pt-2">
+      <div class="row d-flex pb-2">
+        <i class="fa-solid fa-bag-shopping fa-4x"
+          ><span style="font-size: 30%" class="ps-1">orders</span></i
+        >
+      </div>
+      <table
+        class="table table-fluid table-hover table-bordered mt-5 pt-2"
+        id="myTable"
+      >
+        <!-- style="text-align: center" -->
+        <thead>
+          <tr class="bg-dark text-white">
+            <th scope="col" style="text-align: center">No</th>
+            <th scope="col" style="text-align: center">Date</th>
+            <th scope="col" style="text-align: center">Address</th>
+            <th scope="col" style="text-align: center">Pincode</th>
+            <th scope="col" style="text-align: center">Mobile</th>
+            <th scope="col" style="text-align: center">Total Amount</th>
+            <th scope="col" style="text-align: center">Status</th>
+            <th scope="col" style="text-align: center">View</th>
+          </tr>
+        </thead>
+        <% var No=1 %>
+        <tbody style="text-align: center">
+          <% locals.orders.forEach(order=>{%>
+          <tr>
+            <th scope="row"><%=No++ %></th>
+
+            <td><%=order.date %></td>
+            <td><%=order.deliveryDetails.address%></td>
+            <td><%=order.deliveryDetails.pincode %></td>
+            <td><%=order.deliveryDetails.mobile %></td>
+            <td><%=order.totalAmount %> ₹</td>
+            <% if (order.status == "Placed") {%>
+            <td><%=order.status %><i class="fa-solid fa-check ps-1"></i></td>
+            <% }else{ %>
+            <td><%=order.status %><i class="fa-solid fa-spinner ps-1"></i></td>
+            <% } %>
+            <td>
+              <a
+                href="/viewOrderProducts/<%=order._id%>"
+                class="btn btn-outline-dark removeProduct"
+                ><i class="fa-solid fa-eye"></i
+              ></a>
+            </td>
+          </tr>
+          <%})%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- <hr class="me-5 ms-5 mt-3" /> -->
+</section>

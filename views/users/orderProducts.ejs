@@ -1,0 +1,34 @@
+<!-- carousel -->
+<section class="page-fill" style="background-color: #eaddbf">
+  <!-- products -->
+  <div class="container-fluid pt-5 list-wrapper">
+    <div class="row list-item">
+      <% locals.products.forEach(orderProduct=>{%>
+      <div class="col-md-3 col-sm-6 p-3 d-flex justify-content-center">
+        <div class="card shadow rounded" style="width: 16rem">
+          <div>
+            <a href="/singleProduct/<%= orderProduct.product._id %>">
+              <img
+                src="/users/productImages/<%= orderProduct.product._id %>.jpg"
+                class="card-img-top"
+                alt="image"
+              />
+            </a>
+          </div>
+          <div class="card-body" style="background-color: #ede2c8">
+            <h5 class="card-title"><%= orderProduct.product.Name %></h5>
+            <p class="card-text">
+              Price / unit : <%= orderProduct.product.Price %> ₹
+            </p>
+            <p class="card-text">Quantity : <%= orderProduct.quantity %></p>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+  </div>
+</section>
+<script
+  text="text/javascript"
+  src="/users/javascript/countIncrement.js"
+></script>

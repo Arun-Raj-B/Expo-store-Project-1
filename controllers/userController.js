@@ -352,4 +352,33 @@ module.exports = {
       res.json({ status: true });
     });
   },
+
+  getOrders: async (req, res) => {
+    let user = req.session.user;
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+    let orders = await userHelper.getUserOrders(user._id);
+    res.render("users/orders", { user, cartCount, wishlistCount, orders });
+  },
+
+  getViewOrderProducts: async (req, res) => {
+    let user = req.session.user;
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+    let products = await userHelper.getOrderProducts(req.params.id);
+    res.render("users/orderProducts", {
+      user,
+      cartCount,
+      wishlistCount,
+      products,
+    });
+  },
 };

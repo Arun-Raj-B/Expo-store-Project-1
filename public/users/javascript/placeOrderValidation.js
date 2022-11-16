@@ -75,6 +75,7 @@ $("#checkout-form").validate({
                 position: "top-end",
                 icon: "success",
                 title: "Order has been placed",
+                text: "You can see the orders in orders page",
                 showConfirmButton: false,
                 timer: 1500,
               });
