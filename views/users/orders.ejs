@@ -36,9 +36,17 @@
             <td><%=order.deliveryDetails.mobile %></td>
             <td><%=order.totalAmount %> ₹</td>
             <% if (order.status == "Placed") {%>
-            <td><%=order.status %><i class="fa-solid fa-check ps-1"></i></td>
-            <% }else{ %>
+            <td>
+              <%=order.status %><i class="fa-solid fa-thumbs-up ps-1"></i>
+            </td>
+            <% }else if(order.status == "Processing"){ %>
             <td><%=order.status %><i class="fa-solid fa-spinner ps-1"></i></td>
+            <% }else if(order.status == "Shipped"){ %>
+            <td>
+              <%=order.status %><i class="fa-solid fa-truck-fast ps-1"></i>
+            </td>
+            <% }else if(order.status == "Delivered"){ %>
+            <td><%=order.status %><i class="fa-solid fa-check ps-1"></i></td>
             <% } %>
             <td>
               <a

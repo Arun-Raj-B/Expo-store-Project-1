@@ -73,7 +73,13 @@
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire("Deleted!", ` Product has been removed`, "success");
-          location.href = self.attr("href");
+          const timeOut = setTimeout(reloadPage, 1000);
+
+            function reloadPage() {
+              location.href = self.attr("href");
+              clearTimeout(timeOut);
+            }
+          
         }
       });
     });

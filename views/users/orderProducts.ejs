@@ -1,30 +1,55 @@
 <!-- carousel -->
-<section class="page-fill" style="background-color: #eaddbf">
+<section class="page-fill pb-2" style="background-color: #eaddbf">
   <!-- products -->
-  <div class="container-fluid pt-5 list-wrapper">
-    <div class="row list-item">
-      <% locals.products.forEach(orderProduct=>{%>
-      <div class="col-md-3 col-sm-6 p-3 d-flex justify-content-center">
-        <div class="card shadow rounded" style="width: 16rem">
+  <div class="container-fluid" style="padding-top: 5%">
+    <div class="container card" style="background-color: #efe9dc">
+      <div class="row pt-2 d-flex">
+        <div class="col"><h4>OrderId : <%=order._id %></div>
+        <div class="col text-end">
           <div>
-            <a href="/singleProduct/<%= orderProduct.product._id %>">
-              <img
-                src="/users/productImages/<%= orderProduct.product._id %>.jpg"
-                class="card-img-top"
-                alt="image"
-              />
-            </a>
-          </div>
-          <div class="card-body" style="background-color: #ede2c8">
-            <h5 class="card-title"><%= orderProduct.product.Name %></h5>
-            <p class="card-text">
-              Price / unit : <%= orderProduct.product.Price %> ₹
-            </p>
-            <p class="card-text">Quantity : <%= orderProduct.quantity %></p>
+            <button class="btn btn-outline-danger" onclick="cancelOrder('<%=order._id %>')">Cancel Order</button>
           </div>
         </div>
+        <div class="pb-2"></div>
+        <hr />
       </div>
-      <% }) %>
+      <div class="row">
+        <div class="col">
+          <p><b>Date : </b><%=order.date %></p>
+          <p>
+            <b>Address : </b><%=order.deliveryDetails.address%>,
+            <%=order.deliveryDetails.pincode %>, <%=order.deliveryDetails.mobile
+            %>
+          </p>
+          <p><b>Total Amount : </b><%=order.totalAmount %> ₹</p>
+          <p><b>Status : </b><%=order.status %></p>
+        </div>
+      </div>
+      <div class="row d-flex">
+        <% locals.products.forEach(orderProduct=>{%>
+        <div class="col-md-3 col-sm-6 p-3 d-flex justify-content-center">
+          <div class="card shadow rounded" style="width: 16rem">
+            <div>
+              <a href="/singleProduct/<%= orderProduct.product._id %>">
+                <img
+                  width="10"
+                  src="/users/productImages/<%= orderProduct.product._id %>.jpg"
+                  class="card-img-top"
+                  alt="image"
+                />
+              </a>
+            </div>
+            <div class="card-body" style="background-color: #ede2c8">
+              <h5 class="card-title"><%= orderProduct.product.Name %></h5>
+              <p class="card-text">
+                Price / unit : <%= orderProduct.product.Price %> ₹
+              </p>
+              <p class="card-text">Quantity : <%= orderProduct.quantity %></p>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
     </div>
   </div>
 </section>
@@ -32,3 +57,20 @@
   text="text/javascript"
   src="/users/javascript/countIncrement.js"
 ></script>
+
+<script>
+  function cancelOrder(orderId){
+    console.log(orderId)
+    $.ajax({
+      url:'/cancelOrder',
+      data:{
+        orderId:orderId,
+      },
+      method:"post",
+      success:(response)=>{
+
+      }
+    })
+    
+  }
+</script>

@@ -76,4 +76,5 @@ router.get(
   verifyLogin,
   userController.getViewOrderProducts
 );
+router.post("/cancelOrder", userController.postCancelOrder);
 module.exports = router;

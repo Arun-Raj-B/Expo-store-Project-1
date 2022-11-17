@@ -639,6 +639,17 @@ module.exports = {
     });
   },
 
+  getSingleOrder: (orderId) => {
+    return new Promise(async (resolve, reject) => {
+      let order = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .findOne({ _id: objectId(orderId) });
+      // console.log(order);
+      resolve(order);
+    });
+  },
+
   getOrderProducts: (orderId) => {
     return new Promise(async (resolve, reject) => {
       let orderItems = await db
@@ -676,6 +687,21 @@ module.exports = {
         .toArray();
       console.log(orderItems);
       resolve(orderItems);
+    });
+  },
+
+  cancelOrder: (orderId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .updateOne(
+          { _id: objectId(orderId) },
+          {
+            $set: {
+              status: "Cancel requested",
+            },
+          }
+        );
     });
   },
 };

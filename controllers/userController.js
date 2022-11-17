@@ -373,12 +373,21 @@ module.exports = {
       cartCount = await userHelper.getCartCount(req.session.user._id);
       wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
     }
+    let order = await userHelper.getSingleOrder(req.params.id);
     let products = await userHelper.getOrderProducts(req.params.id);
     res.render("users/orderProducts", {
       user,
       cartCount,
       wishlistCount,
       products,
+      order,
     });
   },
+
+  postCancelOrder: (req, res) => {
+    const orderId = req.body.orderId;
+    userHelper.cancelOrder(orderId);
+  },
+
+  
 };

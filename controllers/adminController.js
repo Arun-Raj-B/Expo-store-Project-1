@@ -311,7 +311,7 @@ module.exports = {
   getAllOrders: async (req, res) => {
     const adminData = req.session.admin;
     const orders = await adminUserHelper.getAllOrders();
-    res.render("admin/adminOrders", { admin: true, adminData, orders });
+    res.render("admin/viewOrders", { admin: true, adminData, orders });
   },
 
   postSetStatus: (req, res) => {
