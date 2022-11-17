@@ -50,8 +50,10 @@
                   <span id="<%=order._id%>"><%=order.status %></span>
                 </button>
                 <ul class="dropdown-menu">
-                  <% if(order.status!="Delivered") {%> <% if (order.status !==
-                  "Shipped"&&order.status !== "Delivered"){%>
+                  <% if (order.status !== "Cancel requested"){%> <%
+                  if(order.status!="Delivered"&&order.status!="Cancelled") {%>
+                  <% if (order.status !== "Shipped"&&order.status !==
+                  "Delivered"){%>
                   <li>
                     <button
                       class="dropdown-item"
@@ -77,7 +79,16 @@
                       Delivered
                     </button>
                   </li>
-                  <% } %>
+                  <% } %> <% }else{ %>
+                  <li>
+                    <button
+                      class="dropdown-item"
+                      onclick="changeStatus('Cancelled','<%=order._id%>')"
+                    >
+                      Cancel
+                    </button>
+                  </li>
+                  <%}%>
                 </ul>
               </div>
             </td>
@@ -120,11 +131,19 @@
           method: "post",
           success: (response) => {
             document.getElementById(orderId).innerHTML = status;
-            Swal.fire(
-              "Updated!",
-              `Status has been updated to "${status}"`,
-              "success"
-            );
+            if (status !== "Cancelled") {
+              Swal.fire(
+                "Updated!",
+                `Status has been updated to "${status}"`,
+                "success"
+              );
+            } else {
+              Swal.fire(
+                "Cancelled!",
+                `Order has been cancelled successfully`,
+                "success"
+              );
+            }
             const timeOut = setTimeout(reloadPage, 1200);
 
             function reloadPage() {

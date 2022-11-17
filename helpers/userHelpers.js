@@ -701,7 +701,11 @@ module.exports = {
               status: "Cancel requested",
             },
           }
-        );
+        )
+        .then((response) => {
+          console.log(response);
+          resolve({ request: true });
+        });
     });
   },
 };

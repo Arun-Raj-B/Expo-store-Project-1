@@ -35,7 +35,8 @@
             <td><%=order.deliveryDetails.pincode %></td>
             <td><%=order.deliveryDetails.mobile %></td>
             <td><%=order.totalAmount %> ₹</td>
-            <% if (order.status == "Placed") {%>
+            <% if (order.status !== "Cancel requested") {%> <% if (order.status
+            == "Placed") {%>
             <td>
               <%=order.status %><i class="fa-solid fa-thumbs-up ps-1"></i>
             </td>
@@ -47,7 +48,13 @@
             </td>
             <% }else if(order.status == "Delivered"){ %>
             <td><%=order.status %><i class="fa-solid fa-check ps-1"></i></td>
-            <% } %>
+            <% }else{ %>
+
+            <td><%=order.status %><i class="fa-solid fa-ban ps-1"></i></td>
+
+            <% } %> <% }else{ %>
+            <td><%=order.status %><i class="fa-solid fa-ban ps-1"></i></td>
+            <%}%>
             <td>
               <a
                 href="/viewOrderProducts/<%=order._id%>"

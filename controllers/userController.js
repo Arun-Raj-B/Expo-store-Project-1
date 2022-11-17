@@ -386,8 +386,9 @@ module.exports = {
 
   postCancelOrder: (req, res) => {
     const orderId = req.body.orderId;
-    userHelper.cancelOrder(orderId);
+    userHelper.cancelOrder(orderId).then((response) => {
+      console.log(response);
+      res.json(response);
+    });
   },
-
-  
 };
