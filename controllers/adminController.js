@@ -307,4 +307,20 @@ module.exports = {
       res.redirect("/admin/view-category");
     });
   },
+
+  getAllOrders: async (req, res) => {
+    const adminData = req.session.admin;
+    const orders = await adminUserHelper.getAllOrders();
+    res.render("admin/adminOrders", { admin: true, adminData, orders });
+  },
+
+  postSetStatus: (req, res) => {
+    const status = req.body.status;
+    const orderId = req.body.orderId;
+    console.log(status, orderId);
+    adminUserHelper.setStatus(status, orderId).then((response) => {
+      // console.log(response);
+      res.json(response);
+    });
+  },
 };

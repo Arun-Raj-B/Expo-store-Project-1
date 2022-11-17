@@ -35,7 +35,7 @@ router
 router.get("/logout", adminController.getAdminLogout);
 router.get("/view-category", verifyLogin, adminController.getViewCategory);
 router
-  .route("/add-category") 
+  .route("/add-category")
   .get(verifyLogin, adminController.getAddCategory)
   .post(adminController.postAddCategory);
 router
@@ -47,5 +47,7 @@ router.get(
   "/delete-subcategory/:subctgry/:ctgry",
   adminController.getDeleteSubcategory
 );
+router.get("/orders", verifyLogin, adminController.getAllOrders);
+router.post("/setStatus", adminController.postSetStatus);
 
 module.exports = router;
