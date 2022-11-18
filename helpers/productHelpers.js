@@ -25,7 +25,7 @@ module.exports = {
       const products = await db
         .get()
         .collection(collection.PRODUCT_COLLECTION)
-        .find({ Deleted: false })
+        .find({ Deleted: false, Stock: { $gte: 1 } })
         .toArray();
       resolve(products);
     });

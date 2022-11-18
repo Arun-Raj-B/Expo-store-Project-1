@@ -1,0 +1,84 @@
+<!-- carousel -->
+<section class="page-fill pb-2" style="background-color: #eaddbf">
+    <!-- products -->
+    <div class="container-fluid pt-2">
+      <% requests.forEach(request=>{ %>
+        <div class="container card mb-2" style="background-color: #efe9dc">
+            <div class="row pt-2 d-flex">
+              <div class="col"><h4><span id="<%=request._id %>">OrderId : <%=request._id %></span></div>
+              <div class="col text-end">
+                <div>
+                    <button class="btn btn-outline-danger" id="cancel" onclick="changeStatus('Cancelled','<%=request._id %>')">Cancel Order</button>
+                </div>
+              </div>
+              <div class="pb-2"></div>
+              <hr />
+            </div>
+            <div class="row">
+              <div class="col">
+                <p><b>Date : </b><%=request.date %></p>
+                <p>
+                  <b>Address : </b><%=request.deliveryDetails.address%>,
+                  <%=request.deliveryDetails.pincode %>, <%=request.deliveryDetails.mobile
+                  %>
+                </p>
+                <p><b>Total Amount : </b><%=request.totalAmount %> ₹</p>
+                <p><b>Status : </b><%=request.status %></p>
+              </div>
+            </div>
+          </div> 
+      <% }) %> 
+    </div>
+  </section>
+  
+  <script>
+    function changeStatus(status, orderId) {
+      console.log(status, orderId);
+  
+      Swal.fire({
+        title: `Change status to ${status} ?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, change!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+            console.log("Order is going to be cancelled")
+          $.ajax({
+            url: `/admin/setStatus`,
+            data: {
+              status: status,
+              orderId: orderId,
+            },
+            method: "post",
+            success: (response) => {
+                console.log("Order is cancelled");
+                let count = $("#request-count").html();
+                if(count>0){
+                    count = parseInt(count) - 1;
+        $("#request-count").html(count);
+                }else{
+                    count = 0;
+        $("#request-count").html(0);
+                }
+                
+              document.getElementById(orderId).innerHTML = status;
+                Swal.fire(
+                  "Cancelled!",
+                  `Order has been cancelled successfully`,
+                  "success"
+                );
+              const timeOut = setTimeout(reloadPage, 1200);
+  
+              function reloadPage() {
+                location.reload();
+                clearTimeout(timeOut);
+              }
+            },
+          });
+        }
+      });
+    }
+  </script>
+  

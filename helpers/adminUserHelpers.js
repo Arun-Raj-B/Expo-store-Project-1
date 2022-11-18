@@ -100,4 +100,16 @@ module.exports = {
         });
     });
   },
+
+  cancelRequests: () => {
+    return new Promise(async (resolve, reject) => {
+      const requests = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .find({ status: "Cancel requested" })
+        .toArray();
+      // console.log(requests);
+      resolve(requests);
+    });
+  },
 };

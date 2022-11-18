@@ -4,33 +4,46 @@ const adminHelper = require("../helpers/adminHelpers");
 const { response } = require("express");
 
 module.exports = {
-  getAdminHome: (req, res) => {
+  getAdminHome: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     let adminData = req.session.admin;
     if (!adminData) {
       res.render("admin/adminLogin", { admin: true });
     } else {
-      res.render("admin/adminHome", { admin: true, adminData });
+      res.render("admin/adminHome", { admin: true, adminData, reqNo });
     }
   },
 
-  getViewProduct: (req, res) => {
+  getViewProduct: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     let adminData = req.session.admin;
     productHelper.getAllProducts().then((products) => {
       // console.log(products);
-      res.render("admin/viewProducts", { products, admin: true, adminData });
+      res.render("admin/viewProducts", {
+        products,
+        admin: true,
+        adminData,
+        reqNo,
+      });
     });
   },
 
-  getViewUser: (req, res) => {
+  getViewUser: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     let adminData = req.session.admin;
     adminUserHelper.getAllUsers().then((users) => {
-      res.render("admin/viewUsers", { users, admin: true, adminData });
+      res.render("admin/viewUsers", { users, admin: true, adminData, reqNo });
     });
   },
 
-  getAddProduct: (req, res) => {
+  getAddProduct: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     let adminData = req.session.admin;
-    res.render("admin/addProduct", { admin: true, adminData });
+    res.render("admin/addProduct", { admin: true, adminData, reqNo });
   },
 
   postAddProduct: (req, res) => {
@@ -164,10 +177,12 @@ module.exports = {
   },
 
   getEditProduct: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     let adminData = req.session.admin;
     let proId = req.params.id;
     let product = await productHelper.getOneProduct(proId);
-    res.render("admin/editProduct", { admin: true, product, adminData });
+    res.render("admin/editProduct", { admin: true, product, adminData, reqNo });
   },
 
   postEditProduct: (req, res) => {
@@ -207,18 +222,23 @@ module.exports = {
     });
   },
 
-  getAdminSignup: (req, res) => {
+  getAdminSignup: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     let adminData = req.session.admin;
-    res.render("admin/adminSignup", { admin: true, adminData });
+    res.render("admin/adminSignup", { admin: true, adminData, reqNo });
   },
 
-  getAdminLogin: (req, res) => {
+  getAdminLogin: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     if (req.session.loggedIn) {
       res.redirect("/admin");
     } else {
       res.render("admin/adminlogin", {
         admin: true,
         loginErr: req.session.loginErr,
+        reqNo,
       });
       req.session.loginErr = false;
     }
@@ -250,14 +270,23 @@ module.exports = {
     res.redirect("/admin");
   },
 
-  getViewCategory: (req, res) => {
+  getViewCategory: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     let adminData = req.session.admin;
     productHelper.getAllCategories().then((categories) => {
-      res.render("admin/viewCategory", { admin: true, adminData, categories });
+      res.render("admin/viewCategory", {
+        admin: true,
+        adminData,
+        categories,
+        reqNo,
+      });
     });
   },
 
-  getAddCategory: (req, res) => {
+  getAddCategory: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     let adminData = req.session.admin;
     res.render("admin/addCategory", { admin: true, adminData });
   },
@@ -294,10 +323,17 @@ module.exports = {
   },
 
   getEditCategory: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     const adminData = req.session.admin;
     const catId = req.params.id;
     const category = await productHelper.getOneCategory(catId);
-    res.render("admin/editCategory", { admin: true, adminData, category });
+    res.render("admin/editCategory", {
+      admin: true,
+      adminData,
+      category,
+      reqNo,
+    });
   },
 
   postEditCategory: (req, res) => {
@@ -309,9 +345,11 @@ module.exports = {
   },
 
   getAllOrders: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
     const adminData = req.session.admin;
     const orders = await adminUserHelper.getAllOrders();
-    res.render("admin/viewOrders", { admin: true, adminData, orders });
+    res.render("admin/viewOrders", { admin: true, adminData, orders, reqNo });
   },
 
   postSetStatus: (req, res) => {
@@ -321,6 +359,18 @@ module.exports = {
     adminUserHelper.setStatus(status, orderId).then((response) => {
       // console.log(response);
       res.json(response);
+    });
+  },
+
+  getCancelRequests: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
+    const adminData = req.session.admin;
+    res.render("admin/viewRequests", {
+      admin: true,
+      requests,
+      adminData,
+      reqNo,
     });
   },
 };

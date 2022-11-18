@@ -607,7 +607,7 @@ module.exports = {
       // console.log(products[0].item);
       // console.log(products[0].item);
       // console.log(products[0].item);
-      
+
       let i = 0;
       for (i = 0; i < orderedProducts; i++) {
         db.get()
