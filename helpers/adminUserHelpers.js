@@ -1,5 +1,6 @@
 const db = require("../config/connection");
 const collection = require("../config/collections");
+const userHelpers = require("./userHelpers");
 const { response } = require("express");
 var objectId = require("mongodb").ObjectId;
 module.exports = {
@@ -57,7 +58,7 @@ module.exports = {
         .collection(collection.ORDER_COLLECTION)
         .find()
         .toArray();
-      console.log(allOrders);
+      // console.log(allOrders);
       resolve(allOrders);
     });
   },
@@ -74,7 +75,26 @@ module.exports = {
             },
           }
         )
-        .then((response) => {
+        .then(async (response) => {
+          if (status == "Cancelled") {
+            const products = await userHelpers.getOrderProducts(orderId);
+            let i = 0;
+            for (i = 0; i < products.length; i++) {
+              db.get()
+                .collection(collection.PRODUCT_COLLECTION)
+                .updateOne(
+                  {
+                    _id: objectId(products[i].item),
+                  },
+                  {
+                    $inc: { Stock: products[i].quantity },
+                  }
+                )
+                .then((response) => {
+                  console.log(`Stock increased for ${i} items`);
+                });
+            }
+          }
           console.log(response);
           resolve({ statusUpdated: true });
         });

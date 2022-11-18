@@ -602,7 +602,30 @@ module.exports = {
         status: status,
         date: new Date().toLocaleDateString(),
       };
-      console.log(orderObj);
+      const orderedProducts = products.length;
+
+      // console.log(products[0].item);
+      // console.log(products[0].item);
+      // console.log(products[0].item);
+      
+      let i = 0;
+      for (i = 0; i < orderedProducts; i++) {
+        db.get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .updateOne(
+            {
+              _id: objectId(products[i].item),
+            },
+            {
+              $inc: { Stock: -products[i].quantity },
+            }
+          )
+          .then((response) => {
+            console.log(`Stock reduced for ${i} items`);
+          });
+      }
+
+      // console.log(orderObj);
 
       db.get()
         .collection(collection.ORDER_COLLECTION)

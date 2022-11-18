@@ -12,6 +12,7 @@ const fileUpload = require("express-fileupload");
 const nocache = require("nocache");
 
 const db = require("./config/connection");
+const middlewares = require("./middlewares/errorHandler");
 
 //set templating engine
 app.set("view engine", "ejs");
@@ -49,6 +50,10 @@ app.use("/admin", adminRouter);
 app.all("*", (req, res) => {
   res.render("users/404", { layout: "layouts/404Layout" });
 });
+
+//error handler
+// app.use(middlewares.catch404);
+// app.use(middlewares.errorHandler);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server listening to port 3000");

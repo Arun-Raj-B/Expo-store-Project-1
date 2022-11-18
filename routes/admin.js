@@ -15,7 +15,7 @@ router.get("/view-product", verifyLogin, adminController.getViewProduct);
 router
   .route("/add-product")
   .get(verifyLogin, adminController.getAddProduct)
-  .post(adminController.postAddProduct);
+  .post(adminController.postAddProduct); 
 router.get("/delete-product/:id", adminController.getDeleteProduct);
 router
   .route("/edit-product/:id")

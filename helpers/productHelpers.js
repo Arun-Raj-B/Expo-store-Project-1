@@ -10,8 +10,8 @@ module.exports = {
         Name: product.Name,
         Category: product.Category,
         Subcategory: product.Subcategory,
-        Quantity: product.Quantity,
-        Price: product.Price,
+        Stock: parseInt(product.Stock),
+        Price: parseInt(product.Price),
         Description: product.Description,
         Deleted: false,
       })
@@ -75,8 +75,8 @@ module.exports = {
               Name: product.Name,
               Category: product.Category,
               Subcategory: product.Subcategory,
-              Quantity: product.Quantity,
-              Price: product.Price,
+              Stock: parseInt(product.Stock),
+              Price: parseInt(product.Price),
               Description: product.Description,
             },
           }
@@ -131,7 +131,7 @@ module.exports = {
         .toArray();
       resolve(categories);
     });
-  },      
+  },
 
   deleteCategory: (catId) => {
     return new Promise((resolve, reject) => {
