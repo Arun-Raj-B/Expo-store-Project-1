@@ -199,4 +199,23 @@ module.exports = {
         });
     });
   },
+  getCategoryProducts: (category) => {
+    return new Promise(async (resolve, reject) => {
+      let products = "";
+      if (category == "all") {
+        products = await db
+          .get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .find({ Deleted: false, Stock: { $gte: 1 } })
+          .toArray();
+      } else {
+        products = await db
+          .get()
+          .collection(collection.PRODUCT_COLLECTION)
+          .find({ Category: category, Deleted: false, Stock: { $gte: 1 } })
+          .toArray();
+      }
+      resolve(products);
+    });
+  },
 };

@@ -64,11 +64,11 @@
       </button>
       <ul class="dropdown-menu opacity-75" style="background-color: #dbbf80">
         <li>
-          <a class="dropdown-item" href="#">All products</a>
+          <a class="dropdown-item" href="/category/all">All products</a>
         </li>
         <li>
           <% locals.category.forEach((category)=>{ %>
-            <a class="dropdown-item" href="#"><%=category.category  %> </a>
+            <a class="dropdown-item" href="/category/<%=category.category  %>"><%=category.category  %> </a>
         </li>
             <% }) %>
           <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->

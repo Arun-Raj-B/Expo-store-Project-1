@@ -77,5 +77,6 @@ router.get(
   userController.getViewOrderProducts
 );
 router.post("/cancelOrder", userController.postCancelOrder);
+router.get("/category/:id", userController.getCategoryProducts);
 
 module.exports = router;

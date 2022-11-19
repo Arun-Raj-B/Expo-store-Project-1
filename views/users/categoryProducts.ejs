@@ -1,0 +1,160 @@
+<!-- carousel -->
+<section class="page-fill pt-5" style="background-color: #eaddbf">
+  
+    <div class="pb-3" style="background-color: #ddc898">
+      <!-- Example split danger button -->
+      <div class="btn-group zindex-offcanvas mt-3">
+        <button type="button" class="btn btn-outline-secondary text-dark ms-5">
+          Category
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <span class="visually-hidden">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu opacity-75" style="background-color: #dbbf80">
+          <li>
+            <a class="dropdown-item" href="/category/all">All products</a>
+          </li>
+          <li>
+            <% locals.category.forEach((category)=>{ %>
+              <a class="dropdown-item" href="/category/<%=category.category  %>"><%=category.category  %> </a>
+          </li>
+              <% }) %>
+            <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+          </li>
+        </ul>
+      </div>
+    </div>
+  
+    <!-- products -->
+    <div class="container-fluid mt-5 list-wrapper">
+      <div class="row list-item">
+        <% locals.products.forEach(product=>{%>
+        <div class=" col-md-3 col-sm-6 p-3 d-flex justify-content-center">
+          <div class="card card-work shadow rounded" style="width: 16rem">
+            <div>
+              <a href="/singleProduct/<%= product._id %>">
+                <img
+                  src="/users/productImages/<%= product._id %>.jpg"
+                  class="card-img-top"
+                  alt="image"
+                />
+              </a>
+            </div>
+            <div class="card-body" style="background-color: #ede2c8">
+              <h5 class="card-title"><%= product.Name %></h5>
+              <p class="card-text"><%= product.Price %> ₹</p>
+              <p class="card-text"><%= product.Description %></p>
+              <!-- <a href="#" class="btn text-white" style="background-color: #1c3879"
+                >Add to cart</a
+              > -->
+              <div class="d-flex justify-content-between">
+                <!-- <a href="/addToCart/ product._id" class="btn btn-outline-dark cart" 
+                  ><i class="fa-solid fa-cart-shopping"></i
+                ></a> -->
+                <button class="btn btn-outline-dark"  onclick="addToCart('<%= product._id %>')">
+                  <i class="fa-solid fa-cart-shopping"></i
+                    ></button>
+                <!-- <a href="/addToWishlist/< product._id %>" class="btn btn-outline-dark wishlist">
+                  <i class="fa-solid fa-heart"></i> -->
+                  <button class="btn btn-outline-dark" onclick="addToWishlist('<%= product._id %>')">
+                    <i class="fa-solid fa-heart"></i
+                      ></button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+      <!-- <div id="pagination-container"></div> -->
+    </div>
+  </section>
+  <script text="text/javascript" src="/users/javascript/countIncrement.js"></script>
+  
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/simplePagination.js/1.6/jquery.simplePagination.min.js"></script> -->
+  
+  <!-- <script>
+  
+    const items = $(".list-wrapper .list-item")
+    const numItems = items.length;
+    const perPage =12;
+    items.slice(perPage).hide();
+  
+    $("#pagination-container").pagination({
+      items: numItems,
+      itemsOnPage: perPage,
+      prevText:"<",
+      nextText:">",
+      onPageClick: function(PageNumber){
+        const showFrom = perPage * (PageNumber-1);
+        const showTo = showFrom + perPage;
+        items.hide().slice(showFrom,showTo).show();
+      }
+    })
+  </script> -->
+  
+  <!-- < if (user){ %>
+    <script>
+      $(".wishlist").on("click", function (e) {
+        e.preventDefault();
+        var self = $(this);
+        console.log(self.data("title"));
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Do you want to add this to wishlist!",
+          icon: "question",
+          iconColor: 'red',
+          showCancelButton: true,
+          background: '#e7cf96',
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, add!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Added!",
+              text: `Product is wishlisted`,
+              icon: "success",
+              iconColor:"#097015",
+              background: '#e7cf96',
+            });
+            location.href = self.attr("href");
+          }
+        });
+      });
+    
+      $(".cart").on("click", function (e) {
+        e.preventDefault();
+        var self = $(this);
+        console.log(self.data("title"));
+        Swal.fire({
+          title: "Are you sure?",
+          text: "Do you want to add this to cart!",
+          icon: "question",
+          iconColor: 'red',
+          showCancelButton: true,
+          background: '#e7cf96',
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, add!",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Added!",
+              text: `Product is added to cart`,
+              icon: "success",
+              iconColor:"#097015",
+              background: '#e7cf96',
+            });
+            location.href = self.attr("href");
+          }
+        });
+      });
+    </script>
+    < } %>   -->
+  

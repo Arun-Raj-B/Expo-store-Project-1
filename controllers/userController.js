@@ -391,4 +391,23 @@ module.exports = {
       res.json(response);
     });
   },
+
+  getCategoryProducts: async (req, res) => {
+    const category = await productHelper.getAllCategories();
+    const products = await productHelper.getCategoryProducts(req.params.id);
+    let user = req.session.user;
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+    res.render("users/categoryProducts", {
+      products,
+      user,
+      category,
+      cartCount,
+      wishlistCount,
+    });
+  },
 };
