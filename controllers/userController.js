@@ -318,10 +318,12 @@ module.exports = {
   },
 
   postWishlistToCart: (req, res) => {
+    console.log(req.session.user._id);
     const product = req.body.product;
     const wishlist = req.body.wishlist;
     const user = req.session.user._id;
     userHelper.wishlistToCart(user, product, wishlist).then((response) => {
+      // console.log(response);
       res.json(response);
     });
   },

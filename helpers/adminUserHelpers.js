@@ -53,11 +53,12 @@ module.exports = {
 
   getAllOrders: () => {
     return new Promise(async (resolve, reject) => {
-      const allOrders = await db
+      let allOrders = await db
         .get()
         .collection(collection.ORDER_COLLECTION)
         .find()
         .toArray();
+      allOrders = allOrders.reverse();
       // console.log(allOrders);
       resolve(allOrders);
     });

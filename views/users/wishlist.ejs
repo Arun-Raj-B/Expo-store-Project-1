@@ -72,13 +72,13 @@
         confirmButtonText: "Yes, remove it!",
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire("Deleted!", ` Product has been removed`, "success");
-          const timeOut = setTimeout(reloadPage, 1000);
+          // Swal.fire("Deleted!", ` Product has been removed`, "success");
+          // const timeOut = setTimeout(reloadPage, 1000);
 
-            function reloadPage() {
+          //   function reloadPage() {
               location.href = self.attr("href");
-              clearTimeout(timeOut);
-            }
+            //   clearTimeout(timeOut);
+            // }
           
         }
       });
@@ -134,7 +134,6 @@ Swal.fire({
 
 <script>
   function wishlistToCart(proId,prodName,wishlistId){
-
     $.ajax({
       url:'/wishlistToCart',
       data:{

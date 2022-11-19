@@ -37,7 +37,7 @@
         <tr>
           <th scope="row"><%=No++ %></th>
           <td><%=product.Name %></td>
-          <td><%=product.Price %></td>
+          <td>₹ <%=product.Price %></td>
           <td><%=product.Category %></td>
           <td><%=product.Subcategory %></td>
           <td><%=product.Description %></td>
@@ -85,8 +85,8 @@
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Deleted!", ` Product has been deleted`, "success");
         location.href = self.attr("href");
+        Swal.fire("Deleted!", ` Product has been deleted`, "success");
       }
     });
   });

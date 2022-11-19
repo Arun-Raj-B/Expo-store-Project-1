@@ -16,7 +16,7 @@
               <%=order.deliveryDetails.pincode %>, <%=order.deliveryDetails.mobile
               %>
             </p>
-            <p><b>Total Amount : </b><%=order.totalAmount %> ₹</p>
+            <p><b>Total Amount : </b>₹ <%=order.totalAmount %></p>
             <p><b>Status : </b><%=order.status %></p>
           </div>
         </div>
@@ -37,7 +37,7 @@
               <div class="card-body" style="background-color: #eae7e0">
                 <h5 class="card-title"><%= orderProduct.product.Name %></h5>
                 <p class="card-text">
-                  Price / unit : <%= orderProduct.product.Price %> ₹
+                  Price / unit : ₹ <%= orderProduct.product.Price %>
                 </p>
                 <p class="card-text">Quantity : <%= orderProduct.quantity %></p>
               </div>

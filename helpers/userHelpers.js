@@ -657,7 +657,7 @@ module.exports = {
         .collection(collection.ORDER_COLLECTION)
         .find({ userId: objectId(userId) })
         .toArray();
-      console.log(orders);
+      orders = orders.reverse();
       resolve(orders);
     });
   },
@@ -731,6 +731,4 @@ module.exports = {
         });
     });
   },
-
-  
 };
