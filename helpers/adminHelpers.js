@@ -45,4 +45,29 @@ module.exports = {
       }
     });
   },
+
+  totalRevenue: () => {
+    return new Promise(async (resolve, reject) => {
+      const totalRevenue = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          {
+            $match: { status: { $ne: "Cancelled" } },
+          },
+          {
+            $group: { _id: "", totalAmount: { $sum: "$totalAmount" } },
+          },
+          {
+            $project: {
+              _id: 0,
+              TotalAmount: "$totalAmount",
+            },
+          },
+        ])
+        .toArray();
+      console.log(totalRevenue[0].TotalAmount);
+      resolve(totalRevenue[0].TotalAmount);
+    });
+  },
 };

@@ -6,13 +6,25 @@ const { response } = require("express");
 
 module.exports = {
   getAdminHome: async (req, res) => {
-    let requests = await adminUserHelper.cancelRequests();
+    const requests = await adminUserHelper.cancelRequests();
+    const users = await adminUserHelper.getAllUsers();
+    const orders = await adminUserHelper.getAllOrders();
+    const totalRevenue = await adminHelper.totalRevenue();
+    const totalUsers = users.length;
+    const totalOrders = orders.length;
     const reqNo = requests.length;
-    let adminData = req.session.admin;
+    const adminData = req.session.admin;
     if (!adminData) {
       res.render("admin/adminLogin", { admin: true });
     } else {
-      res.render("admin/adminHome", { admin: true, adminData, reqNo });
+      res.render("admin/adminHome", {
+        admin: true,
+        adminData,
+        reqNo,
+        totalUsers,
+        totalOrders,
+        totalRevenue,
+      });
     }
   },
 
