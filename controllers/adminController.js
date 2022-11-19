@@ -1,4 +1,5 @@
 const productHelper = require("../helpers/productHelpers");
+const userHelper = require("../helpers/userHelpers");
 const adminUserHelper = require("../helpers/adminUserHelpers");
 const adminHelper = require("../helpers/adminHelpers");
 const { response } = require("express");
@@ -371,6 +372,22 @@ module.exports = {
       requests,
       adminData,
       reqNo,
+    });
+  },
+
+  getViewOrderProducts: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
+    const adminData = req.session.admin;
+    let order = await userHelper.getSingleOrder(req.params.id);
+    let products = await userHelper.getOrderProducts(req.params.id);
+    res.render("admin/viewOrderProducts", {
+      admin: true,
+      requests,
+      adminData,
+      reqNo,
+      products,
+      order,
     });
   },
 };

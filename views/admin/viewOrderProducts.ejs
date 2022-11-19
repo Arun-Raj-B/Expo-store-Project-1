@@ -1,0 +1,88 @@
+<!-- carousel -->
+<section class="page-fill pb-2" style="background-color: rgb(219, 219, 219)">
+    <!-- products -->
+    <div class="container-fluid" style="padding-top: 2%">
+      <div class="container card">
+        <div class="row pt-2 d-flex">
+          <div class="col"><h4>OrderId : <%=order._id %></div>
+          <div class="pb-2"></div>
+          <hr />
+        </div>
+        <div class="row">
+          <div class="col">
+            <p><b>Date : </b><%=order.date %></p>
+            <p>
+              <b>Address : </b><%=order.deliveryDetails.address%>,
+              <%=order.deliveryDetails.pincode %>, <%=order.deliveryDetails.mobile
+              %>
+            </p>
+            <p><b>Total Amount : </b><%=order.totalAmount %> ₹</p>
+            <p><b>Status : </b><%=order.status %></p>
+          </div>
+        </div>
+        <div class="row d-flex">
+          <% locals.products.forEach(orderProduct=>{%>
+          <div class="col-md-3 col-sm-6 p-3 d-flex justify-content-center">
+            <div class="card shadow rounded" style="width: 16rem">
+              <div>
+                <a href="/singleProduct/<%= orderProduct.product._id %>">
+                  <img
+                    width="10"
+                    src="/users/productImages/<%= orderProduct.product._id %>.jpg"
+                    class="card-img-top"
+                    alt="image"
+                  />
+                </a>
+              </div>
+              <div class="card-body" style="background-color: #eae7e0">
+                <h5 class="card-title"><%= orderProduct.product.Name %></h5>
+                <p class="card-text">
+                  Price / unit : <%= orderProduct.product.Price %> ₹
+                </p>
+                <p class="card-text">Quantity : <%= orderProduct.quantity %></p>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script
+    text="text/javascript"
+    src="/users/javascript/countIncrement.js"
+  ></script>
+  
+  <script>
+    function cancelOrder(orderId){
+      console.log(orderId)
+      Swal.fire({
+    title: 'Are you sure?',
+    text: `Do you want to cancel the order with OrderId : ${orderId}`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes!'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url:'/cancelOrder',
+        data:{
+          orderId:orderId,
+        },
+        method:"post",
+        success:(response)=>{
+          document.getElementById("cancel").innerHTML = "Cancel requested";
+          Swal.fire(
+        'Request send!',
+        'Wait for confirmation',
+        'success'
+      )
+        }
+      })
+    }
+  })
+    }
+  </script>
+  

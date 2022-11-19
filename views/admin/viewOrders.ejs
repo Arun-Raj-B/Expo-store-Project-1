@@ -1,5 +1,5 @@
 <section class="page-fill">
-  <div style="padding-top: 5%">
+  <div style="padding-top: 2%; padding-bottom: 2%">
     <!-- padding-bottom: 5%; -->
     <div class="container shadow-lg rounded pb-2 pt-2">
       <div class="row d-flex pb-2">
@@ -9,7 +9,7 @@
       </div>
       <table
         class="table table-fluid table-hover table-bordered mt-5 pt-2"
-        id="myTable"
+        id="pdfTable"
       >
         <!-- style="text-align: center" -->
         <thead>
@@ -19,6 +19,7 @@
             <th scope="col" style="text-align: center">Address</th>
             <th scope="col" style="text-align: center">Total Amount</th>
             <th scope="col" style="text-align: center">Payment</th>
+            <th scope="col" style="text-align: center">View</th>
             <th scope="col" style="text-align: center">Status</th>
             <!-- <th scope="col" style="text-align: center">View</th> -->
           </tr>
@@ -37,6 +38,13 @@
             </td>
             <td><%=order.totalAmount %> ₹</td>
             <td><%=order.paymentMethod %></td>
+            <td>
+              <a
+                href="/admin/viewOrderProducts/<%=order._id%>"
+                class="btn btn-outline-dark removeProduct"
+                ><i class="fa-solid fa-eye"></i
+              ></a>
+            </td>
             <!-- <td><=order.status %><i class="fa-solid fa-check ps-1"></i></td> -->
             <!-- Example single danger button -->
             <td>
@@ -92,6 +100,7 @@
                 </ul>
               </div>
             </td>
+
             <!-- <td><=order.status %><i class="fa-solid fa-spinner ps-1"></i></td> -->
             <!-- <td>
                 <a

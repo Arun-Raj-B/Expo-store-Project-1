@@ -50,5 +50,10 @@ router.get(
 router.get("/orders", verifyLogin, adminController.getAllOrders);
 router.post("/setStatus", adminController.postSetStatus);
 router.get("/requests", verifyLogin, adminController.getCancelRequests);
+router.get(
+  "/viewOrderProducts/:id",
+  verifyLogin,
+  adminController.getViewOrderProducts
+);
 
 module.exports = router;

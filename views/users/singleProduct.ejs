@@ -1,51 +1,56 @@
 <section class="pt-5" style="background-color: #eaddbf">
   <div class="container">
     <!-- class = "column" -->
-    <div class="row">
+    <div class="row main-container">
       <div class="col-md-2 col-sm-12 p-5">
         <div class="column">
-          <div class="row d-md-flex flex-md-column flex-sm-row">
+          <div class="row d-md-flex flex-md-column flex-sm-row slides">
             <div class="col pb-2">
               <% const id1 = prod._id %> <% const id2 = prod._id+"a" %> <% const
               id3 = prod._id+"b" %> <% const id4 = prod._id+"c" %>
               <img
                 src="/users/productImages/<%= id1%>.jpg"
-                class="img-thumbnail p-0"
+                class="img-thumbnail p-0 image"
                 alt="..."
+                style="cursor: pointer"
               />
             </div>
             <div class="col pb-2">
               <img
                 src="/users/productImages/<%= id2%>.jpg"
-                class="img-thumbnail p-0"
+                class="img-thumbnail p-0 image"
                 alt="..."
+                style="cursor: pointer"
               />
             </div>
             <div class="col pb-2">
               <img
                 src="/users/productImages/<%= id3%>.jpg"
-                class="img-thumbnail p-0"
+                class="img-thumbnail p-0 image"
                 alt="..."
+                style="cursor: pointer"
               />
             </div>
             <div class="col">
               <img
                 src="/users/productImages/<%= id4%>.jpg"
-                class="img-thumbnail p-0"
+                class="img-thumbnail p-0 image"
                 alt="..."
+                style="cursor: pointer"
               />
             </div>
           </div>
         </div>
       </div>
       <div
-        class="col-md-4 col-sm-12 d-flex align-items-center"
+        class="col-md-4 col-sm-12 d-flex align-items-center big-image"
         id="img-container-main"
       >
         <img
           src="/users/productImages/<%= prod._id%>.jpg"
           class="rounded"
           alt="Image not working"
+          style="cursor: pointer"
         />
       </div>
       <div class="col-md-6 col-sm-12 p-5">
@@ -87,17 +92,24 @@
       </div>
     </div>
   </div>
-
-  <script>
-    var options = {
-      width: 430,
-      height: 540,
-      zoomWidth: 500,
-      offset: { vertical: 10, horizontal: 50 },
-    };
-    new ImageZoom(document.getElementById("img-container-main"), options);
-  </script>
 </section>
+<script>
+  var options = {
+    width: 430,
+    height: 540,
+    zoomWidth: 500,
+    offset: { vertical: 10, horizontal: 50 },
+  };
+  new ImageZoom(document.getElementById("img-container-main"), options);
+</script>
+<script>
+  $(document).ready(function () {
+    $(".main-container .slides .image").click(function () {
+      var $smallImages = $(this).attr("src");
+      $(".main-container .big-image > img").attr("src", $smallImages);
+    });
+  });
+</script>
 
 <script
   text="text/javascript"

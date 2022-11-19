@@ -1,9 +1,9 @@
 <!-- carousel -->
-<section class="page-fill pb-2" style="background-color: #eaddbf">
+<section class="page-fill pb-2" style="background-color: rgb(229, 229, 229);">
     <!-- products -->
     <div class="container-fluid pt-2">
       <% requests.forEach(request=>{ %>
-        <div class="container card mb-2" style="background-color: #efe9dc">
+        <div class="container card mb-2" >
             <div class="row pt-2 d-flex">
               <div class="col"><h4><span id="<%=request._id %>">OrderId : <%=request._id %></span></div>
               <div class="col text-end">
@@ -24,6 +24,13 @@
                 </p>
                 <p><b>Total Amount : </b><%=request.totalAmount %> ₹</p>
                 <p><b>Status : </b><%=request.status %></p>
+              </div>
+              <div class="col text-end">
+                <a
+                href="/admin/viewOrderProducts/<%=request._id%>"
+                class="btn btn-outline-dark removeProduct"
+                ><i class="fa-solid fa-eye"></i
+              ></a>
               </div>
             </div>
           </div> 
