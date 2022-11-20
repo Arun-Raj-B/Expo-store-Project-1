@@ -8,7 +8,7 @@
               <div class="col"><h4><span id="<%=request._id %>">OrderId : <%=request._id %></span></div>
               <div class="col text-end">
                 <div>
-                    <button class="btn btn-outline-danger" id="cancel" onclick="changeStatus('Cancelled','<%=request._id %>')">Cancel Order</button>
+                    <button class="btn btn-outline-danger" id="cancel" onclick="changeStatus('Cancelled','<%=request._id %>','<%=request.deliveryDetails.mobile%>')">Cancel Order</button>
                 </div>
               </div>
               <div class="pb-2"></div>
@@ -39,7 +39,7 @@
   </section>
   
   <script>
-    function changeStatus(status, orderId) {
+    function changeStatus(status, orderId,mobile) {
       console.log(status, orderId);
   
       Swal.fire({
@@ -57,6 +57,7 @@
             data: {
               status: status,
               orderId: orderId,
+              mobile:mobile
             },
             method: "post",
             success: (response) => {

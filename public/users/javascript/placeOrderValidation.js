@@ -71,14 +71,30 @@ $("#checkout-form").validate({
               let count = $("#cart-count").html();
               count = 0;
               $("#cart-count").html(count);
-              Swal.fire({
-                position: "top-end",
+              var toastMixin = Swal.mixin({
+                toast: true,
                 icon: "success",
-                title: "Order has been placed",
-                text: "You can see the orders in orders page",
+                title: "General Title",
+                animation: false,
+                position: "top-right",
                 showConfirmButton: false,
                 timer: 1500,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
               });
+              toastMixin.fire({
+                animation: true,
+                title: "Order has been placed ",
+              });
+              const timeOut = setTimeout(reloadPage, 1600);
+
+              function reloadPage() {
+                window.location.href = window.location.origin + "/orders";
+                clearTimeout(timeOut);
+              }
             }
           },
         });

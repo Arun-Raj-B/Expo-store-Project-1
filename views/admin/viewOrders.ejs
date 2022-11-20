@@ -65,7 +65,7 @@
                   <li>
                     <button
                       class="dropdown-item"
-                      onclick="changeStatus('Processing','<%=order._id%>')"
+                      onclick="changeStatus('Processing','<%=order._id%>','<%=order.deliveryDetails.mobile %>')"
                     >
                       Processing
                     </button>
@@ -73,7 +73,7 @@
                   <li>
                     <button
                       class="dropdown-item"
-                      onclick="changeStatus('Shipped','<%=order._id%>')"
+                      onclick="changeStatus('Shipped','<%=order._id%>','<%=order.deliveryDetails.mobile %>')"
                     >
                       Shipped
                     </button>
@@ -82,7 +82,7 @@
                   <li>
                     <button
                       class="dropdown-item"
-                      onclick="changeStatus('Delivered','<%=order._id%>')"
+                      onclick="changeStatus('Delivered','<%=order._id%>','<%=order.deliveryDetails.mobile %>')"
                     >
                       Delivered
                     </button>
@@ -91,7 +91,7 @@
                   <li>
                     <button
                       class="dropdown-item"
-                      onclick="changeStatus('Cancelled','<%=order._id%>')"
+                      onclick="changeStatus('Cancelled','<%=order._id%>','<%=order.deliveryDetails.mobile %>')"
                     >
                       Cancel
                     </button>
@@ -119,8 +119,8 @@
 </section>
 
 <script>
-  function changeStatus(status, orderId) {
-    console.log(status, orderId);
+  function changeStatus(status, orderId, mobile) {
+    console.log(status, orderId, mobile);
 
     Swal.fire({
       title: `Change status to ${status} ?`,
@@ -136,6 +136,7 @@
           data: {
             status: status,
             orderId: orderId,
+            mobile: mobile,
           },
           method: "post",
           success: (response) => {

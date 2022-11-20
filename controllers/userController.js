@@ -1,6 +1,7 @@
 const productHelper = require("../helpers/productHelpers");
 const userHelper = require("../helpers/userHelpers");
 const otpHelper = require("../helpers/otpHelper");
+const orderHelper = require("../helpers/orderHelper");
 const { resolveInclude } = require("ejs");
 const { urlencoded } = require("express");
 
@@ -351,6 +352,8 @@ module.exports = {
     let products = await userHelper.getCartProductList(req.body.userId);
     let totalAmount = await userHelper.getTotalAmount(req.body.userId);
     userHelper.placeOrder(req.body, products, totalAmount).then((response) => {
+      const message = `Thanks for purchasing from EXPOstore. Your order has been placed successfully`;
+      orderHelper.sendMessage(req.body.mobile, message);
       res.json({ status: true });
     });
   },
@@ -390,6 +393,8 @@ module.exports = {
     const orderId = req.body.orderId;
     userHelper.cancelOrder(orderId).then((response) => {
       console.log(response);
+      const message = `Your cancel request for the order ID : ${orderId} is being processed.`;
+      orderHelper.sendMessage(req.body.mobile, message);
       res.json(response);
     });
   },

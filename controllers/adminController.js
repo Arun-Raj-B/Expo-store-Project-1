@@ -1,5 +1,6 @@
 const productHelper = require("../helpers/productHelpers");
 const userHelper = require("../helpers/userHelpers");
+const orderHelper = require("../helpers/orderHelper");
 const adminUserHelper = require("../helpers/adminUserHelpers");
 const adminHelper = require("../helpers/adminHelpers");
 const { response } = require("express");
@@ -370,6 +371,8 @@ module.exports = {
     const orderId = req.body.orderId;
     console.log(status, orderId);
     adminUserHelper.setStatus(status, orderId).then((response) => {
+      const message = `EXPOstore : Your order:${orderId} is ${status}`;
+      orderHelper.sendMessage(req.body.mobile, message);
       // console.log(response);
       res.json(response);
     });

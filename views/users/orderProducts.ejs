@@ -11,7 +11,7 @@
               <% if (order.status == "Cancel requested"||order.status == "Cancelled") {%>
                 <button class="btn btn-outline-danger"><%=order.status  %> </button>
                 <% } else {%> 
-              <button class="btn btn-outline-danger" id="cancel" onclick="cancelOrder('<%=order._id %>')">Cancel Order</button>
+              <button class="btn btn-outline-danger" id="cancel" onclick="cancelOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Cancel Order</button>
               <% } %> 
               <% } %>
           </div>
@@ -65,7 +65,7 @@
 ></script>
 
 <script>
-  function cancelOrder(orderId){
+  function cancelOrder(orderId,mobile){
     console.log(orderId)
     Swal.fire({
   title: 'Are you sure?',
@@ -81,6 +81,7 @@
       url:'/cancelOrder',
       data:{
         orderId:orderId,
+        mobile:mobile
       },
       method:"post",
       success:(response)=>{
