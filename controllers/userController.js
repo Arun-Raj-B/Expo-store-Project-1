@@ -333,6 +333,7 @@ module.exports = {
     let user = req.session.user;
     let cartCount = 0;
     let wishlistCount = 0;
+    console.log(user);
     if (user) {
       cartCount = await userHelper.getCartCount(req.session.user._id);
       wishlistCount = await userHelper.getWishlistCount(req.session.user._id);

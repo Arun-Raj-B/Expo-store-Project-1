@@ -1,8 +1,8 @@
 <!-- carousel -->
-<section class="page-fill pb-2" style="background-color: #eaddbf">
+<section class="page-fill pb-2" style="background-color: #ece6d9">
   <!-- products -->
   <div class="container-fluid" style="padding-top: 5%">
-    <div class="container card" style="background-color: #efe9dc">
+    <div class="container card" style="background-color: #eae2d1">
       <div class="row pt-2 d-flex">
         <div class="col"><h4>OrderId : <%=order._id %></div>
         <div class="col text-end">
@@ -34,7 +34,7 @@
       <div class="row d-flex">
         <% locals.products.forEach(orderProduct=>{%>
         <div class="col-md-3 col-sm-6 p-3 d-flex justify-content-center">
-          <div class="card shadow rounded" style="width: 16rem">
+          <div class="card card-work shadow rounded" style="width: 16rem">
             <div>
               <a href="/singleProduct/<%= orderProduct.product._id %>">
                 <img
