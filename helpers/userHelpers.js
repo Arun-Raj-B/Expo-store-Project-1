@@ -29,6 +29,7 @@ module.exports = {
             role: "user",
             access: true,
             isVerified: false,
+            addresses: [],
           })
           .then((data) => {
             console.log(data);
@@ -728,6 +729,32 @@ module.exports = {
         .then((response) => {
           console.log(response);
           resolve({ request: true });
+        });
+    });
+  },
+
+  saveAddress: (address) => {
+    return new Promise((resolve, reject) => {
+      console.log("This is the user address");
+      const useraddress = {
+        house: address.house,
+        street: address.street,
+        district: address.district,
+        state: address.state,
+        pincode: address.pincode,
+        mobile: address.mobile,
+      };
+      console.log(useraddress);
+
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          { _id: objectId(address.userId) },
+          { $push: { addresses: useraddress } }
+        )
+        .then((response) => {
+          console.log("Address saved successfully");
+          resolve({ saved: true });
         });
     });
   },

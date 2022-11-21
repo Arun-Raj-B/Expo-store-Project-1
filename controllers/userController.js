@@ -417,4 +417,10 @@ module.exports = {
       wishlistCount,
     });
   },
+
+  postSaveAddress: (req, res) => {
+    userHelper.saveAddress(req.body).then((response) => {
+      res.json(response);
+    });
+  },
 };

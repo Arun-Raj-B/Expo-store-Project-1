@@ -40,6 +40,7 @@
               <select
                 class="form-select mb-2 me-1"
                 name="district"
+                id="district"
                 aria-label="Default select example"
                 style="background-color: #eeeeee"
               >
@@ -71,6 +72,7 @@
             <input
               type="text"
               name="userId"
+              id="userId"
               class=""
               value="<%=user._id  %>"
               hidden
@@ -93,6 +95,14 @@
               style="background-color: #eeeeee"
               required
             />
+            <div class="text-end mb-2">
+              <a
+                class="btn btn-outline-success text-end"
+                onclick="saveAddress()"
+              >
+                Save address
+              </a>
+            </div>
           </div>
         </div>
         <div
@@ -155,3 +165,50 @@
 
 <!-- witten in placeOrderValidation.js -->
 <!-- all handling done inside placeOrderValidation.js -->
+
+<script>
+  function saveAddress() {
+    const house = document.getElementById("house").value;
+    const street = document.getElementById("street").value;
+    const district = document.getElementById("district").value;
+    const state = document.getElementById("state").value;
+    const pincode = document.getElementById("pincode").value;
+    const mobile = document.getElementById("mobile").value;
+    const userId = document.getElementById("userId").value;
+    console.log(house, street, district, state, pincode, mobile, userId);
+    $.ajax({
+      url: "/saveAddress",
+      data: {
+        house: house,
+        street: street,
+        district: district,
+        state: state,
+        pincode: pincode,
+        mobile: mobile,
+        userId: userId,
+      },
+      method: "post",
+      success: (response) => {
+        console.log(response);
+        var toastMixin = Swal.mixin({
+          toast: true,
+          icon: "success",
+          title: "General Title",
+          animation: false,
+          position: "top-right",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        toastMixin.fire({
+          animation: true,
+          title: "Address saved",
+        });
+      },
+    });
+  }
+</script>
