@@ -67,24 +67,10 @@ $("#checkout-form").validate({
           method: "post",
           data: $(form).serialize(),
           success: (response) => {
-            if (response.status) {
+            if (response.codSuccess) {
               let count = $("#cart-count").html();
               count = 0;
               $("#cart-count").html(count);
-              var toastMixin = Swal.mixin({
-                toast: true,
-                icon: "success",
-                title: "General Title",
-                animation: false,
-                position: "top-right",
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
               toastMixin.fire({
                 animation: true,
                 title: "Order has been placed ",
@@ -95,10 +81,107 @@ $("#checkout-form").validate({
                 window.location.href = window.location.origin + "/orders";
                 clearTimeout(timeOut);
               }
+            } else {
+              razorpayPayment(response);
             }
           },
         });
       }
     });
+  },
+});
+
+function razorpayPayment(order) {
+  var options = {
+    key: "rzp_test_xcBZfvinv5ykWl", // Enter the Key ID generated from the Dashboard
+    amount: order.amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    currency: "INR",
+    name: "EXPOstore",
+    description: "Test Transaction",
+    image: "../images/logos/Razorpay.jpg",
+    order_id: order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    handler: function (response) {
+      // alert(response.razorpay_payment_id);
+      // alert(response.razorpay_order_id);
+      // alert(response.razorpay_signature);
+
+      verifyPayment(response, order);
+    },
+    prefill: {
+      name: "Gaurav Kumar",
+      email: "gaurav.kumar@example.com",
+      contact: "9999999999",
+    },
+    notes: {
+      address: "Razorpay Corporate Office",
+    },
+    theme: {
+      color: "#ece6d9",
+    },
+  };
+  var rzp1 = new Razorpay(options);
+  rzp1.open();
+}
+
+function verifyPayment(payment, order) {
+  $.ajax({
+    url: "/verifyPayment",
+    data: {
+      payment,
+      order,
+    },
+    method: "post",
+    success: (response) => {
+      if (response.status) {
+        let count = $("#cart-count").html();
+        count = 0;
+        $("#cart-count").html(count);
+        var toastMixin = Swal.mixin({
+          toast: true,
+          icon: "success",
+          title: "General Title",
+          animation: false,
+          position: "top-right",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        toastMixin.fire({
+          animation: true,
+          title: "Order has been placed ",
+        });
+        const timeOut = setTimeout(reloadPage, 1600);
+
+        function reloadPage() {
+          window.location.href = window.location.origin + "/orders";
+          clearTimeout(timeOut);
+        }
+      } else {
+        toastMixin.fire({
+          title: "Some error happened",
+          icon: "error",
+        });
+      }
+    },
+  });
+}
+
+//success / failed toast message
+var toastMixin = Swal.mixin({
+  toast: true,
+  icon: "success",
+  title: "General Title",
+  animation: false,
+  position: "top-right",
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener("mouseenter", Swal.stopTimer);
+    toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });

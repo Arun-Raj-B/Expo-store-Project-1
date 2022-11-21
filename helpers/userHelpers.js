@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { response } = require("express");
 const { ObjectId } = require("mongodb");
 const Razorpay = require("razorpay");
+const { resolve } = require("path");
 var objectId = require("mongodb").ObjectId;
 var instance = new Razorpay({
   key_id: process.env.keyId,
@@ -769,15 +770,36 @@ module.exports = {
       var options = {
         amount: totalAmount, // amount in the smallest currency unit
         currency: "INR",
-        receipt: orderId,
+        receipt: "" + orderId,
       };
       instance.orders.create(options, function (err, order) {
         if (err) {
           connsole.log(err);
         } else {
           console.log(order);
+          resolve(order);
         }
       });
+    });
+  },
+
+  verifyPayment: (details) => {
+    return new Promise((resolve, reject) => {
+      const crypto = require("crypto");
+      let hmac = crypto.createHmac("sha256", process.env.keySecret);
+      hmac.update(
+        details["payment[razorpay_order_id]"] +
+          "|" +
+          details["payment[razorpay_payment_id]"]
+      );
+      hmac = hmac.digest("hex");
+      if (hmac == details["payment[razorpay_signature]"]) {
+        console.log("Resolved here");
+        resolve();
+      } else {
+        console.log("Rejected here");
+        reject();
+      }
     });
   },
 };

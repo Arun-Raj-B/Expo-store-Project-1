@@ -98,6 +98,9 @@ module.exports = {
           }
           console.log(response);
           resolve({ statusUpdated: true });
+        })
+        .catch((err) => {
+          reject(err);
         });
     });
   },

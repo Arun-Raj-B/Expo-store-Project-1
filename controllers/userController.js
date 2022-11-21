@@ -4,6 +4,8 @@ const otpHelper = require("../helpers/otpHelper");
 const orderHelper = require("../helpers/orderHelper");
 const { resolveInclude } = require("ejs");
 const { urlencoded } = require("express");
+const userHelpers = require("../helpers/userHelpers");
+const adminUserHelpers = require("../helpers/adminUserHelpers");
 
 module.exports = {
   getHome: async (req, res) => {
@@ -357,11 +359,11 @@ module.exports = {
       if (req.body.paymentMethod == "COD") {
         const message = `Thanks for purchasing from EXPOstore. Your order has been placed successfully`;
         orderHelper.sendMessage(req.body.mobile, message);
-        res.json({ status: true });
+        res.json({ codSuccess: true });
       } else {
-        userHelper
-          .generateRazorpay(orderId, totalAmount)
-          .then((response) => {});
+        userHelper.generateRazorpay(orderId, totalAmount).then((response) => {
+          res.json(response);
+        });
       }
     });
   },
@@ -430,5 +432,29 @@ module.exports = {
     userHelper.saveAddress(req.body).then((response) => {
       res.json(response);
     });
+  },
+
+  postverifyPayment: (req, res) => {
+    console.log(req.body);
+    userHelper
+      .verifyPayment(req.body)
+      .then(() => {
+        adminUserHelpers
+          .setStatus("Placed", req.body["order[receipt]"])
+          .then(() => {
+            console.log("Payment Success");
+            res.json({ status: true });
+          })
+          .catch((err) => {
+            console.log(err);
+            console.log(err);
+            console.log(err);
+            console.log(err);
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({ status: false, errMsg: "" });
+      });
   },
 };

@@ -79,5 +79,6 @@ router.get(
 router.post("/cancelOrder", userController.postCancelOrder);
 router.get("/category/:id", userController.getCategoryProducts);
 router.post("/saveAddress", userController.postSaveAddress);
+router.post("/verifyPayment", userController.postverifyPayment);
 
 module.exports = router;
