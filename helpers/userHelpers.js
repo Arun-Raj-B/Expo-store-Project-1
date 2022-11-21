@@ -3,7 +3,12 @@ const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
 const { response } = require("express");
 const { ObjectId } = require("mongodb");
+const Razorpay = require("razorpay");
 var objectId = require("mongodb").ObjectId;
+var instance = new Razorpay({
+  key_id: process.env.keyId,
+  key_secret: process.env.keySecret,
+});
 module.exports = {
   doSignup: (userData) => {
     return new Promise(async (resolve, reject) => {
@@ -635,7 +640,7 @@ module.exports = {
           db.get()
             .collection(collection.CART_COLLECTION)
             .deleteOne({ user: objectId(order.userId) });
-          resolve();
+          resolve(response.insertedId);
         });
     });
   },
@@ -756,6 +761,23 @@ module.exports = {
           console.log("Address saved successfully");
           resolve({ saved: true });
         });
+    });
+  },
+
+  generateRazorpay: (orderId, totalAmount) => {
+    return new Promise((resolve, reject) => {
+      var options = {
+        amount: totalAmount, // amount in the smallest currency unit
+        currency: "INR",
+        receipt: orderId,
+      };
+      instance.orders.create(options, function (err, order) {
+        if (err) {
+          connsole.log(err);
+        } else {
+          console.log(order);
+        }
+      });
     });
   },
 };

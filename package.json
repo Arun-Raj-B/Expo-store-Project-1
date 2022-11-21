@@ -28,7 +28,8 @@
     "fast-two-sms": "^3.0.0",
     "mongodb": "^4.9.1",
     "morgan": "^1.10.0",
-    "nocache": "^3.0.4"
+    "nocache": "^3.0.4",
+    "razorpay": "^2.8.3"
   },
   "devDependencies": {
     "dotenv": "^16.0.3",

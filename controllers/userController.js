@@ -352,10 +352,17 @@ module.exports = {
     console.log(req.body);
     let products = await userHelper.getCartProductList(req.body.userId);
     let totalAmount = await userHelper.getTotalAmount(req.body.userId);
-    userHelper.placeOrder(req.body, products, totalAmount).then((response) => {
-      const message = `Thanks for purchasing from EXPOstore. Your order has been placed successfully`;
-      orderHelper.sendMessage(req.body.mobile, message);
-      res.json({ status: true });
+    console.log(typeof totalAmount);
+    userHelper.placeOrder(req.body, products, totalAmount).then((orderId) => {
+      if (req.body.paymentMethod == "COD") {
+        const message = `Thanks for purchasing from EXPOstore. Your order has been placed successfully`;
+        orderHelper.sendMessage(req.body.mobile, message);
+        res.json({ status: true });
+      } else {
+        userHelper
+          .generateRazorpay(orderId, totalAmount)
+          .then((response) => {});
+      }
     });
   },
 
