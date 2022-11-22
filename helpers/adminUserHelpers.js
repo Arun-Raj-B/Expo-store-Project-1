@@ -2,7 +2,12 @@ const db = require("../config/connection");
 const collection = require("../config/collections");
 const userHelpers = require("./userHelpers");
 const { response } = require("express");
+const Razorpay = require("razorpay");
 var objectId = require("mongodb").ObjectId;
+var instance = new Razorpay({
+  key_id: process.env.keyId,
+  key_secret: process.env.keySecret,
+});
 module.exports = {
   getAllUsers: () => {
     return new Promise((resolve, reject) => {
@@ -66,6 +71,7 @@ module.exports = {
 
   setStatus: (status, orderId) => {
     return new Promise((resolve, reject) => {
+      let refundResponse;
       db.get()
         .collection(collection.ORDER_COLLECTION)
         .updateOne(
@@ -78,6 +84,33 @@ module.exports = {
         )
         .then(async (response) => {
           if (status == "Cancelled") {
+            const order = await db
+              .get()
+              .collection(collection.ORDER_COLLECTION)
+              .findOne({ _id: objectId(orderId) });
+
+            console.log("This is the order ");
+            console.log(order);
+            if (order.paymentMethod == "ONLINE") {
+              console.log("trying to refund");
+              // refund
+              instance.payments
+                .refund(order.paymentId, {
+                  amount: order.totalAmount,
+                  speed: "optimum",
+                  receipt: "123456",
+                })
+                .then((response) => {
+                  console.log(response);
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+            }
+
+            // if (refundResponse) {
+            // }
+
             const products = await userHelpers.getOrderProducts(orderId);
             let i = 0;
             for (i = 0; i < products.length; i++) {

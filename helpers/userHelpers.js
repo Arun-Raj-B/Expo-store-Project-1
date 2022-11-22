@@ -2,7 +2,7 @@ const db = require("../config/connection");
 const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
 const { response } = require("express");
-const { ObjectId } = require("mongodb");
+const { ObjectId, Timestamp } = require("mongodb");
 const Razorpay = require("razorpay");
 const { resolve } = require("path");
 var objectId = require("mongodb").ObjectId;
@@ -608,6 +608,8 @@ module.exports = {
         totalAmount: total,
         status: status,
         date: new Date().toLocaleDateString(),
+        month: new Date().getMonth(),
+        paymentId: "",
       };
       const orderedProducts = products.length;
 
@@ -615,21 +617,26 @@ module.exports = {
       // console.log(products[0].item);
       // console.log(products[0].item);
 
-      let i = 0;
-      for (i = 0; i < orderedProducts; i++) {
-        db.get()
-          .collection(collection.PRODUCT_COLLECTION)
-          .updateOne(
-            {
-              _id: objectId(products[i].item),
-            },
-            {
-              $inc: { Stock: -products[i].quantity },
-            }
-          )
-          .then((response) => {
-            console.log(`Stock reduced for ${i} items`);
-          });
+      if (order.paymentMethod == "COD") {
+        let i = 0;
+        for (i = 0; i < orderedProducts; i++) {
+          db.get()
+            .collection(collection.PRODUCT_COLLECTION)
+            .updateOne(
+              {
+                _id: objectId(products[i].item),
+              },
+              {
+                $inc: {
+                  Stock: -products[i].quantity,
+                  sales: products[i].quantity,
+                },
+              }
+            )
+            .then((response) => {
+              console.log(`Stock reduced for ${i} items`);
+            });
+        }
       }
 
       // console.log(orderObj);
@@ -768,7 +775,7 @@ module.exports = {
   generateRazorpay: (orderId, totalAmount) => {
     return new Promise((resolve, reject) => {
       var options = {
-        amount: totalAmount, // amount in the smallest currency unit
+        amount: totalAmount * 100, // amount in the smallest currency unit
         currency: "INR",
         receipt: "" + orderId,
       };
@@ -784,7 +791,7 @@ module.exports = {
   },
 
   verifyPayment: (details) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const crypto = require("crypto");
       let hmac = crypto.createHmac("sha256", process.env.keySecret);
       hmac.update(
@@ -794,12 +801,64 @@ module.exports = {
       );
       hmac = hmac.digest("hex");
       if (hmac == details["payment[razorpay_signature]"]) {
+        let order = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .findOne({ _id: objectId(details["order[receipt]"]) });
+
+        let orderedProducts = order.products.length;
+
+        let i = 0;
+        for (i = 0; i < orderedProducts; i++) {
+          db.get()
+            .collection(collection.PRODUCT_COLLECTION)
+            .updateOne(
+              {
+                _id: objectId(order.products[i].item),
+              },
+              {
+                $inc: {
+                  Stock: -order.products[i].quantity,
+                  sales: order.products[i].quantity,
+                },
+              }
+            )
+            .then((response) => {
+              console.log(`Stock reduced for ${i} items`);
+            });
+        }
+
+        console.log("This is the order thats set for the payment");
+
         console.log("Resolved here");
         resolve();
       } else {
         console.log("Rejected here");
         reject();
       }
+    });
+  },
+
+  setPaymentId: (paymentId, orderId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .updateOne(
+          { _id: objectId(orderId) },
+          {
+            $set: {
+              paymentId: paymentId,
+            },
+          }
+        )
+        .then(() => {
+          console.log("Payment Id added to database");
+          resolve();
+        })
+        .catch(() => {
+          console.log("Payment Id not added to database");
+          reject();
+        });
     });
   },
 };

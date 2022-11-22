@@ -14,6 +14,7 @@ module.exports = {
         Price: parseInt(product.Price),
         Description: product.Description,
         Deleted: false,
+        sales: 0,
       })
       .then((data) => {
         callback(data.insertedId);

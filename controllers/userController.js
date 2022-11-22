@@ -436,6 +436,17 @@ module.exports = {
 
   postverifyPayment: (req, res) => {
     console.log(req.body);
+
+    const paymentId = req.body["payment[razorpay_payment_id]"];
+    const orderId = req.body["order[receipt]"];
+    userHelper
+      .setPaymentId(paymentId, orderId)
+      .then(() => {
+        console.log("To verify payment");
+      })
+      .catch(() => {
+        console.log("some error happened");
+      });
     userHelper
       .verifyPayment(req.body)
       .then(() => {
@@ -454,7 +465,7 @@ module.exports = {
       })
       .catch((err) => {
         console.log(err);
-        res.json({ status: false, errMsg: "" });
+        res.json({ status: false, errMsg: "Some error happened" });
       });
   },
 };

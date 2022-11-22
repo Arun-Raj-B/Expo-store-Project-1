@@ -94,7 +94,7 @@ $("#checkout-form").validate({
 function razorpayPayment(order) {
   var options = {
     key: "rzp_test_xcBZfvinv5ykWl", // Enter the Key ID generated from the Dashboard
-    amount: order.amount * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    amount: order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     currency: "INR",
     name: "EXPOstore",
     description: "Test Transaction",
@@ -162,7 +162,7 @@ function verifyPayment(payment, order) {
         }
       } else {
         toastMixin.fire({
-          title: "Some error happened",
+          title: response.errMsg,
           icon: "error",
         });
       }
