@@ -107,9 +107,17 @@ module.exports = {
                   console.log(err);
                 });
             }
-
-            // if (refundResponse) {
-            // }
+            status = "Refund complete";
+            db.get()
+              .collection(collection.ORDER_COLLECTION)
+              .updateOne(
+                { _id: objectId(orderId) },
+                {
+                  $set: {
+                    status: status,
+                  },
+                }
+              );
 
             const products = await userHelpers.getOrderProducts(orderId);
             let i = 0;
