@@ -29,6 +29,7 @@
     "mongodb": "^4.9.1",
     "morgan": "^1.10.0",
     "nocache": "^3.0.4",
+    "node-fetch": "^2.6.7",
     "razorpay": "^2.8.3"
   },
   "devDependencies": {

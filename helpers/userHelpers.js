@@ -587,7 +587,7 @@ module.exports = {
         console.log(total[0].total);
         resolve(total[0].total);
       } catch (err) {
-        resolve(0);
+        resolve(0); 
       }
     });
   },

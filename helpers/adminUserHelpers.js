@@ -91,19 +91,24 @@ module.exports = {
 
             console.log("This is the order ");
             console.log(order);
-            if (order.paymentMethod == "ONLINE") {
+            if (order.paymentMethod == "RAZORPAY") {
               console.log("trying to refund");
+
+              console.log(order.paymentId);
+              console.log(order.totalAmount);
               // refund
               instance.payments
                 .refund(order.paymentId, {
                   amount: order.totalAmount,
-                  speed: "optimum",
+                  speed: "normal",
                   receipt: "123456",
                 })
                 .then((response) => {
+                  console.log("Refund succeded");
                   console.log(response);
                 })
                 .catch((err) => {
+                  console.log("This is the error response");
                   console.log(err);
                 });
             }

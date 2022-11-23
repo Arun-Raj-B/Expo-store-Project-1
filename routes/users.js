@@ -80,5 +80,7 @@ router.post("/cancelOrder", userController.postCancelOrder);
 router.get("/category/:id", userController.getCategoryProducts);
 router.post("/saveAddress", userController.postSaveAddress);
 router.post("/verifyPayment", userController.postverifyPayment);
+router.post("/paypal/:total", userController.postPaypalOrder);
+router.post("/paypal/:orderID/capture", userController.postApprove);
 
 module.exports = router;

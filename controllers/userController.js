@@ -6,6 +6,7 @@ const { resolveInclude } = require("ejs");
 const { urlencoded } = require("express");
 const userHelpers = require("../helpers/userHelpers");
 const adminUserHelpers = require("../helpers/adminUserHelpers");
+const paypalHelpers = require("../helpers/paypalHelpers");
 
 module.exports = {
   getHome: async (req, res) => {
@@ -360,10 +361,13 @@ module.exports = {
         const message = `Thanks for purchasing from EXPOstore. Your order has been placed successfully`;
         orderHelper.sendMessage(req.body.mobile, message);
         res.json({ codSuccess: true });
-      } else {
+      } else if (req.body.paymentMethod == "RAZORPAY") {
         userHelper.generateRazorpay(orderId, totalAmount).then((response) => {
           res.json(response);
         });
+      } else {
+        const mobile = req.body.mobile;
+        res.json({ paypal: true, orderId, mobile });
       }
     });
   },
@@ -467,5 +471,18 @@ module.exports = {
         console.log(err);
         res.json({ status: false, errMsg: "Some error happened" });
       });
+  },
+
+  postPaypalOrder: async (req, res) => {
+    const totalAmount = req.params.total;
+    const order = await paypalHelpers.createOrder(totalAmount);
+    res.json(order);
+  },
+
+  postApprove: async (req, res) => {
+    const { orderID } = req.params;
+    const captureData = await paypalHelpers.capturePayment(orderID);
+    // TODO: store payment information such as the transaction ID
+    res.json(captureData);
   },
 };

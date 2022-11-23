@@ -81,6 +81,12 @@ $("#checkout-form").validate({
                 window.location.href = window.location.origin + "/orders";
                 clearTimeout(timeOut);
               }
+            } else if (response.paypal) {
+              document.getElementById("order-Id").innerHTML = response.orderId;
+              document.getElementById("phone").innerHTML = response.mobile;
+
+              document.getElementById("paypal-button-container").style.display =
+                "block";
             } else {
               razorpayPayment(response);
             }
@@ -185,3 +191,5 @@ var toastMixin = Swal.mixin({
     toast.addEventListener("mouseleave", Swal.resumeTimer);
   },
 });
+
+// console.log("Paypal lsdkjflkdjf");
