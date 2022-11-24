@@ -50,7 +50,7 @@
         </div>
         <div class="col card card-work">
           <div class="card-body" style="margin-left: 50px">
-            <h1 class="p-2" style="color: rgb(255, 99, 132)">Sales Data</h1>
+            <h1 class="p-2" style="color: rgb(255, 99, 132)">Top Sellers</h1>
             <canvas id="salesChart"></canvas>
           </div>
         </div>
@@ -61,21 +61,33 @@
 
 <script>
   // user datas
-  const userData = {
-    labels: ["January", "February", "March", "April", "May", "June"],
+  const orderData = {
+    labels: [
+      "<%=ordersDate[4]._id%>",
+      "<%=ordersDate[3]._id%>",
+      "<%=ordersDate[2]._id%>",
+      "<%=ordersDate[1]._id%>",
+      "<%=ordersDate[0]._id%>",
+    ],
     datasets: [
       {
-        label: "New users",
+        label: "Orders",
         backgroundColor: "rgb(255, 99, 132)",
         borderColor: "rgb(255, 99, 132)",
-        data: [10, 15, 32, 40, 50, 60],
+        data: [
+          "<%=ordersDate[4].count%>",
+          "<%=ordersDate[3].count%>",
+          "<%=ordersDate[2].count%>",
+          "<%=ordersDate[1].count%>",
+          "<%=ordersDate[0].count%>",
+        ],
       },
     ],
   };
 
   const configLineGraph = {
     type: "line",
-    data: userData,
+    data: orderData,
     options: {},
   };
 
@@ -84,17 +96,31 @@
     configLineGraph
   );
 
-  //Sales in last 3 months
+  //top5Products
   const salesData = {
-    labels: ["April", "May", "June"],
+    labels: [
+      "<%=topSellers[0].Name%>",
+      "<%=topSellers[1].Name%>",
+      "<%=topSellers[2].Name%>",
+      "<%=topSellers[3].Name%>",
+      "<%=topSellers[4].Name%>",
+    ],
     datasets: [
       {
-        label: "Sales in last 3 months",
-        data: [300, 50, 100],
+        label: "Sales in last month",
+        data: [
+          "<%=topSellers[0].sales%>",
+          "<%=topSellers[1].sales%>",
+          "<%=topSellers[2].sales%>",
+          "<%=topSellers[3].sales%>",
+          "<%=topSellers[4].sales%>",
+        ],
         backgroundColor: [
           "rgb(255, 99, 132)",
           "rgb(54, 162, 235)",
           "rgb(255, 205, 86)",
+          "rgb(35, 205, 130)",
+          "rgb(200, 205, 130)",
         ],
         hoverOffset: 4,
       },

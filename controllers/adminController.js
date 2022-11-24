@@ -11,6 +11,8 @@ module.exports = {
     const users = await adminUserHelper.getAllUsers();
     const orders = await adminUserHelper.getAllOrders();
     const totalRevenue = await adminHelper.totalRevenue();
+    const topSellers = await adminHelper.topSellers();
+    const ordersDate = await adminHelper.ordersDate();
     const totalUsers = users.length;
     const totalOrders = orders.length;
     const reqNo = requests.length;
@@ -25,6 +27,8 @@ module.exports = {
         totalUsers,
         totalOrders,
         totalRevenue,
+        topSellers,
+        ordersDate,
       });
     }
   },

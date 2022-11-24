@@ -70,4 +70,36 @@ module.exports = {
       resolve(totalRevenue[0].TotalAmount);
     });
   },
+
+  topSellers: () => {
+    return new Promise(async (resolve, reject) => {
+      const topSellers = await db
+        .get()
+        .collection(collection.PRODUCT_COLLECTION)
+        .aggregate([
+          { $project: { _id: 0, Name: 1, sales: 1 } },
+          { $sort: { sales: -1 } },
+          { $limit: 5 },
+        ])
+        .toArray();
+      console.log(topSellers);
+      resolve(topSellers);
+    });
+  },
+
+  ordersDate: () => {
+    return new Promise(async (resolve, reject) => {
+      const ordersPer = await db
+        .get()
+        .collection(collection.ORDER_COLLECTION)
+        .aggregate([
+          { $group: { _id: "$date", count: { $sum: 1 } } },
+          { $sort: { _id: -1 } },
+          { $limit: 5 },
+        ])
+        .toArray();
+      console.log(ordersPer);
+      resolve(ordersPer);
+    });
+  },
 };
