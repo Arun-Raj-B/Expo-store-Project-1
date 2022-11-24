@@ -1,4 +1,4 @@
-<section class="pt-3" style="background-color: #ece6d9">
+<section class="pt-5 page-fill" style="background-color: #ece6d9">
   <div class="container py-5">
     <div class="row">
       <div class="col-lg-4">
@@ -129,7 +129,7 @@
                   <span class="text-primary font-italic me-1">Add</span>
                   address
                 </p>
-                <form id="checkout-form">
+                <form id="add-address">
                   <div
                     class="row d-flex justify-content-center align-items-center"
                   >
@@ -224,12 +224,9 @@
                         required
                       />
                       <div class="text-end mb-2">
-                        <a
-                          class="btn btn-outline-success text-end"
-                          onclick="saveAddress()"
-                        >
-                          Save address
-                        </a>
+                        <button class="btn btn-outline-success text-end">
+                          Save
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -243,34 +240,6 @@
   </div>
 </section>
 
-<script>
-  $("#checkout-form").validate({
-    rules: {
-      username: {
-        minlength: 4,
-      },
-
-      password: {
-        required: true,
-      },
-    },
-    messages: {
-      username: {
-        required: "Please enter username",
-        minlength: "Requires minimum of 4 characters",
-      },
-
-      password: {
-        required: "Please enter a password",
-      },
-    },
-
-    submitHandler: function (form) {
-      form.submit();
-    },
-  });
-</script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script
   type="text/javascript"
@@ -278,48 +247,91 @@
 ></script>
 
 <script>
-  function saveAddress() {
-    const house = document.getElementById("house").value;
-    const street = document.getElementById("street").value;
-    const district = document.getElementById("district").value;
-    const state = document.getElementById("state").value;
-    const pincode = document.getElementById("pincode").value;
-    const mobile = document.getElementById("mobile").value;
-    const userId = document.getElementById("userId").value;
-    console.log(house, street, district, state, pincode, mobile, userId);
-    $.ajax({
-      url: "/saveAddress",
-      data: {
-        house: house,
-        street: street,
-        district: district,
-        state: state,
-        pincode: pincode,
-        mobile: mobile,
-        userId: userId,
+  $("#add-address").validate({
+    rules: {
+      house: {
+        required: true,
       },
-      method: "post",
-      success: (response) => {
-        console.log(response);
-        var toastMixin = Swal.mixin({
-          toast: true,
-          icon: "success",
-          title: "General Title",
-          animation: false,
-          position: "top-right",
-          showConfirmButton: false,
-          timer: 1500,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        toastMixin.fire({
-          animation: true,
-          title: "Address saved",
-        });
+      street: {
+        required: true,
       },
-    });
-  }
+      district: {
+        required: true,
+      },
+      state: {
+        required: true,
+      },
+      pincode: {
+        minlength: 6,
+        maxlength: 6,
+        required: true,
+      },
+      mobile: {
+        minlength: 10,
+        maxlength: 10,
+        required: true,
+      },
+    },
+    messages: {
+      house: {
+        required: "Enter house name",
+      },
+      street: {
+        required: "Enter street name",
+      },
+      district: {
+        required: "Enter the district",
+      },
+      state: {
+        required: "Enter the state",
+      },
+
+      pincode: {
+        minlength: "Pincode should be of 6 digits",
+        maxlength: "Pincode is not valid",
+        required: "Please enter your pincode",
+      },
+
+      mobile: {
+        minlength: "Mobile number should be of 10 digits",
+        maxlength: "Number is not valid",
+        required: "Please enter your mobile number",
+      },
+    },
+
+    submitHandler: function (form) {
+      $.ajax({
+        url: "/saveAddress",
+        data: $(form).serialize(),
+        method: "post",
+        success: (response) => {
+          console.log(response);
+          var toastMixin = Swal.mixin({
+            toast: true,
+            icon: "success",
+            title: "General Title",
+            animation: false,
+            position: "top-right",
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          toastMixin.fire({
+            animation: true,
+            title: "Address saved",
+          });
+          const timeOut = setTimeout(reloadPage, 1500);
+
+          function reloadPage() {
+            location.reload();
+            clearTimeout(timeOut);
+          }
+        },
+      });
+    },
+  });
 </script>
