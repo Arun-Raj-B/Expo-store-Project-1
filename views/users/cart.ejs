@@ -37,10 +37,10 @@
               <td><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>','<%=user._id%>',-1)"><i class="fa-solid fa-minus"></i><button class="btn btn-outline-dark m-1" id="<%=cartItem.product._id %>"><%=cartItem.quantity %><button class="card-item-count btn btn-outline-secondary m-1" onclick="changeCartQuantity('<%=cartItem._id%>','<%=cartItem.product._id %>','<%=user._id%>',1)"><i class="fa-solid fa-plus"></i>
               </button></td>
               <td>
-                <a
-                  href="/removeCartProduct/<%=cartItem._id%>/<%=cartItem.product._id %>"
+                <button
                   class="btn btn-outline-danger removeProduct"
-                  ><i class="fa-solid fa-trash"></i></a>
+                  onclick="removeProduct('<%=cartItem._id%>','<%=cartItem.product._id %>')"
+                  ><i class="fa-solid fa-trash"></i></button>
                 <!-- <button
                   class="btn btn-outline-danger removeProduct" onclick="removeCartProduct('<=cartItem._id%>','<=cartItem.product._id %>')"
                   ><i class="fa-solid fa-trash"></i></button> -->
@@ -67,10 +67,7 @@
 <!-- onclick="return confirm('Do you want to delete product.Name ?')" -->
 
 <script>
-  $(".removeProduct").on("click", function (e) {
-    e.preventDefault();
-    var self = $(this);
-    console.log(self.data("title"));
+  function removeProduct(cartId,prodId){
     Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -81,18 +78,19 @@
       confirmButtonText: "Yes, remove it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        // Swal.fire("Deleted!", ` Product has been removed`, "success");
-        // const timeOut = setTimeout(reloadPage, 1200);
-
-        //     function reloadPage() {
-        //       location.reload();
-        //       clearTimeout(timeOut);
-        //     }
-        location.href = self.attr("href");
+    $.ajax({
+      url:`/removeCartProduct/${cartId}/${prodId}`,
+      method:'get',
+      success:(response)=>{
+        location.reload();
+      }
+    })
       }
     });
-  });
+  }
 </script>
+
+<!-- yy -->
 
 <script>
   function changeCartQuantity(cartId,proId,userId,count){
