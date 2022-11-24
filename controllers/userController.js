@@ -333,7 +333,7 @@ module.exports = {
   },
 
   getplaceOrder: async (req, res) => {
-    let user = req.session.user;
+    let user = await userHelper.findUser(req.session.user._id);
     let cartCount = 0;
     let wishlistCount = 0;
     console.log(user);
@@ -484,5 +484,23 @@ module.exports = {
     const captureData = await paypalHelpers.capturePayment(orderID);
     // TODO: store payment information such as the transaction ID
     res.json(captureData);
+  },
+
+  getProfile: async (req, res) => {
+    let user = await userHelper.findUser(req.session.user._id);
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+    const category = await productHelper.getAllCategories();
+    console.log(category);
+    res.render("users/userprofile", {
+      user,
+      category,
+      cartCount,
+      wishlistCount,
+    });
   },
 };

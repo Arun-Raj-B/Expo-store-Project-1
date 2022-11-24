@@ -587,7 +587,7 @@ module.exports = {
         console.log(total[0].total);
         resolve(total[0].total);
       } catch (err) {
-        resolve(0); 
+        resolve(0);
       }
     });
   },
@@ -858,6 +858,17 @@ module.exports = {
         .catch(() => {
           console.log("Payment Id not added to database");
           reject();
+        });
+    });
+  },
+
+  findUser: (userId) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .findOne({ _id: objectId(userId) })
+        .then((user) => {
+          resolve(user);
         });
     });
   },

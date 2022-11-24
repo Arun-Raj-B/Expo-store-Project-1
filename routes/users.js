@@ -82,5 +82,6 @@ router.post("/saveAddress", userController.postSaveAddress);
 router.post("/verifyPayment", userController.postverifyPayment);
 router.post("/paypal/:total", userController.postPaypalOrder);
 router.post("/paypal/:orderID/capture", userController.postApprove);
+router.get("/profile", verifyLogin, userController.getProfile);
 
 module.exports = router;

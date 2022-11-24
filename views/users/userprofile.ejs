@@ -1,0 +1,325 @@
+<section class="pt-3" style="background-color: #ece6d9">
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card mb-4">
+          <div class="card-body text-center">
+            <img
+              src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp"
+              alt="avatar"
+              class="rounded-circle img-fluid"
+              style="width: 150px"
+            />
+            <h5 class="my-3"><%=user.username %></h5>
+            <p class="text-muted mb-4">
+              <%=user.addresses[0].house %>, <%=user.addresses[0].street %>,
+              <%=user.addresses[0].district %>, <%=user.addresses[0].state %>
+            </p>
+          </div>
+        </div>
+        <div class="card mb-4 mb-lg-0">
+          <div class="card-body p-0">
+            <ul class="list-group list-group-flush rounded-3">
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center p-3"
+              >
+                <i class="fa-solid fa-cart-shopping text-warning"></i>
+                <a
+                  href="/cart"
+                  class="mb-0 text-dark"
+                  style="text-decoration: none"
+                  >Cart</a
+                >
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center p-3"
+              >
+                <i class="fa-solid fa-sort" style="color: #333333"></i>
+                <a
+                  href="/orders"
+                  class="mb-0 text-dark"
+                  style="text-decoration: none"
+                  >Orders</a
+                >
+              </li>
+              <li
+                class="list-group-item d-flex justify-content-between align-items-center p-3"
+              >
+                <i class="fa-solid fa-heart" style="color: red"></i>
+                <a
+                  href="/wishlist"
+                  class="mb-0 text-dark"
+                  style="text-decoration: none"
+                  >Wishlist</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="card mb-4">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Full Name</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  <%=user.firstname %> <%=user.lastname %>
+                </p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Email</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%= user.email %></p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Mobile</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0"><%= user.mobilenumber %></p>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-sm-3">
+                <p class="mb-0">Address</p>
+              </div>
+              <div class="col-sm-9">
+                <p class="text-muted mb-0">
+                  <%=user.addresses[0].house %>, <%=user.addresses[0].street %>,
+                  <%=user.addresses[0].district %>, <%=user.addresses[0].state
+                  %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+                <p class="mb-4">
+                  <span class="text-primary font-italic me-1">All</span>
+                  addresses
+                </p>
+                <% let no = 1 %> <% user.addresses.forEach((address)=>{ %>
+                <p class="text-muted mb-0">
+                  <span class="me-3"><%= no++ %></span> <%=address.house %>,
+                  <%=address.street %>, <%=address.district %>, <%=address.state
+                  %>, <%=address.pincode %>
+                </p>
+                <hr />
+                <% }) %>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card mb-4 mb-md-0">
+              <div class="card-body">
+                <p class="mb-4">
+                  <span class="text-primary font-italic me-1">Add</span>
+                  address
+                </p>
+                <form id="checkout-form">
+                  <div
+                    class="row d-flex justify-content-center align-items-center"
+                  >
+                    <div>
+                      <!-- <textarea
+                            class="form-control mb-2"
+                            id="address"
+                            name="address"
+                            cols="20"
+                            rows="5"
+                            placeholder="Address"
+                            style="background-color: #dbdbdb"
+                            required
+                          ></textarea> -->
+                      <div class="d-flex">
+                        <input
+                          class="form-control mb-2 me-1"
+                          id="house"
+                          name="house"
+                          placeholder="House"
+                          type="text"
+                          style="background-color: #eeeeee"
+                          required
+                        />
+                        <input
+                          class="form-control mb-2 ms-1"
+                          id="street"
+                          name="street"
+                          placeholder="Street"
+                          type="text"
+                          style="background-color: #eeeeee"
+                          required
+                        />
+                      </div>
+                      <div class="d-flex">
+                        <select
+                          class="form-select mb-2 me-1"
+                          name="district"
+                          id="district"
+                          aria-label="Default select example"
+                          style="background-color: #eeeeee"
+                        >
+                          <option>Thiruvananthapuram</option>
+                          <option>Kollam</option>
+                          <option>Pathanamthitta</option>
+                          <option>Alappuzha</option>
+                          <option>Kottayam</option>
+                          <option>Idukki</option>
+                          <option>Ernakulam</option>
+                          <option>Thrissur</option>
+                          <option>Palakkad</option>
+                          <option>Malappuram</option>
+                          <option>Kozhikode</option>
+                          <option>Wayanad</option>
+                          <option>Kannur</option>
+                          <option>Kasargod</option>
+                        </select>
+                        <input
+                          class="form-control mb-2 ms-1"
+                          id="state"
+                          name="state"
+                          placeholder="State"
+                          type="text"
+                          style="background-color: #eeeeee"
+                          required
+                        />
+                      </div>
+                      <input
+                        type="text"
+                        name="userId"
+                        id="userId"
+                        class=""
+                        value="<%=user._id  %>"
+                        hidden
+                      />
+                      <input
+                        class="form-control mb-2"
+                        id="pincode"
+                        name="pincode"
+                        placeholder="Pincode"
+                        type="number"
+                        style="background-color: #eeeeee"
+                        required
+                      />
+                      <input
+                        class="form-control mb-2"
+                        id="mobile"
+                        name="mobile"
+                        placeholder="Mobile"
+                        type="number"
+                        style="background-color: #eeeeee"
+                        required
+                      />
+                      <div class="text-end mb-2">
+                        <a
+                          class="btn btn-outline-success text-end"
+                          onclick="saveAddress()"
+                        >
+                          Save address
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $("#checkout-form").validate({
+    rules: {
+      username: {
+        minlength: 4,
+      },
+
+      password: {
+        required: true,
+      },
+    },
+    messages: {
+      username: {
+        required: "Please enter username",
+        minlength: "Requires minimum of 4 characters",
+      },
+
+      password: {
+        required: "Please enter a password",
+      },
+    },
+
+    submitHandler: function (form) {
+      form.submit();
+    },
+  });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+></script>
+
+<script>
+  function saveAddress() {
+    const house = document.getElementById("house").value;
+    const street = document.getElementById("street").value;
+    const district = document.getElementById("district").value;
+    const state = document.getElementById("state").value;
+    const pincode = document.getElementById("pincode").value;
+    const mobile = document.getElementById("mobile").value;
+    const userId = document.getElementById("userId").value;
+    console.log(house, street, district, state, pincode, mobile, userId);
+    $.ajax({
+      url: "/saveAddress",
+      data: {
+        house: house,
+        street: street,
+        district: district,
+        state: state,
+        pincode: pincode,
+        mobile: mobile,
+        userId: userId,
+      },
+      method: "post",
+      success: (response) => {
+        console.log(response);
+        var toastMixin = Swal.mixin({
+          toast: true,
+          icon: "success",
+          title: "General Title",
+          animation: false,
+          position: "top-right",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        toastMixin.fire({
+          animation: true,
+          title: "Address saved",
+        });
+      },
+    });
+  }
+</script>
