@@ -514,4 +514,26 @@ module.exports = {
         console.log(err);
       });
   },
+
+  postEditEmail: (req, res) => {
+    userHelper
+      .editEmail(req.body)
+      .then(() => {
+        res.json({ updated: true });
+      })
+      .catch(() => {
+        res.json({ updated: false });
+      });
+  },
+
+  postEditMobile: (req, res) => {
+    userHelper
+      .editMobile(req.body)
+      .then(() => {
+        res.json({ updated: true });
+      })
+      .catch(() => {
+        res.json({ updated: false });
+      });
+  },
 };

@@ -78,8 +78,11 @@
                 <p class="mb-0">Email</p>
               </div>
               <div class="col-sm-9 d-flex">
-                <p class="text-muted mb-0"><%= user.email %></p>
-                <a class="text-decoration-none">
+                <p class="text-muted mb-0" id="original"><%= user.email %></p>
+                <a
+                  class="text-decoration-none"
+                  onclick="editEmail('<%=user._id%>')"
+                >
                   &nbsp;<i class="fa-solid fa-pen-to-square"></i>
                 </a>
               </div>
@@ -89,8 +92,16 @@
               <div class="col-sm-3">
                 <p class="mb-0">Mobile</p>
               </div>
-              <div class="col-sm-9">
-                <p class="text-muted mb-0"><%= user.mobilenumber %></p>
+              <div class="col-sm-9 d-flex">
+                <p class="text-muted mb-0" id="orgPhone">
+                  <%= user.mobilenumber %>
+                </p>
+                <a
+                  class="text-decoration-none"
+                  onclick="editMobile('<%=user._id%>')"
+                >
+                  &nbsp;<i class="fa-solid fa-pen-to-square"></i>
+                </a>
               </div>
             </div>
             <hr />
@@ -381,6 +392,126 @@
           title: "Address removed",
         });
         location.reload();
+      },
+    });
+  }
+</script>
+
+<script>
+  function editEmail(userId) {
+    const oldEmail = document.getElementById("original").innerHTML;
+    console.log(oldEmail);
+    Swal.fire({
+      title: "New Email",
+      html: `<input type="text" id="email" class="swal2-input" placeholder= ${oldEmail}>`,
+      confirmButtonText: "Update",
+      focusConfirm: false,
+      preConfirm: () => {
+        const email = Swal.getPopup().querySelector("#email").value;
+        let validateEmail = (email) => {
+          return String(email)
+            .toLowerCase()
+            .match(
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            );
+        };
+        const checked = validateEmail(email);
+        console.log(checked);
+        console.log(userId, email);
+        if (!checked) {
+          Swal.showValidationMessage(`Enter a valid email eg: abc@gmail.com`);
+        } else {
+          $.ajax({
+            url: "/editEmail",
+            data: {
+              userId,
+              email,
+            },
+            method: "post",
+            success: (response) => {
+              if (response.updated) {
+                var toastMixin = Swal.mixin({
+                  toast: true,
+                  icon: "success",
+                  title: "General Title",
+                  animation: false,
+                  position: "top-right",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                document.getElementById("original").innerHTML = email;
+                toastMixin.fire({
+                  animation: true,
+                  title: "Email updated",
+                });
+              }
+            },
+          });
+        }
+      },
+    });
+  }
+</script>
+
+<script>
+  function editMobile(userId) {
+    const oldPhone = document.getElementById("orgPhone").innerHTML;
+    console.log(oldPhone);
+    Swal.fire({
+      title: "New Mobile",
+      html: `<input type="text" id="mobile" class="swal2-input" placeholder= ${oldPhone}>`,
+      confirmButtonText: "Update",
+      focusConfirm: false,
+      preConfirm: () => {
+        const mobile = Swal.getPopup().querySelector("#mobile").value;
+        let validateMobile = (mobile) => {
+          return String(mobile)
+            .toLowerCase()
+            .match(/^\d{10}$/);
+        };
+        const checked = validateMobile(mobile);
+        console.log(checked);
+        console.log(userId, mobile);
+        if (!checked) {
+          Swal.showValidationMessage(`Enter a valid number (10 digits)`);
+        } else {
+          $.ajax({
+            url: "/editMobile",
+            data: {
+              userId,
+              mobile,
+            },
+            method: "post",
+            success: (response) => {
+              if (response.updated) {
+                var toastMixin = Swal.mixin({
+                  toast: true,
+                  icon: "success",
+                  title: "General Title",
+                  animation: false,
+                  position: "top-right",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                document.getElementById("orgPhone").innerHTML = mobile;
+                toastMixin.fire({
+                  animation: true,
+                  title: "Mobile updated",
+                });
+              }
+            },
+          });
+        }
       },
     });
   }

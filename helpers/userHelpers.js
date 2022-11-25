@@ -898,4 +898,47 @@ module.exports = {
         });
     });
   },
+
+  editEmail: (details) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          {
+            _id: objectId(details.userId),
+          },
+          {
+            $set: { email: details.email },
+          }
+        )
+        .then(() => {
+          resolve();
+        })
+        .catch(() => {
+          reject();
+        });
+    });
+  },
+
+  editMobile: (details) => {
+    const mobile = parseInt(details.mobile);
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          {
+            _id: objectId(details.userId),
+          },
+          {
+            $set: { mobilenumber: mobile },
+          }
+        )
+        .then(() => {
+          resolve();
+        })
+        .catch(() => {
+          reject();
+        });
+    });
+  },
 };
