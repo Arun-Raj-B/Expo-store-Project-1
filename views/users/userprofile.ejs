@@ -11,10 +11,12 @@
               style="width: 150px"
             />
             <h5 class="my-3"><%=user.username %></h5>
+            <% if (locals.user.addresses.length>=1) {%>
             <p class="text-muted mb-4">
               <%=user.addresses[0].house %>, <%=user.addresses[0].street %>,
               <%=user.addresses[0].district %>, <%=user.addresses[0].state %>
             </p>
+            <% } %>
           </div>
         </div>
         <div class="card mb-4 mb-lg-0">
@@ -75,8 +77,11 @@
               <div class="col-sm-3">
                 <p class="mb-0">Email</p>
               </div>
-              <div class="col-sm-9">
+              <div class="col-sm-9 d-flex">
                 <p class="text-muted mb-0"><%= user.email %></p>
+                <a class="text-decoration-none">
+                  &nbsp;<i class="fa-solid fa-pen-to-square"></i>
+                </a>
               </div>
             </div>
             <hr />
@@ -94,11 +99,13 @@
                 <p class="mb-0">Address</p>
               </div>
               <div class="col-sm-9">
+                <% if (locals.user.addresses.length>=1) {%>
                 <p class="text-muted mb-0">
                   <%=user.addresses[0].house %>, <%=user.addresses[0].street %>,
                   <%=user.addresses[0].district %>, <%=user.addresses[0].state
                   %>
                 </p>
+                <% } %>
               </div>
             </div>
           </div>
@@ -111,7 +118,8 @@
                   <span class="text-primary font-italic me-1">All</span>
                   addresses
                 </p>
-                <% let no = 1 %> <% user.addresses.forEach((address)=>{ %>
+                <% if (locals.user.addresses.length>=1) {%> <% let no = 1 %> <%
+                user.addresses.forEach((address)=>{ %>
                 <p class="text-muted mb-0">
                   <span class="me-3"><%= no++ %></span> <%=address.house %>,
                   <%=address.street %>, <%=address.district %>, <%=address.state
@@ -125,7 +133,7 @@
                   ></span>
                 </p>
                 <hr />
-                <% }) %>
+                <% }) %> <% } %>
               </div>
             </div>
           </div>
