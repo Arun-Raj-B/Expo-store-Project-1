@@ -503,4 +503,8 @@ module.exports = {
       wishlistCount,
     });
   },
+
+  postDeleteAddress: (req, res) => {
+    userHelper.deleteAddress(req.body);
+  },
 };

@@ -872,4 +872,15 @@ module.exports = {
         });
     });
   },
+
+  deleteAddress: (address) => {
+    db.get()
+      .collection(collection.USER_COLLECTION)
+      .updateOne(
+        {
+          _id: objectId(address),
+        },
+        {}
+      );
+  },
 };

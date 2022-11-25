@@ -111,14 +111,21 @@
                   <span class="text-primary font-italic me-1">All</span>
                   addresses
                 </p>
-                <% let no = 1 %> <% user.addresses.forEach((address)=>{ %>
+                <% let no = 0 %> <% user.addresses.forEach((address)=>{ %>
                 <p class="text-muted mb-0">
-                  <span class="me-3"><%= no++ %></span> <%=address.house %>,
+                  <span class="me-3"><%= no+1 %></span> <%=address.house %>,
                   <%=address.street %>, <%=address.district %>, <%=address.state
                   %>, <%=address.pincode %>
+                  <span>
+                    <button
+                      class="btn"
+                      onclick="deleteAdress('<%=user._id%>','<%=no%>')"
+                    >
+                      <i class="fa-solid fa-eraser"></i></button
+                  ></span>
                 </p>
                 <hr />
-                <% }) %>
+                <% no++ %> <% }) %>
               </div>
             </div>
           </div>
@@ -334,4 +341,18 @@
       });
     },
   });
+</script>
+
+<script>
+  function deleteAdress(userId, no) {
+    $.ajax({
+      url: "/deleteAddress",
+      data: {
+        userId,
+        no,
+      },
+      method: "post",
+      success: (response) => {},
+    });
+  }
 </script>
