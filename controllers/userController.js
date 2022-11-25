@@ -505,6 +505,13 @@ module.exports = {
   },
 
   postDeleteAddress: (req, res) => {
-    userHelper.deleteAddress(req.body);
+    userHelper
+      .deleteAddress(req.body)
+      .then(() => {
+        res.json({ updated: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
 };

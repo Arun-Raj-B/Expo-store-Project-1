@@ -111,21 +111,21 @@
                   <span class="text-primary font-italic me-1">All</span>
                   addresses
                 </p>
-                <% let no = 0 %> <% user.addresses.forEach((address)=>{ %>
+                <% let no = 1 %> <% user.addresses.forEach((address)=>{ %>
                 <p class="text-muted mb-0">
-                  <span class="me-3"><%= no+1 %></span> <%=address.house %>,
+                  <span class="me-3"><%= no++ %></span> <%=address.house %>,
                   <%=address.street %>, <%=address.district %>, <%=address.state
                   %>, <%=address.pincode %>
                   <span>
                     <button
                       class="btn"
-                      onclick="deleteAdress('<%=user._id%>','<%=no%>')"
+                      onclick="deleteAddress('<%=user._id%>','<%=address.house %>')"
                     >
                       <i class="fa-solid fa-eraser"></i></button
                   ></span>
                 </p>
                 <hr />
-                <% no++ %> <% }) %>
+                <% }) %>
               </div>
             </div>
           </div>
@@ -344,15 +344,36 @@
 </script>
 
 <script>
-  function deleteAdress(userId, no) {
+  function deleteAddress(userId, house) {
     $.ajax({
       url: "/deleteAddress",
       data: {
         userId,
-        no,
+        house,
       },
       method: "post",
-      success: (response) => {},
+      success: (response) => {
+        console.log(response);
+        var toastMixin = Swal.mixin({
+          toast: true,
+          icon: "success",
+          title: "General Title",
+          animation: false,
+          position: "top-right",
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        toastMixin.fire({
+          animation: true,
+          title: "Address removed",
+        });
+        location.reload();
+      },
     });
   }
 </script>

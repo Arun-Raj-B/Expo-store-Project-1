@@ -874,13 +874,28 @@ module.exports = {
   },
 
   deleteAddress: (address) => {
-    db.get()
-      .collection(collection.USER_COLLECTION)
-      .updateOne(
-        {
-          _id: objectId(address),
-        },
-        {}
-      );
+    return new Promise((resolve, reject) => {
+      console.log("userId is " + address.userId);
+      console.log("house is" + address.house);
+      db.get()
+        .collection(collection.USER_COLLECTION)
+        .updateOne(
+          {
+            _id: objectId(address.userId),
+          },
+          {
+            $pull: { addresses: { house: address.house } },
+          }
+        )
+        .then((response) => {
+          console.log("This is going to be resolved");
+          console.log(response);
+          resolve();
+        })
+        .catch((err) => {
+          console.log(err);
+          reject(err);
+        });
+    });
   },
 };
