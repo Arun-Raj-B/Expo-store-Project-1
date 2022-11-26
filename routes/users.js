@@ -1,22 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
-
-const verifyLogin = (req, res, next) => {
-  if (req.session.user) {
-    next();
-  } else {
-    res.redirect("/login");
-  }
-};
-
-const redirectHome = (req, res, next) => {
-  if (req.session.user) {
-    res.redirect("/");
-  } else {
-    next();
-  }
-};
+const userMiddlewear = require("../middlewares/userMiddlewear");
 
 router.get("/", userController.getHome);
 router
@@ -28,12 +13,16 @@ router
   .get(userController.getSignup)
   .post(userController.postSignup);
 router.get("/logout", userController.getLogout);
-router.get("/cart", verifyLogin, userController.getCart);
+router.get("/cart", userMiddlewear.verifyLogin, userController.getCart);
 //verifyLogin required
 router.get("/addToCart/:id", userController.getAddToCart);
-router.get("/wishlist", verifyLogin, userController.getWishlist);
+router.get("/wishlist", userMiddlewear.verifyLogin, userController.getWishlist);
 //verifyLogin required
-router.get("/addToWishlist/:id", verifyLogin, userController.getAddToWishlist);
+router.get(
+  "/addToWishlist/:id",
+  userMiddlewear.verifyLogin,
+  userController.getAddToWishlist
+);
 router.route("/otp").get(userController.getOTP).post(userController.postOTP);
 router
   .route("/verifyNo")
@@ -41,11 +30,11 @@ router
   .post(userController.postVerifyNo);
 router
   .route("/getMobile")
-  .get(redirectHome, userController.getGetMobile)
+  .get(userMiddlewear.redirectHome, userController.getGetMobile)
   .post(userController.postGetMobile);
 router
   .route("/loginOTP")
-  .get(redirectHome, userController.getLoginOTP)
+  .get(userMiddlewear.redirectHome, userController.getLoginOTP)
   .post(userController.postLoginOTP);
 router.get("/singleProduct/:id", userController.getSingleProduct);
 router.post(
@@ -67,13 +56,13 @@ router.get(
 router.post("/wishlistToCart", userController.postWishlistToCart);
 router
   .route("/placeOrder")
-  .get(verifyLogin, userController.getplaceOrder)
+  .get(userMiddlewear.verifyLogin, userController.getplaceOrder)
   .post(userController.postplaceOrder);
 
-router.get("/orders", verifyLogin, userController.getOrders);
+router.get("/orders", userMiddlewear.verifyLogin, userController.getOrders);
 router.get(
   "/viewOrderProducts/:id",
-  verifyLogin,
+  userMiddlewear.verifyLogin,
   userController.getViewOrderProducts
 );
 router.post("/cancelOrder", userController.postCancelOrder);
@@ -82,7 +71,7 @@ router.post("/saveAddress", userController.postSaveAddress);
 router.post("/verifyPayment", userController.postverifyPayment);
 router.post("/paypal/:total", userController.postPaypalOrder);
 router.post("/paypal/:orderID/capture", userController.postApprove);
-router.get("/profile", verifyLogin, userController.getProfile);
+router.get("/profile", userMiddlewear.verifyLogin, userController.getProfile);
 router.post("/deleteAddress", userController.postDeleteAddress);
 router.post("/editEmail", userController.postEditEmail);
 router.post("/editMobile", userController.postEditMobile);
