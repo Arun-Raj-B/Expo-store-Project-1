@@ -1,6 +1,7 @@
 const db = require("../config/connection");
 const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
+var objectId = require("mongodb").ObjectId;
 
 module.exports = {
   adminSignup: (adminData) => {
@@ -100,6 +101,49 @@ module.exports = {
         .toArray();
       console.log(ordersPer);
       resolve(ordersPer);
+    });
+  },
+
+  addCoupon: (coupon) => {
+    return new Promise((resolve, reject) => {
+      let newCoupon = {
+        name: coupon.name,
+        limit: coupon.limit,
+        discount: coupon.discount,
+        date: coupon.date,
+        users: [],
+      };
+      console.log(newCoupon);
+      db.get()
+        .collection(collection.COUPON_COLLECTION)
+        .insertOne(newCoupon)
+        .then((response) => {
+          console.log(response);
+          console.log("Coupon Added to database");
+          resolve(response);
+        });
+    });
+  },
+
+  deleteCoupon: (coupon) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.COUPON_COLLECTION)
+        .deleteOne({ _id: objectId(coupon.couponId) })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
+
+  getAllCoupons: () => {
+    return new Promise(async (resolve, reject) => {
+      const coupons = await db
+        .get()
+        .collection(collection.COUPON_COLLECTION)
+        .find()
+        .toArray();
+      resolve(coupons);
     });
   },
 };

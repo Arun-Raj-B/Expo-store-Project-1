@@ -106,15 +106,13 @@ module.exports = {
                 .then((response) => {
                   console.log("Refund succeded");
                   console.log(response);
-                  status = "Refund complete";
                 })
                 .catch((err) => {
                   console.log("This is the error response");
                   console.log(err);
-                  status = "Refund complete";
                 });
+              status = "Refund complete";
             }
-
             db.get()
               .collection(collection.ORDER_COLLECTION)
               .updateOne(

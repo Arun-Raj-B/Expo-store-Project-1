@@ -57,6 +57,7 @@
                 >
                   <span id="<%=order._id%>"><%=order.status %></span>
                 </button>
+                <!-- &&order.status!="Refund complete" -->
                 <ul class="dropdown-menu">
                   <% if (order.status !== "Cancel requested"){%> <%
                   if(order.status!="Delivered"&&order.status!="Cancelled") {%>

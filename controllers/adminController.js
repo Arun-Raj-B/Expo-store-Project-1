@@ -409,4 +409,32 @@ module.exports = {
       order,
     });
   },
+
+  getCoupons: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
+    const adminData = req.session.admin;
+    const coupons = await adminHelper.getAllCoupons();
+    res.render("admin/viewCoupons", {
+      admin: true,
+      requests,
+      adminData,
+      reqNo,
+      coupons,
+    });
+  },
+
+  postAddCoupon: async (req, res) => {
+    adminHelper.addCoupon(req.body).then((response) => {
+      console.log("Coupon added", response);
+      res.json({ added: "success" });
+    });
+  },
+
+  postDeleteCoupon: async (req, res) => {
+    adminHelper.deleteCoupon(req.body).then((response) => {
+      console.log(response);
+      res.json({ deleted: "success" });
+    });
+  },
 };

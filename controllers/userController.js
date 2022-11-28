@@ -4,9 +4,9 @@ const otpHelper = require("../helpers/otpHelper");
 const orderHelper = require("../helpers/orderHelper");
 const { resolveInclude } = require("ejs");
 const { urlencoded } = require("express");
-const userHelpers = require("../helpers/userHelpers");
 const adminUserHelpers = require("../helpers/adminUserHelpers");
 const paypalHelpers = require("../helpers/paypalHelpers");
+const adminHelpers = require("../helpers/adminHelpers");
 
 module.exports = {
   getHome: async (req, res) => {
@@ -343,11 +343,13 @@ module.exports = {
     }
     let totalAmount = await userHelper.getTotalAmount(user._id);
     console.log(totalAmount);
+    let coupons = await adminHelpers.getAllCoupons();
     res.render("users/placeOrder", {
       user,
       cartCount,
       wishlistCount,
       totalAmount,
+      coupons,
     });
   },
 

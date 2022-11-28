@@ -68,5 +68,9 @@ router.get(
   adminMiddlewear.verifyLogin,
   adminController.getViewOrderProducts
 );
+router.get("/coupons", adminMiddlewear.verifyLogin, adminController.getCoupons);
+
+router.post("/addCoupon", adminController.postAddCoupon);
+router.post("/deleteCoupon", adminController.postDeleteCoupon);
 
 module.exports = router;

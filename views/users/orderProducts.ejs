@@ -7,7 +7,7 @@
         <div class="col"><h4>OrderId : <%=order._id %></div>
         <div class="col text-end">
           <div>
-            <% if (order.status!= "Cancelled"&&order.status!="Shipped"&&order.status!="Delivered") { %> 
+            <% if (order.status!= "Cancelled"&&order.status!="Shipped"&&order.status!="Delivered"&&order.status !== "Refund complete") { %> 
               <% if (order.status == "Cancel requested"||order.status == "Cancelled") {%>
                 <button class="btn btn-outline-danger"><%=order.status  %> </button>
                 <% } else {%> 

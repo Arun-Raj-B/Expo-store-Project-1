@@ -1,6 +1,6 @@
 <section class="page-fill" style="background-color: #ece6d9">
   <div class="container" style="padding-top: 5%; padding-bottom: 5%">
-    <div class="row ms-3 me-3 text-start d-flex flex-sm-row">
+    <div class="row ms-3 me-3 text-start">
       <!-- Example split danger button -->
       <div class="btn-group col-md-2">
         <button type="button" class="btn btn-secondary">Choose Address</button>
@@ -171,6 +171,14 @@
                 />
               </label>
             </div>
+            <hr style="width: 75%; text-align: left; margin-left: 0" />
+            <h5>Available Coupons</h5>
+            <select class="form-select" aria-label="Default select example">
+              <option selected>Apply Coupon</option>
+              <% locals.coupons.forEach((coupon)=>{ %>
+              <option value="<%=coupon.discount%> "><%=coupon.name %></option>
+              <% }) %>
+            </select>
             <div id="paypal-button-container" style="display: none"></div>
             <div id="order-Id" hidden></div>
             <div id="phone" hidden></div>
