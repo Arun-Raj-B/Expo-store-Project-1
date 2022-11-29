@@ -95,9 +95,9 @@
             </a>
           </div>
           <div class="card-body" style="background-color: #e9e0ca">
-            <h5 class="card-title"><b><%= product.Name %></b> </h5>
-            <p class="card-text"><b>Price :</b> <strike>₹ <%= product.Price %></strike> <b>₹ <%= product.OfferPrice  %></b> </p>
-            <p class="card-text"><%= product.Offer %> % offer</p>
+            <h5 class="card-title"><%= product.Name %> </h5>
+            <p class="card-text"><strike>₹ <%= product.Price %></strike> <b>₹ <%= product.OfferPrice  %></b> </p>
+            <p class="card-text"><i class="fa-solid fa-star fa-2xs"></i> <i><%= product.Offer %> % offer</i></p>
             <!-- <a href="#" class="btn text-white" style="background-color: #1c3879"
               >Add to cart</a
             > -->
