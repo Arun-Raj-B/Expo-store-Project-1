@@ -95,8 +95,8 @@
             </a>
           </div>
           <div class="card-body" style="background-color: #e9e0ca">
-            <h5 class="card-title"><%= product.Name %></h5>
-            <p class="card-text">Price : <strike>₹ <%= product.Price %></strike> ₹ <%= Math.round(product.Price - ((product.Price*product.Offer)/100))  %> </p>
+            <h5 class="card-title"><b><%= product.Name %></b> </h5>
+            <p class="card-text"><b>Price :</b> <strike>₹ <%= product.Price %></strike> <b>₹ <%= product.OfferPrice  %></b> </p>
             <p class="card-text"><%= product.Offer %> % offer</p>
             <!-- <a href="#" class="btn text-white" style="background-color: #1c3879"
               >Add to cart</a

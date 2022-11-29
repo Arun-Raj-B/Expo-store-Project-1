@@ -16,6 +16,9 @@ module.exports = {
         Deleted: false,
         sales: 0,
         Offer: parseInt(product.Offer),
+        OfferPrice: Math.round(
+          product.Price - (product.Price * product.Offer) / 100
+        ),
       })
       .then((data) => {
         callback(data.insertedId);
@@ -81,6 +84,9 @@ module.exports = {
               Price: parseInt(product.Price),
               Description: product.Description,
               Offer: parseInt(product.Offer),
+              OfferPrice: Math.round(
+                product.Price - (product.Price * product.Offer) / 100
+              ),
             },
           }
         )

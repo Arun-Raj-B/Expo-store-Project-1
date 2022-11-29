@@ -55,13 +55,16 @@
       </div>
       <div class="col-md-6 col-sm-12 p-5">
         <h1 class="mb-5"><%= prod.Category%>'s Dress Collection</h1>
-        <p><b>Name:</b> <%= prod.Name%></p>
-        <p><b>Category:</b> <%= prod.Category%></p>
-        <p><b>Sub-category:</b> <%= prod.Subcategory%></p>
-        <p><b>Price:</b> <%= prod.Price%>₹</p>
+        <p>Name: <b><%= prod.Name%></b></p>
+        <p>Category: <b><%= prod.Category%></b></p>
+        <p>Sub-category: <b><%= prod.Subcategory%></b></p>
+        <p>
+          Price: <strike>₹ <%= prod.Price %></strike>
+          <b>₹ <%= prod.OfferPrice %></b> (<%= prod.Offer %> % offer)
+        </p>
         <div>
           <div class="d-flex">
-            <p><b>Description:</b></p>
+            <p>Description:</p>
             <p class="ms-4" align="justify">
               <%= prod.Description%> $$$$$ Lorem ipsum dolor sit amet,
               consectetur adipisicing elit. Consectetur, eaque! Ab itaque
