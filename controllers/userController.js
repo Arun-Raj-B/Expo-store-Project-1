@@ -357,6 +357,7 @@ module.exports = {
     console.log(req.body);
     let products = await userHelper.getCartProductList(req.body.userId);
     let totalAmount = await userHelper.getTotalAmount(req.body.userId);
+    totalAmount = totalAmount - parseInt(req.body.coupon);
     console.log(typeof totalAmount);
     userHelper.placeOrder(req.body, products, totalAmount).then((orderId) => {
       if (req.body.paymentMethod == "COD") {
@@ -536,6 +537,18 @@ module.exports = {
       })
       .catch(() => {
         res.json({ updated: false });
+      });
+  },
+
+  postCheckCoupon: (req, res) => {
+    let userId = req.session.user._id;
+    userHelper
+      .checkCoupon(req.body.coupon, userId)
+      .then(() => {
+        res.json({ used: false });
+      })
+      .catch(() => {
+        res.json({ used: true });
       });
   },
 };

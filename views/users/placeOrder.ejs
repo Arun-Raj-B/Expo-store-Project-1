@@ -183,13 +183,15 @@
                   class="form-select"
                   aria-label="Default select example"
                   id="couponValue"
+                  name="coupon"
                 >
-                  <!-- <option selected>Apply Coupon</option> -->
-                  <% locals.coupons.forEach((coupon)=>{ %>
+                  <option value="0" selected>Coupons</option>
+                  <% locals.coupons.forEach((coupon)=>{ %> <% if
+                  (totalAmount>=coupon.limit) {%>
                   <option value="<%=coupon.discount%>">
                     <%=coupon.name %>
                   </option>
-                  <% }) %>
+                  <% } %> <% }) %>
                 </select>
               </div>
               <div>
@@ -199,7 +201,7 @@
               </div>
             </div>
             <h6 class="text-success" id="couponPrice"></h6>
-            <h6 class="text-danger">You have used this coupon once</h6>
+            <h6 class="text-danger" id="used"></h6>
             <h3 id="grandTotal" class="text-success"></h3>
             <div id="paypal-button-container" style="display: none"></div>
             <div id="order-Id" hidden></div>
@@ -230,7 +232,9 @@
       },
       // Order is created on the server and the order id is returned
       createOrder: (data, actions) => {
-        const total = document.getElementById("total").innerHTML;
+        let total = document.getElementById("total").innerHTML;
+        let coupon = document.getElementById("couponValue").value;
+        total = parseInt(total) - parseInt(coupon);
         // console.log("This is the total " + total);
         return fetch(`/paypal/${total}`, {
           method: "post",
@@ -299,21 +303,24 @@
   src="/users/javascript/placeOrderValidation.js"
 ></script>
 
+//
 <!-- <script>
-  $("#checkout-form").submit((e) => {
-    e.preventDefault();
-    $.ajax({
-      url: "/placeOrder",
-      method: "post",
-      data: $("#checkout-form").serialize(),
-      success: (response) => {
-        alert(response);
-      },
-    });
-  });
-</script> -->
+//   $("#checkout-form").submit((e) => {
+//     e.preventDefault();
+//     $.ajax({
+//       url: "/placeOrder",
+//       method: "post",
+//       data: $("#checkout-form").serialize(),
+//       success: (response) => {
+//         alert(response);
+//       },
+//     });
+//   });
+// </script> -->
 
+//
 <!-- witten in placeOrderValidation.js -->
+//
 <!-- all handling done inside placeOrderValidation.js -->
 
 <script>
@@ -378,18 +385,29 @@
 <script>
   function redeemCoupon() {
     let coupon = document.getElementById("couponValue").value;
-    $.ajax({
-      url: "/checkCoupon",
-    });
-    // let coupon = document.getElementById("couponValue").value;
     let Total = document.getElementById("total").innerHTML;
     let grandTotal = Total - coupon;
-
-    document.getElementById(
-      "couponPrice"
-    ).innerHTML = `Redeemed ₹ ${coupon} from ${Total}`;
-    document.getElementById(
-      "grandTotal"
-    ).innerHTML = `Grand Total : ₹ ${grandTotal}`;
+    $.ajax({
+      url: "/checkCoupon",
+      data: {
+        coupon: coupon,
+      },
+      method: "post",
+      success: (response) => {
+        if (!response.used) {
+          document.getElementById(
+            "couponPrice"
+          ).innerHTML = `Redeemed ₹ ${coupon} from ${Total}`;
+          document.getElementById(
+            "grandTotal"
+          ).innerHTML = `Grand Total : ₹ ${grandTotal}`;
+        } else {
+          document.getElementById("used").innerHTML =
+            "You have already redeemed this coupon";
+          document.getElementById("couponValue").value = 0;
+        }
+      },
+    });
+    // let coupon = document.getElementById("couponValue").value;
   }
 </script>

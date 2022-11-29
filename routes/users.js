@@ -75,5 +75,6 @@ router.get("/profile", userMiddlewear.verifyLogin, userController.getProfile);
 router.post("/deleteAddress", userController.postDeleteAddress);
 router.post("/editEmail", userController.postEditEmail);
 router.post("/editMobile", userController.postEditMobile);
+router.post("/checkCoupon", userController.postCheckCoupon);
 
 module.exports = router;

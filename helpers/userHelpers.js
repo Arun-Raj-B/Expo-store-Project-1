@@ -941,4 +941,38 @@ module.exports = {
         });
     });
   },
+
+  checkCoupon: (coupon, userId) => {
+    return new Promise(async (resolve, reject) => {
+      const userExist = await db
+        .get()
+        .collection(collection.COUPON_COLLECTION)
+        .findOne({
+          $and: [{ discount: coupon }, { users: { $in: [objectId(userId)] } }],
+        });
+      if (userExist) {
+        console.log(userExist);
+        console.log("user exists");
+        reject();
+      } else {
+        console.log("user does not exist");
+        console.log(coupon);
+        userId = objectId(userId);
+        db.get()
+          .collection(collection.COUPON_COLLECTION)
+          .updateOne(
+            {
+              discount: coupon,
+            },
+            {
+              $push: { users: userId },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            resolve();
+          });
+      }
+    });
+  },
 };
