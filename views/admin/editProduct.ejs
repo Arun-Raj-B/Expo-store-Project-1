@@ -21,21 +21,26 @@
           />
 
           <label for="" class="mt-2">Category</label>
-          <select class="form-select" name="Category">
+          <select
+            class="form-select"
+            name="Category"
+            id="Category"
+            onchange="updateSubcategory()"
+          >
             <option hidden><%=product.Category%></option>
-            <option>Men</option>
-            <option>Women</option>
+            <% locals.categories.forEach((category)=>{ %>
+            <option value="<%= category.category %>">
+              <%= category.category %>
+            </option>
+            <% }) %>
           </select>
 
           <label for="" class="mt-2">Sub-Category</label>
           <select class="form-select" name="Subcategory">
             <option hidden><%=product.Subcategory%></option>
-            <option>Shirt</option>
-            <option>T-shirt</option>
-            <option>Hoodie</option>
-            <option>Skirt</option>
-            <option>Gown</option>
-            <option>Kurti</option>
+            <option id="1">Shirt</option>
+            <option id="2">T-shirt</option>
+            <option id="3">Hoodie</option>
           </select>
 
           <label for="" class="mt-2">Price</label>
@@ -60,6 +65,14 @@
             name="Stock"
             class="form-control"
             value="<%=product.Stock%>"
+          />
+
+          <label for="" class="mt-2">Offer (in %)</label>
+          <input
+            type="number"
+            name="Offer"
+            class="form-control"
+            value="<%=product.Offer%>"
           />
 
           <% const id1 = product._id %> <% const id2 = product._id+"a" %> <%
@@ -149,5 +162,26 @@
     document.getElementById("imgView4").src = URL.createObjectURL(
       event.target.files[0]
     );
+  }
+</script>
+
+<script>
+  function updateSubcategory() {
+    let category = document.getElementById("Category");
+    let categoryOption = category.options[category.selectedIndex].value;
+    // console.log(categoryOption);
+    $.ajax({
+      url: "/admin/getSubcategory",
+      data: {
+        category: categoryOption,
+      },
+      method: "post",
+      success: (response) => {
+        // console.log(response.subcategory[0]);
+        document.getElementById("1").innerHTML = response.subcategory[0];
+        document.getElementById("2").innerHTML = response.subcategory[1];
+        document.getElementById("3").innerHTML = response.subcategory[2];
+      },
+    });
   }
 </script>

@@ -15,6 +15,7 @@ module.exports = {
         Description: product.Description,
         Deleted: false,
         sales: 0,
+        Offer: parseInt(product.Offer),
       })
       .then((data) => {
         callback(data.insertedId);
@@ -79,6 +80,7 @@ module.exports = {
               Stock: parseInt(product.Stock),
               Price: parseInt(product.Price),
               Description: product.Description,
+              Offer: parseInt(product.Offer),
             },
           }
         )

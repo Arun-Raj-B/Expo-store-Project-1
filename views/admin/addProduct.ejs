@@ -1,4 +1,4 @@
-<section>
+<section class="mb-5">
   <div
     class="container mt-5 bg-dark text-white w-50 m-auto"
     style="border-radius: 25px"
@@ -19,10 +19,15 @@
           <select
             class="form-select"
             name="Category"
+            id="Category"
             aria-label="Default select example"
+            onchange="updateSubcategory()"
           >
-            <option>Men</option>
-            <option>Women</option>
+            <% locals.categories.forEach((category)=>{ %>
+            <option value="<%= category.category %>">
+              <%= category.category %>
+            </option>
+            <% }) %>
           </select>
 
           <label for="" class="mt-2">Sub-Category</label>
@@ -32,12 +37,9 @@
             aria-label="Default select example"
             value=""
           >
-            <option>Shirt</option>
-            <option>T-shirt</option>
-            <option>Hoodie</option>
-            <option>Skirt</option>
-            <option>Gown</option>
-            <option>Kurti</option>
+            <option id="1">Shirt</option>
+            <option id="2">T-shirt</option>
+            <option id="3">Hoodie</option>
           </select>
 
           <label for="" class="mt-2">Price</label>
@@ -48,6 +50,9 @@
 
           <label for="" class="mt-2">Stock</label>
           <input type="number" name="Stock" class="form-control" />
+
+          <label for="" class="mt-2">Offer (in %)</label>
+          <input type="number" name="Offer" class="form-control" />
 
           <!-- <label for="" class="mt-2">Image</label>
           <input type="file" name="Image" class="form-control" multiple /> -->
@@ -138,5 +143,26 @@
     document.getElementById("imgView4").src = URL.createObjectURL(
       event.target.files[0]
     );
+  }
+</script>
+
+<script>
+  function updateSubcategory() {
+    let category = document.getElementById("Category");
+    let categoryOption = category.options[category.selectedIndex].value;
+    // console.log(categoryOption);
+    $.ajax({
+      url: "/admin/getSubcategory",
+      data: {
+        category: categoryOption,
+      },
+      method: "post",
+      success: (response) => {
+        // console.log(response.subcategory[0]);
+        document.getElementById("1").innerHTML = response.subcategory[0];
+        document.getElementById("2").innerHTML = response.subcategory[1];
+        document.getElementById("3").innerHTML = response.subcategory[2];
+      },
+    });
   }
 </script>

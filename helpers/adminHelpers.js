@@ -146,4 +146,14 @@ module.exports = {
       resolve(coupons);
     });
   },
+
+  getSingleCategory: (category) => {
+    return new Promise(async (resolve, reject) => {
+      const singleCategory = await db
+        .get()
+        .collection(collection.CATEGORY_COLLECTION)
+        .findOne({ category: category });
+      resolve(singleCategory);
+    });
+  },
 };

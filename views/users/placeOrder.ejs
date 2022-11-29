@@ -1,5 +1,5 @@
-<section class="page-fill" style="background-color: #ece6d9">
-  <div class="container" style="padding-top: 5%; padding-bottom: 5%">
+<section style="background-color: #ece6d9; padding-top: 5%">
+  <div class="container" style="padding-top: 3%; padding-bottom: 8%">
     <form id="checkout-form">
       <div class="row d-flex justify-content-center align-items-center">
         <div class="card col-md-7 col-sm-12 shadow-sm m-3">
@@ -303,8 +303,8 @@
   src="/users/javascript/placeOrderValidation.js"
 ></script>
 
-//
 <!-- <script>
+  
 //   $("#checkout-form").submit((e) => {
 //     e.preventDefault();
 //     $.ajax({
@@ -316,12 +316,9 @@
 //       },
 //     });
 //   });
+//witten in placeOrderValidation.js 
+  //all handling done inside placeOrderValidation.js
 // </script> -->
-
-//
-<!-- witten in placeOrderValidation.js -->
-//
-<!-- all handling done inside placeOrderValidation.js -->
 
 <script>
   function saveAddress() {
@@ -397,14 +394,17 @@
         if (!response.used) {
           document.getElementById(
             "couponPrice"
-          ).innerHTML = `Redeemed ₹ ${coupon} from ${Total}`;
+          ).innerHTML = `Redeemed ₹ ${coupon} from ₹ ${Total}`;
           document.getElementById(
             "grandTotal"
           ).innerHTML = `Grand Total : ₹ ${grandTotal}`;
+          document.getElementById("used").innerHTML = "";
         } else {
           document.getElementById("used").innerHTML =
             "You have already redeemed this coupon";
           document.getElementById("couponValue").value = 0;
+          document.getElementById("couponPrice").innerHTML = "";
+          document.getElementById("grandTotal").innerHTML = "";
         }
       },
     });

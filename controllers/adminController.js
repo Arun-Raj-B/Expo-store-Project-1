@@ -61,7 +61,13 @@ module.exports = {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
     let adminData = req.session.admin;
-    res.render("admin/addProduct", { admin: true, adminData, reqNo });
+    let categories = await productHelper.getAllCategories();
+    res.render("admin/addProduct", {
+      admin: true,
+      adminData,
+      reqNo,
+      categories,
+    });
   },
 
   postAddProduct: (req, res) => {
@@ -200,7 +206,14 @@ module.exports = {
     let adminData = req.session.admin;
     let proId = req.params.id;
     let product = await productHelper.getOneProduct(proId);
-    res.render("admin/editProduct", { admin: true, product, adminData, reqNo });
+    let categories = await productHelper.getAllCategories();
+    res.render("admin/editProduct", {
+      admin: true,
+      product,
+      adminData,
+      reqNo,
+      categories,
+    });
   },
 
   postEditProduct: (req, res) => {
@@ -435,6 +448,13 @@ module.exports = {
     adminHelper.deleteCoupon(req.body).then((response) => {
       console.log(response);
       res.json({ deleted: "success" });
+    });
+  },
+
+  getSingleCategory: (req, res) => {
+    // console.log(req.body.category);
+    adminHelper.getSingleCategory(req.body.category).then((response) => {
+      res.json(response);
     });
   },
 };
