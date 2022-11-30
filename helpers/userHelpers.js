@@ -928,7 +928,7 @@ module.exports = {
   },
 
   editMobile: (details) => {
-    const mobile = parseInt(details.mobile);
+    const mobile = details.mobile;
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.USER_COLLECTION)

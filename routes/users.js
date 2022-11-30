@@ -15,7 +15,11 @@ router
 router.get("/logout", userController.getLogout);
 router.get("/cart", userMiddlewear.verifyLogin, userController.getCart);
 //verifyLogin required
-router.get("/addToCart/:id", userController.getAddToCart);
+router.get(
+  "/addToCart/:id",
+  userMiddlewear.verifyLogin,
+  userController.getAddToCart
+);
 router.get("/wishlist", userMiddlewear.verifyLogin, userController.getWishlist);
 //verifyLogin required
 router.get(
@@ -52,6 +56,7 @@ router.get(
 );
 router.get(
   "/removeWishlistProduct/:wishlistId/:prodId",
+  userMiddlewear.verifyLogin,
   userController.postRemoveWishlistProduct
 );
 router.post("/wishlistToCart", userController.postWishlistToCart);
