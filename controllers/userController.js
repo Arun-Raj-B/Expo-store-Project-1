@@ -238,6 +238,7 @@ module.exports = {
         const mobile = user.mobilenumber;
         req.session.mobile = mobile;
         req.session.tempUser = user;
+        otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
         res.redirect("/loginOTP");
       } else {
         const loginErr = "User does not exist";
@@ -246,9 +247,15 @@ module.exports = {
     });
   },
 
-  getLoginOTP: (req, res) => {
+  resendOTP: (req, res) => {
     const mobile = req.session.mobile;
     otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
+    console.log("{ send: true }");
+    res.json({ send: true });
+  },
+
+  getLoginOTP: (req, res) => {
+    const mobile = req.session.mobile;
     res.render("users/loginOTP", { mobile });
   },
 

@@ -36,6 +36,7 @@ router
   .route("/loginOTP")
   .get(userMiddlewear.redirectHome, userController.getLoginOTP)
   .post(userController.postLoginOTP);
+router.post("/resendOTP", userController.resendOTP);
 router.get("/singleProduct/:id", userController.getSingleProduct);
 router.post(
   "/changeCartProductQuantity",

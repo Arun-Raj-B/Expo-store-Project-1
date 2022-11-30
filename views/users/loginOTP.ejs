@@ -33,11 +33,10 @@
           </div>
           <a
             id="resendOTP"
-            class="btn btn-outline-success"
+            class="text-success text-decoration-none"
             style="cursor: pointer; display: none"
-            onclick="reload()"
           >
-            Resend OTP
+            Resend OTP (<span id="OTPcount"></span>/3)
           </a>
           <div id="otp-text">
             Resend OTP in <span id="timer"></span> seconds
@@ -62,6 +61,8 @@
 <script>
   let seconds = 10;
   let timer;
+  let OTPcount = 0;
+  console.log(timer);
   function myFunction() {
     if (seconds < 10) {
       // I want it to say 1:00, not 60
@@ -72,22 +73,43 @@
       seconds--;
     } else {
       clearInterval(timer);
+      document.getElementById("OTPcount").innerHTML = OTPcount++;
       document.getElementById("resendOTP").style.display = "block";
       document.getElementById("otp-text").style.display = "none";
     }
   }
-  // document.getElementById("resendOTP").onclick = function () {
-  function onPageLoad() {
+
+  function counter() {
+    console.log("working");
     if (!timer) {
+      console.log("timer working");
       timer = window.setInterval(function () {
         myFunction();
       }, 1000); // every second
     }
   }
-  document.getElementById("timer").innerHTML = "1:00";
-  onPageLoad();
+  document.getElementById("timer").innerHTML = "10";
 
-  function reload() {
-    location.reload();
-  }
+  //to start counter when the page loads
+  counter();
+
+  document.getElementById("resendOTP").onclick = function () {
+    if (OTPcount == "4") {
+      window.location.href = "/login";
+    } else {
+      $.ajax({
+        url: "/resendOTP",
+        method: "post",
+        success: (response) => {
+          console.log(response);
+          timer = false;
+          seconds = 10;
+          document.getElementById("timer").innerHTML = "10";
+          document.getElementById("resendOTP").style.display = "none";
+          document.getElementById("otp-text").style.display = "block";
+          counter();
+        },
+      });
+    }
+  };
 </script>
