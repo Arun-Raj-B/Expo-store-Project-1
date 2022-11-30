@@ -5,7 +5,7 @@
     <div class="position-relative">
       <div
         class="card card-work p-2 shadow text-center"
-        style="width: 22rem; height: 16rem"
+        style="width: 22rem; height: 18rem"
       >
         <form action="/loginOTP" method="post" id="formValidation">
           <div class="pt-3">
@@ -31,6 +31,17 @@
               Submit
             </button>
           </div>
+          <a
+            id="resendOTP"
+            class="btn btn-outline-success"
+            style="cursor: pointer; display: none"
+            onclick="reload()"
+          >
+            Resend OTP
+          </a>
+          <div id="otp-text">
+            Resend OTP in <span id="timer"></span> seconds
+          </div>
         </form>
       </div>
     </div>
@@ -47,3 +58,36 @@
   text="text/javascript"
   src="/users/javascript/signupValidation.js"
 ></script>
+
+<script>
+  let seconds = 10;
+  let timer;
+  function myFunction() {
+    if (seconds < 10) {
+      // I want it to say 1:00, not 60
+      document.getElementById("timer").innerHTML = seconds;
+    }
+    if (seconds > 0) {
+      // so it doesn't go to -1
+      seconds--;
+    } else {
+      clearInterval(timer);
+      document.getElementById("resendOTP").style.display = "block";
+      document.getElementById("otp-text").style.display = "none";
+    }
+  }
+  // document.getElementById("resendOTP").onclick = function () {
+  function onPageLoad() {
+    if (!timer) {
+      timer = window.setInterval(function () {
+        myFunction();
+      }, 1000); // every second
+    }
+  }
+  document.getElementById("timer").innerHTML = "1:00";
+  onPageLoad();
+
+  function reload() {
+    location.reload();
+  }
+</script>
