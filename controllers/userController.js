@@ -60,6 +60,7 @@ module.exports = {
         req.session.mobile = mobile;
         otpHelper.obj.OTP = otpHelper.sendMessage(mobile);
         // res.redirect("/login");
+        // console.log("Redirecting to OTP page");
         res.redirect("/otp");
       })
       .catch((Err) => {
@@ -83,6 +84,7 @@ module.exports = {
         } else {
           req.session.loggedIn = true;
           req.session.user = response.user;
+          // console.log(req.session.user);
           res.redirect("/");
         }
       } else {

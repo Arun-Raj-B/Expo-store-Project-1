@@ -80,6 +80,8 @@ module.exports = {
   },
 
   doVerify: (mobile) => {
+    console.log(mobile);
+    console.log("In doVerify");
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.USER_COLLECTION)
@@ -92,12 +94,14 @@ module.exports = {
           }
         )
         .then((response) => {
+          console.log(response);
           resolve(response);
         });
     });
   },
 
   checkNoExist: (mobile) => {
+    console.log(mobile);
     return new Promise((resolve, reject) => {
       db.get()
         .collection(collection.USER_COLLECTION)
@@ -105,6 +109,7 @@ module.exports = {
           mobilenumber: mobile,
         })
         .then((user) => {
+          console.log(user);
           resolve(user);
         });
     });
