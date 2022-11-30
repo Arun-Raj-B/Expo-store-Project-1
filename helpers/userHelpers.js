@@ -982,4 +982,31 @@ module.exports = {
       }
     });
   },
+
+  returnRequest: (details) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .updateOne(
+          {
+            _id: objectId(details.orderId),
+          },
+          {
+            $set: { status: "Requested return" },
+          }
+        );
+      db.get()
+        .collection(collection.RETURN_COLLECTION)
+        .insertOne({
+          orderId: details.orderId,
+          subject: details.subject,
+          description: details.description,
+          status: "Requested return",
+        })
+        .then((response) => {
+          console.log(response);
+          resolve();
+        });
+    });
+  },
 };

@@ -7,7 +7,7 @@
         <div class="col"><h4>OrderId : <%=order._id %></div>
         <div class="col text-end">
           <div>
-            <% if (order.status!= "Cancelled"&&order.status!="Shipped"&&order.status!="Delivered"&&order.status !== "Refund complete") { %> 
+            <% if (order.status!= "Cancelled"&&order.status!="Shipped"&&order.status!="Delivered"&&order.status !== "Refund complete"&&order.status !== "Requested return") { %> 
               <% if (order.status == "Cancel requested"||order.status == "Cancelled") {%>
                 <button class="btn btn-outline-danger"><%=order.status  %> </button>
                 <% } else {%> 
@@ -15,7 +15,7 @@
               <% } %> 
               <% } %>
               <% if (order.status == "Delivered"){ %> 
-                <button class="btn btn-outline-danger" id="cancel" onclick="returnOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Return Order</button>
+                <button class="btn btn-outline-danger" id="return" onclick="returnOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Return Order</button>
                 <% } %> 
           </div>
         </div>
@@ -31,7 +31,7 @@
             %>
           </p>
           <p><b>Total Amount : </b><%=order.totalAmount %> ₹</p>
-          <p><b>Status : </b><%=order.status %></p>
+          <p><b>Status : </b><span id="ifReturn"><%=order.status %></span></p>
         </div>
       </div>
       <div class="row d-flex">
@@ -127,13 +127,13 @@
         let validateDescription = (description) => {
           return String(description)
             .toLowerCase()
-            .match(/^[\w_ ]{10,}$/);
+            .match(/^[\w_.!? ]{10,}$/);
         };
 
         let validateSubject = (subject) => {
           return String(subject)
             .toLowerCase()
-            .match(/^[\w_ ]{3,}$/);
+            .match(/^[\w_.!? ]{3,}$/);
         };
 
         const checkSubject = validateSubject(subject);
@@ -154,6 +154,26 @@
             },
             method: "post",
             success: (response) => {
+              var toastMixin = Swal.mixin({
+                  toast: true,
+                  icon: "success",
+                  title: "General Title",
+                  animation: false,
+                  position: "top-right",
+                  showConfirmButton: false,
+                  timer: 1500,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                document.getElementById("return").style.display = 'none'
+                document.getElementById("ifReturn").innerHTML = "Requested return";
+                toastMixin.fire({
+                  animation: true,
+                  title: "Return request sent",
+                });
             }
           })
         }

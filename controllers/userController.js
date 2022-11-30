@@ -563,5 +563,7 @@ module.exports = {
 
   postReturnOrder: (req, res) => {
     console.log(req.body);
+    userHelper.returnRequest(req.body);
+    res.json({ return: true });
   },
 };
