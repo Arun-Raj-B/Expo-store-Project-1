@@ -17,6 +17,7 @@
               <% if (order.status == "Delivered"){ %> 
                 <button class="btn btn-outline-danger" id="return" onclick="returnOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Return Order</button>
                 <% } %> 
+                <button class="btn btn-outline-success" onclick="downloadInvoice('<%=locals.products[0]%>')">Download invoice</button>
           </div>
         </div>
         <div class="pb-2"></div>
@@ -35,6 +36,7 @@
         </div>
       </div>
       <div class="row d-flex">
+        <!-- <div id="products" hidden><=products  %> </div> -->
         <% locals.products.forEach(orderProduct=>{%>
         <div class="col-md-3 col-sm-6 p-3 d-flex justify-content-center">
           <div class="card card-work shadow rounded" style="width: 16rem">
@@ -181,5 +183,127 @@
         });
   }
 })
+  }
+</script>
+
+<script>
+function downloadInvoice(argProducts){
+  console.log(JSON.stringify(argProducts));
+    console.log("<%=products.length%>")
+    console.log("<%=products[0].product.Name%>")
+    console.log("<%=products[0].quantity%>")
+
+    let length = parseInt("<%=products.length%>"),obj ={},allProducts = [], i;
+    "<%let a=0%>"
+    for( i=0;i<length;i++){  
+       allProducts.push({
+        "quantity": "<%=products[a].quantity%>",
+            "description": "<%= products[a].product.Name %>",
+            "tax-rate": 0,
+            "price": "<%= products[a].product.OfferPrice %>"
+      });
+      console.log(allProducts);
+      // allProducts.push({
+      //   "quantity": "<=products[1].quantity%>",
+      //       "description": "<= products[1].product.Name %>",
+      //       "tax-rate": 0,
+      //       "price": "<= products[1].product.OfferPrice %>"
+      // });
+      // console.log(allProducts);
+    }
+    
+
+
+    // let allProducts = "<=products%>"
+    // console.log(allProducts[0].product.Name)
+    // allProducts.forEach(product => {
+    //   let obj = {
+    //     "quantity": "<=product.quantity%>",
+    //         "description": "<= product.product.Name %>",
+    //         "tax-rate": 0,
+    //         "price": "<= product.product.OfferPrice %>"
+    //   }
+    //   products.push(obj);
+    // });
+
+    var data = {
+    // Customize enables you to provide your own templates
+    // Please review the documentation for instructions and examples
+    "customize": {
+        //  "template": fs.readFileSync('template.html', 'base64') // Must be base64 encoded html 
+    },
+    "images": {
+        // The logo on top of your invoice
+        "logo": "",
+        // The invoice background
+        "background": ""
+    },
+    // Your own data
+    "sender": {
+        "company": "EXPO store",
+        "address": "Thottathil",
+        "zip": "691016",
+        "city": "Kollam",
+        "country": "Kerala"
+        //"custom1": "custom value 1",
+        //"custom2": "custom value 2",
+        //"custom3": "custom value 3"
+    },
+    // Your recipient
+    "client": {
+        "address": "<%=order.deliveryDetails.address%>",
+        "zip": "<%=order.deliveryDetails.pincode %>",
+        // "custom1": "custom value 1",
+        // "custom2": "custom value 2",
+        // "custom3": "custom value 3"
+    },
+    "information": {
+        // Invoice number
+        "number": "<%=order._id %>",
+        // Invoice data
+        "date": "<%=order.date %>",
+         // Invoice due date
+         "due-date": "<%=order.date %>"
+    },
+    // The products you would like to see on your invoice
+    // Total values are being calculated automatically
+    "products": allProducts,
+    // The message you would like to display on the bottom of your invoice
+    "bottom-notice": "Thank you for shopping from us. Visit again",
+    // Settings to customize your invoice
+    "settings": {
+        "currency": "INR", // See documentation 'Locales and Currency' for more info. Leave empty for no currency.
+        // "locale": "nl-NL", // Defaults to en-US, used for number formatting (See documentation 'Locales and Currency')
+        // "tax-notation": "gst", // Defaults to 'vat'
+        // "margin-top": 25, // Defaults to '25'
+        // "margin-right": 25, // Defaults to '25'
+        // "margin-left": 25, // Defaults to '25'
+        // "margin-bottom": 25, // Defaults to '25'
+        // "format": "A4", // Defaults to A4, options: A3, A4, A5, Legal, Letter, Tabloid
+        // "height": "1000px", // allowed units: mm, cm, in, px
+        // "width": "500px", // allowed units: mm, cm, in, px
+        // "orientation": "landscape", // portrait or landscape, defaults to portrait
+    },
+    // Translate your invoice to your preferred language
+    "translate": {
+        // "invoice": "FACTUUR",  // Default to 'INVOICE'
+        // "number": "Nummer", // Defaults to 'Number'
+        // "date": "Datum", // Default to 'Date'
+        // "due-date": "Verloopdatum", // Defaults to 'Due Date'
+        // "subtotal": "Subtotaal", // Defaults to 'Subtotal'
+        // "products": "Producten", // Defaults to 'Products'
+        // "quantity": "Aantal", // Default to 'Quantity'
+        // "price": "Prijs", // Defaults to 'Price'
+        // "product-total": "Totaal", // Defaults to 'Total'
+        // "total": "Totaal" // Defaults to 'Total'
+    },
+};
+
+//Create your invoice! Easy!
+easyinvoice.createInvoice(data, function (result) {
+    //The response will contain a base64 encoded PDF file
+    console.log('PDF base64 string: ', result.pdf);
+    easyinvoice.download("invoice.pdf");
+});
   }
 </script>

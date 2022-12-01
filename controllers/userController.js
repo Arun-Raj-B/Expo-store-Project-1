@@ -559,7 +559,7 @@ module.exports = {
       .catch(() => {
         res.json({ used: true });
       });
-  },
+  }, 
 
   postReturnOrder: (req, res) => {
     console.log(req.body);
