@@ -33,6 +33,7 @@ module.exports = {
         topSellers,
         ordersDate,
         returnsNo,
+        orders,
       });
     }
   },
@@ -523,7 +524,7 @@ module.exports = {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
     let returns = await adminHelper.allReturnRequests();
-    const returnsNo = returns.length; 
+    const returnsNo = returns.length;
     returns = returns.reverse();
     const adminData = req.session.admin;
     console.log(returns);
@@ -540,6 +541,8 @@ module.exports = {
   postAcceptReturn: (req, res) => {
     console.log(req.body);
     adminHelper.acceptReturn(req.body).then((response) => {
+      const message = `EXPOstore : Your return request for order:${req.body.orderId} is accepted`;
+      orderHelper.sendMessage(req.body.mobile, message);
       res.json(response);
     });
   },

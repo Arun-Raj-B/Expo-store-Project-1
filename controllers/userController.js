@@ -563,7 +563,10 @@ module.exports = {
 
   postReturnOrder: (req, res) => {
     console.log(req.body);
-    userHelper.returnRequest(req.body);
-    res.json({ return: true });
+    userHelper.returnRequest(req.body).then(() => {
+      const message = `EXPOstore : Your request for return of order:${req.body.orderId} is send`;
+      orderHelper.sendMessage(req.body.mobile, message);
+      res.json({ return: true });
+    });
   },
 };
