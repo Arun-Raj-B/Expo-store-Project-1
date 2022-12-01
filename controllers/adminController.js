@@ -4,6 +4,7 @@ const orderHelper = require("../helpers/orderHelper");
 const adminUserHelper = require("../helpers/adminUserHelpers");
 const adminHelper = require("../helpers/adminHelpers");
 const { response } = require("express");
+const { Db } = require("mongodb");
 
 module.exports = {
   getAdminHome: async (req, res) => {
@@ -16,6 +17,8 @@ module.exports = {
     const totalUsers = users.length;
     const totalOrders = orders.length;
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     const adminData = req.session.admin;
     if (!adminData) {
       res.render("admin/adminLogin", { admin: true });
@@ -29,6 +32,7 @@ module.exports = {
         totalRevenue,
         topSellers,
         ordersDate,
+        returnsNo,
       });
     }
   },
@@ -36,6 +40,8 @@ module.exports = {
   getViewProduct: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     let adminData = req.session.admin;
     productHelper.getAllProducts().then((products) => {
       // console.log(products);
@@ -44,6 +50,7 @@ module.exports = {
         admin: true,
         adminData,
         reqNo,
+        returnsNo,
       });
     });
   },
@@ -51,15 +58,25 @@ module.exports = {
   getViewUser: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     let adminData = req.session.admin;
     adminUserHelper.getAllUsers().then((users) => {
-      res.render("admin/viewUsers", { users, admin: true, adminData, reqNo });
+      res.render("admin/viewUsers", {
+        users,
+        admin: true,
+        adminData,
+        reqNo,
+        returnsNo,
+      });
     });
   },
 
   getAddProduct: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     let adminData = req.session.admin;
     let categories = await productHelper.getAllCategories();
     res.render("admin/addProduct", {
@@ -67,6 +84,7 @@ module.exports = {
       adminData,
       reqNo,
       categories,
+      returnsNo,
     });
   },
 
@@ -203,6 +221,8 @@ module.exports = {
   getEditProduct: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     let adminData = req.session.admin;
     let proId = req.params.id;
     let product = await productHelper.getOneProduct(proId);
@@ -213,6 +233,7 @@ module.exports = {
       adminData,
       reqNo,
       categories,
+      returnsNo,
     });
   },
 
@@ -256,13 +277,22 @@ module.exports = {
   getAdminSignup: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     let adminData = req.session.admin;
-    res.render("admin/adminSignup", { admin: true, adminData, reqNo });
+    res.render("admin/adminSignup", {
+      admin: true,
+      adminData,
+      reqNo,
+      returnsNo,
+    });
   },
 
   getAdminLogin: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     if (req.session.loggedIn) {
       res.redirect("/admin");
     } else {
@@ -270,6 +300,7 @@ module.exports = {
         admin: true,
         loginErr: req.session.loginErr,
         reqNo,
+        returnsNo,
       });
       req.session.loginErr = false;
     }
@@ -304,6 +335,8 @@ module.exports = {
   getViewCategory: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     let adminData = req.session.admin;
     productHelper.getAllCategories().then((categories) => {
       res.render("admin/viewCategory", {
@@ -311,6 +344,7 @@ module.exports = {
         adminData,
         categories,
         reqNo,
+        returnsNo,
       });
     });
   },
@@ -318,8 +352,15 @@ module.exports = {
   getAddCategory: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     let adminData = req.session.admin;
-    res.render("admin/addCategory", { admin: true, adminData });
+    res.render("admin/addCategory", {
+      admin: true,
+      adminData,
+      reqNo,
+      returnsNo,
+    });
   },
 
   postAddCategory: (req, res) => {
@@ -356,6 +397,8 @@ module.exports = {
   getEditCategory: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     const adminData = req.session.admin;
     const catId = req.params.id;
     const category = await productHelper.getOneCategory(catId);
@@ -364,6 +407,7 @@ module.exports = {
       adminData,
       category,
       reqNo,
+      returnsNo,
     });
   },
 
@@ -378,9 +422,17 @@ module.exports = {
   getAllOrders: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     const adminData = req.session.admin;
     const orders = await adminUserHelper.getAllOrders();
-    res.render("admin/viewOrders", { admin: true, adminData, orders, reqNo });
+    res.render("admin/viewOrders", {
+      admin: true,
+      adminData,
+      orders,
+      reqNo,
+      returnsNo,
+    });
   },
 
   postSetStatus: (req, res) => {
@@ -398,18 +450,23 @@ module.exports = {
   getCancelRequests: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     const adminData = req.session.admin;
     res.render("admin/viewRequests", {
       admin: true,
       requests,
       adminData,
       reqNo,
+      returnsNo,
     });
   },
 
   getViewOrderProducts: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     const adminData = req.session.admin;
     let order = await userHelper.getSingleOrder(req.params.id);
     let products = await userHelper.getOrderProducts(req.params.id);
@@ -420,12 +477,15 @@ module.exports = {
       reqNo,
       products,
       order,
+      returnsNo,
     });
   },
 
   getCoupons: async (req, res) => {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
+    const returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
     const adminData = req.session.admin;
     const coupons = await adminHelper.getAllCoupons();
     res.render("admin/viewCoupons", {
@@ -433,6 +493,7 @@ module.exports = {
       requests,
       adminData,
       reqNo,
+      returnsNo,
       coupons,
     });
   },
@@ -454,6 +515,31 @@ module.exports = {
   getSingleCategory: (req, res) => {
     // console.log(req.body.category);
     adminHelper.getSingleCategory(req.body.category).then((response) => {
+      res.json(response);
+    });
+  },
+
+  getAllReturnRequests: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
+    let returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length; 
+    returns = returns.reverse();
+    const adminData = req.session.admin;
+    console.log(returns);
+    console.log("Number of returns = " + returnsNo);
+    res.render("admin/viewReturnRequests", {
+      admin: true,
+      adminData,
+      returns,
+      returnsNo,
+      reqNo,
+    });
+  },
+
+  postAcceptReturn: (req, res) => {
+    console.log(req.body);
+    adminHelper.acceptReturn(req.body).then((response) => {
       res.json(response);
     });
   },

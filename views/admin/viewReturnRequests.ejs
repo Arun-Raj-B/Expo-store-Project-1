@@ -1,0 +1,88 @@
+<!-- carousel -->
+<section class="page-fill pb-2" style="background-color: rgb(229, 229, 229)">
+  <!-- products -->
+  <div class="container-fluid pt-2">
+    <% returns.forEach(returnRequest=>{ %>
+    <div class="container card mb-2">
+      <div class="row pt-2 d-flex">
+        <div class="col">
+          <h4>
+            <span id="<%=returnRequest.orderId%>"
+              ><b>OrderId</b> : <%=returnRequest.orderId%></span
+            >
+          </h4>
+        </div>
+        <div class="col text-end">
+          <div>
+            <button
+              class="btn btn-outline-danger"
+              id="returnOrder"
+              onclick="acceptReturn('Return accepted','<%=returnRequest.orderId%>','<%=returnRequest._id %>','<%=returnRequest.mobile%>')"
+            >
+              Accept return
+            </button>
+          </div>
+        </div>
+        <div class="pb-2"></div>
+        <hr />
+      </div>
+      <div class="row">
+        <div class="col">
+          <h4>Subject : <%=returnRequest.subject %></h4>
+          <p><b>Description : </b><%=returnRequest.description%></p>
+        </div>
+        <div class="col text-end">
+          <a
+            href="/admin/viewOrderProducts/<%=returnRequest.orderId%>"
+            class="btn btn-outline-dark removeProduct"
+            ><i class="fa-solid fa-eye"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</section>
+
+<script>
+  function acceptReturn(status, orderId, returnId, mobile) {
+    console.log(status, orderId, returnId);
+
+    Swal.fire({
+      title: `Accept return of  Order : ${orderId} ?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, return!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log("Order is going to be returned");
+        $.ajax({
+          url: `/admin/returns`,
+          data: {
+            status: status,
+            orderId: orderId,
+            returnId: returnId,
+            mobile: mobile,
+          },
+          method: "post",
+          success: (response) => {
+            console.log("Consoled in server");
+            Swal.fire(
+              "Accepted!",
+              `Return request has been accepted`,
+              "success"
+            );
+            const timeOut = setTimeout(reloadPage, 1200);
+
+            function reloadPage() {
+              location.reload();
+              clearTimeout(timeOut);
+            }
+          },
+        });
+      }
+    });
+  }
+</script>

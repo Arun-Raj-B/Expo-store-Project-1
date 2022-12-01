@@ -73,5 +73,9 @@ router.get("/coupons", adminMiddlewear.verifyLogin, adminController.getCoupons);
 router.post("/addCoupon", adminController.postAddCoupon);
 router.post("/deleteCoupon", adminController.postDeleteCoupon);
 router.post("/getSubcategory", adminController.getSingleCategory);
+router
+  .route("/returns")
+  .get(adminMiddlewear.verifyLogin, adminController.getAllReturnRequests)
+  .post(adminController.postAcceptReturn);
 
 module.exports = router;

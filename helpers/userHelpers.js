@@ -1001,7 +1001,9 @@ module.exports = {
           orderId: details.orderId,
           subject: details.subject,
           description: details.description,
+          mobile: details.mobile,
           status: "Requested return",
+          resolved: false,
         })
         .then((response) => {
           console.log(response);

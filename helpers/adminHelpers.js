@@ -1,6 +1,7 @@
 const db = require("../config/connection");
 const collection = require("../config/collections");
 const bcrypt = require("bcrypt");
+const { obj } = require("./otpHelper");
 var objectId = require("mongodb").ObjectId;
 
 module.exports = {
@@ -154,6 +155,52 @@ module.exports = {
         .collection(collection.CATEGORY_COLLECTION)
         .findOne({ category: category });
       resolve(singleCategory);
+    });
+  },
+
+  allReturnRequests: () => {
+    return new Promise(async (resolve, reject) => {
+      const returns = await db
+        .get()
+        .collection(collection.RETURN_COLLECTION)
+        .find({ resolved: false })
+        .toArray();
+      resolve(returns);
+    });
+  },
+
+  acceptReturn: (details) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.ORDER_COLLECTION)
+        .updateOne(
+          {
+            _id: objectId(details.orderId),
+          },
+          {
+            $set: {
+              status: details.status,
+            },
+          }
+        )
+        .then((response) => {
+          db.get()
+            .collection(collection.RETURN_COLLECTION)
+            .updateOne(
+              { _id: objectId(details.returnId) },
+              {
+                $set: {
+                  status: details.status,
+                  resolved: true,
+                },
+              }
+            )
+            .then((updated) => {
+              console.log("Return all done");
+              console.log(updated);
+              resolve({ returned: true });
+            });
+        });
     });
   },
 };
