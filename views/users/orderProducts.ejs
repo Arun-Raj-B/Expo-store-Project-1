@@ -17,7 +17,7 @@
               <% if (order.status == "Delivered"){ %> 
                 <button class="btn btn-outline-danger" id="return" onclick="returnOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Return Order</button>
                 <% } %> 
-                <button class="btn btn-outline-success" onclick="downloadInvoice('<%=locals.products[0]%>')">Download invoice</button>
+                <button class="btn btn-outline-success" onclick="downloadInvoice()">Download invoice</button>
           </div>
         </div>
         <div class="pb-2"></div>
@@ -187,22 +187,40 @@
 </script>
 
 <script>
-function downloadInvoice(argProducts){
-  console.log(JSON.stringify(argProducts));
-    console.log("<%=products.length%>")
-    console.log("<%=products[0].product.Name%>")
-    console.log("<%=products[0].quantity%>")
+function downloadInvoice(){
+    var products = '<%- JSON.stringify(products) %>', allProducts=[];
+    var parsed = JSON.parse(products);
 
-    let length = parseInt("<%=products.length%>"),obj ={},allProducts = [], i;
-    "<%let a=0%>"
-    for( i=0;i<length;i++){  
-       allProducts.push({
-        "quantity": "<%=products[a].quantity%>",
-            "description": "<%= products[a].product.Name %>",
+
+    parsed.forEach(single => {
+      allProducts.push({
+        "quantity": single.quantity,
+            "description": single.product.Name,
             "tax-rate": 0,
-            "price": "<%= products[a].product.OfferPrice %>"
-      });
-      console.log(allProducts);
+            "price": single.product.OfferPrice,
+      })
+    })
+
+    console.log(parsed.length)
+
+
+
+
+    // console.log("<=products.length%>")
+    // console.log("<=products[0].product.Name%>")
+    // console.log("<=products[0].quantity%>")
+
+    // let length = parseInt("<=products.length%>"),obj ={},allProducts = [], i;
+    // "<let a=0%>"
+    // for( i=0;i<length;i++){  
+    //    allProducts.push({
+    //     "quantity": "<=products[a].quantity%>",
+    //         "description": "<= products[a].product.Name %>",
+    //         "tax-rate": 0,
+    //         "price": "<= products[a].product.OfferPrice %>"
+    //   });
+    //   "< a++%>"
+    //   console.log(allProducts);
       // allProducts.push({
       //   "quantity": "<=products[1].quantity%>",
       //       "description": "<= products[1].product.Name %>",
@@ -210,7 +228,7 @@ function downloadInvoice(argProducts){
       //       "price": "<= products[1].product.OfferPrice %>"
       // });
       // console.log(allProducts);
-    }
+    //}
     
 
 

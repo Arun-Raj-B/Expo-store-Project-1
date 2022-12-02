@@ -59,7 +59,8 @@
                 </button>
                 <!-- &&order.status!="Refund complete" -->
                 <ul class="dropdown-menu">
-                  <% if (order.status !== "Cancel requested"){%> <%
+                  <% if(order.status !== "Return accepted"){ %> <% if
+                  (order.status !== "Cancel requested"){%> <%
                   if(order.status!="Delivered"&&order.status!="Cancelled") {%>
                   <% if (order.status !== "Shipped"&&order.status !==
                   "Delivered"){%>
@@ -97,7 +98,7 @@
                       Cancel
                     </button>
                   </li>
-                  <%}%>
+                  <%}%> <%}%>
                 </ul>
               </div>
             </td>

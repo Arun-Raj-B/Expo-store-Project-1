@@ -10,7 +10,7 @@ module.exports = {
     };
 
     fast2sms
-      .sendMessage(options)
+      .sendMessage(options) 
       .then((response) => {
         console.log("message send successfully");
       })
