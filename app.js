@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config(); 
+  require("dotenv").config();
 }
 
 //imports
@@ -31,7 +31,6 @@ app.use(
   })
 );
 app.use(nocache());
-
 //db connection
 db.connect((err) => {
   if (err) {
