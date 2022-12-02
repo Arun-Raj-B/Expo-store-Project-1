@@ -58,18 +58,69 @@
     </div>
   </div>
 
-  <!-- orders -->
-  <div class="container shadow-lg rounded pb-2 pt-2 mb-5">
-    <div class="row d-flex pb-2">
-      <i class="fa-solid fa-file fa-4x"
-        ><span style="font-size: 30%" class="ps-1"
-          >Sales Report / orders</span
-        ></i
-      >
+  <!-- products -->
+  <div class="container shadow-lg rounded mb-5">
+    <div class="row mt-4">
+      <div class="d-flex justify-content-between mt-1">
+        <div class="pb-2">
+          <i class="fa-solid fa-file fa-4x"
+            ><span style="font-size: 30%" class="ps-1">Sales Report</span></i
+          >
+        </div>
+      </div>
     </div>
     <table
       class="table table-fluid table-hover table-bordered mt-5 pt-2"
       id="pdfTable"
+    >
+      <!-- style="text-align: center" -->
+      <thead>
+        <tr class="bg-dark text-white">
+          <th scope="col" style="text-align: center">No</th>
+          <th scope="col" style="text-align: center">Title</th>
+          <th scope="col" style="text-align: center">Image</th>
+          <th scope="col" style="text-align: center">Price</th>
+          <th scope="col" style="text-align: center">Category</th>
+          <th scope="col" style="text-align: center">Sub Category</th>
+          <th scope="col" style="text-align: center">Stock</th>
+          <th scope="col" style="text-align: center">Sales</th>
+        </tr>
+      </thead>
+      <% var No=1 %>
+      <tbody style="text-align: center">
+        <% locals.products.forEach(product=>{%>
+        <tr>
+          <th scope="row"><%=No++ %></th>
+          <td><%=product.Name %></td>
+          <td>
+            <img
+              style="width: 40px; height: 50px"
+              src="/users/productImages/<%=product._id %>.jpg "
+              alt=""
+            />
+            %>
+          </td>
+          <td>₹ <%=product.Price %></td>
+          <td><%=product.Category %></td>
+          <td><%=product.Subcategory %></td>
+          <td><%=product.Stock %></td>
+          <td><%=product.sales %></td>
+        </tr>
+        <%})%>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- orders -->
+  <div class="container shadow-lg rounded pb-2 pt-2 mb-5">
+    <div class="row d-flex pb-2">
+      <i class="fa-solid fa-file fa-4x"
+        ><span style="font-size: 30%" class="ps-1">All orders</span></i
+      >
+    </div>
+    <table
+      class="table table-fluid table-hover table-bordered mt-5 pt-2"
+      id="pdfTable2"
     >
       <!-- style="text-align: center" -->
       <thead>

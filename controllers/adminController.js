@@ -20,6 +20,7 @@ module.exports = {
     const returns = await adminHelper.allReturnRequests();
     const returnsNo = returns.length;
     const adminData = req.session.admin;
+    const products = await productHelper.getAllProducts();
     if (!adminData) {
       res.render("admin/adminLogin", { admin: true });
     } else {
@@ -34,6 +35,7 @@ module.exports = {
         ordersDate,
         returnsNo,
         orders,
+        products,
       });
     }
   },
