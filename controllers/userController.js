@@ -7,6 +7,7 @@ const { urlencoded } = require("express");
 const adminUserHelpers = require("../helpers/adminUserHelpers");
 const paypalHelpers = require("../helpers/paypalHelpers");
 const adminHelpers = require("../helpers/adminHelpers");
+const adminHelper = require("../helpers/adminHelpers");
 
 module.exports = {
   getHome: async (req, res) => {
@@ -111,6 +112,7 @@ module.exports = {
     }
     let products = await userHelper.getCartProducts(userId);
     let totalAmount = await userHelper.getTotalAmount(user._id);
+    const banners = await adminHelper.allBanners();
     console.log(products);
     res.render("users/cart", {
       user,
@@ -118,6 +120,7 @@ module.exports = {
       cartCount,
       wishlistCount,
       totalAmount,
+      banners,
     });
   },
 
@@ -427,6 +430,7 @@ module.exports = {
 
   getCategoryProducts: async (req, res) => {
     const category = await productHelper.getAllCategories();
+    const banners = await adminHelper.allBanners();
     const products = await productHelper.getCategoryProducts(req.params.id);
     let user = req.session.user;
     let cartCount = 0;
@@ -441,6 +445,7 @@ module.exports = {
       category,
       cartCount,
       wishlistCount,
+      banners,
     });
   },
 
@@ -559,7 +564,7 @@ module.exports = {
       .catch(() => {
         res.json({ used: true });
       });
-  }, 
+  },
 
   postReturnOrder: (req, res) => {
     console.log(req.body);

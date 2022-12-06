@@ -214,4 +214,17 @@ module.exports = {
         });
     });
   },
+
+  allBanners: () => {
+    return new Promise(async (resolve, reject) => {
+      const banners = await db
+        .get()
+        .collection(collection.BANNER_COLLECTION)
+        .find()
+        .toArray();
+      console.log("All the banners are here");
+      console.log(banners);
+      resolve(banners);
+    });
+  },
 };

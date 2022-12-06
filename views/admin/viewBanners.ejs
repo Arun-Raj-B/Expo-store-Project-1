@@ -69,14 +69,14 @@
       </thead>
       <% var No=1 %>
       <tbody>
-        <!-- < locals.coupons.forEach(coupon=>{%> -->
+        <% locals.banners.forEach(banner=>{%>
         <tr>
-          <th scope="row">1</th>
-          <td>FLAT500</td>
+          <th scope="row"><%= No++ %></th>
+          <td><%=banner.name %></td>
           <td>
             <img
-              style="width: 142.8px; height: 52px"
-              src="https://i.pinimg.com/736x/9f/c2/5b/9fc25b1219200a94d4f090cc87318387.jpg"
+              style="width: 192px; height: 44.6px"
+              src="/users/images/banners/<%=banner._id  %>.png "
               alt=""
             />
             %>
@@ -92,7 +92,7 @@
             <!-- <}%> -->
           </td>
         </tr>
-        <!-- <})%> -->
+        <%})%>
       </tbody>
     </table>
   </div>

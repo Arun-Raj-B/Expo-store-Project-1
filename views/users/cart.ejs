@@ -1,6 +1,48 @@
-<section class="page-fill" style="background-color: #ece6d9">
+<section class="page-fill pb-2" style="background-color: #ece6d9">
+   <div
+  id="carouselExampleControls"
+  class="carousel slide overflow-hidden pt-5"
+  data-bs-ride="carousel"
+>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img
+        src="/users/images/banners/expo-store.png"
+        class="d-block w-100"
+        alt="First slide"
+      />
+    </div>
+    <% locals.banners.forEach(banner=>{%>
+    <div class="carousel-item">
+      <img
+        src="/users/images/banners/<%=banner._id  %>.png"
+        class="d-block w-100"
+        alt="Second slide"
+      />
+    </div>
+    <%})%>
+  </div>
+  <button
+    class="carousel-control-prev"
+    type="button"
+    data-bs-target="#carouselExampleControls"
+    data-bs-slide="prev"
+  >
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button
+    class="carousel-control-next"
+    type="button"
+    data-bs-target="#carouselExampleControls"
+    data-bs-slide="next"
+  >
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
   <% if(cartCount == 0) {%>
-    <div class="d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="d-flex justify-content-center">
       <div class="card pb-5 shadow-sm">
         <div class="card-body text-center">
           <img
@@ -15,7 +57,7 @@
         <div class="d-flex justify-content-center"><a href="/" class="btn btn-outline-success ">Go home</a></div>
       </div>
     </div>
-  <% }else{ %><div style="padding-top: 5%; ">
+  <% }else{ %><div >
     <!-- padding-bottom: 5%; -->
     <div class="container shadow-lg rounded pb-2 pt-2">
       <div class="row d-flex pb-2"><i class="fa-solid fa-cart-shopping fa-4x" ><span style="font-size: 30%;" >cart</span></i></div>
@@ -42,7 +84,7 @@
               
                 <td>
                   <img
-                    style="width: 40px; height: 50px"
+                    style="width: 80px; height: 100px"
                     src="/users/productImages/<%=cartItem.product._id %>.jpg "
                     alt=""
                   />

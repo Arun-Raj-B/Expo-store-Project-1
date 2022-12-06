@@ -553,6 +553,7 @@ module.exports = {
     let requests = await adminUserHelper.cancelRequests();
     const reqNo = requests.length;
     let returns = await adminHelper.allReturnRequests();
+    const banners = await adminHelper.allBanners();
     const returnsNo = returns.length;
     const adminData = req.session.admin;
     res.render("admin/viewBanners", {
@@ -560,19 +561,20 @@ module.exports = {
       adminData,
       returnsNo,
       reqNo,
+      banners,
     });
   },
 
   postAddBanner: (req, res) => {
-    console.log(req.body);
-    console.log(req.files.banner);
+    // console.log(req.body);
+    // console.log(req.files.banner);
 
     adminHelper.addBanner(req.body).then((id) => {
       console.log("Inserted Id : " + id);
       let banner = req.files.banner;
       try {
-        banner.mv("./public/users/images/banners/" + id + ".jpg");
-        res.redirect("/admin//banners");
+        banner.mv("./public/users/images/banners/" + id + ".png");
+        res.redirect("/admin/banners");
       } catch (err) {
         console.log(err);
       }
