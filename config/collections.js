@@ -8,4 +8,5 @@ module.exports = {
   ORDER_COLLECTION: "order",
   COUPON_COLLECTION: "coupon",
   RETURN_COLLECTION: "return",
+  BANNER_COLLECTION: "banner",
 };

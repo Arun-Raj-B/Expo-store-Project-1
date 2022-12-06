@@ -77,5 +77,9 @@ router
   .route("/returns")
   .get(adminMiddlewear.verifyLogin, adminController.getAllReturnRequests)
   .post(adminController.postAcceptReturn);
+router
+  .route("/banners")
+  .get(adminMiddlewear.verifyLogin, adminController.getAddBanner)
+  .post(adminController.postAddBanner);
 
 module.exports = router;

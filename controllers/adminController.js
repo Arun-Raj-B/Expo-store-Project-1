@@ -548,4 +548,34 @@ module.exports = {
       res.json(response);
     });
   },
+
+  getAddBanner: async (req, res) => {
+    let requests = await adminUserHelper.cancelRequests();
+    const reqNo = requests.length;
+    let returns = await adminHelper.allReturnRequests();
+    const returnsNo = returns.length;
+    const adminData = req.session.admin;
+    res.render("admin/viewBanners", {
+      admin: true,
+      adminData,
+      returnsNo,
+      reqNo,
+    });
+  },
+
+  postAddBanner: (req, res) => {
+    console.log(req.body);
+    console.log(req.files.banner);
+
+    adminHelper.addBanner(req.body).then((id) => {
+      console.log("Inserted Id : " + id);
+      let banner = req.files.banner;
+      try {
+        banner.mv("./public/users/images/banners/" + id + ".jpg");
+        res.redirect("/admin//banners");
+      } catch (err) {
+        console.log(err);
+      }
+    });
+  },
 };

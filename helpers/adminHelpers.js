@@ -203,4 +203,15 @@ module.exports = {
         });
     });
   },
+
+  addBanner: (banner) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.BANNER_COLLECTION)
+        .insertOne({ name: banner.name })
+        .then((data) => {
+          resolve(data.insertedId);
+        });
+    });
+  },
 };

@@ -1,0 +1,189 @@
+<section class="page-fill" class="pt-5">
+  <div class="container shadow-lg rounded mb-5">
+    <div class="row mt-4">
+      <div class="d-flex justify-content-between mt-1 mb-1">
+        <div>
+          <i class="fa-solid fa-bookmark fa-4x"
+            ><span style="font-size: 30%" class="ps-1">Banners</span></i
+          >
+        </div>
+      </div>
+    </div>
+    <form
+      id="bannerForm"
+      action="/admin/banners"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <div
+        class="d-flex flex-column mb-2 flex-sm-column flex-md-row justify-content-center"
+      >
+        <div class="me-2 mb-2">
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            id="name"
+            placeholder="Banner name"
+            required
+          />
+        </div>
+
+        <div class="me-2 mb-2">
+          <input
+            type="file"
+            class="form-control"
+            name="banner"
+            id="banner"
+            placeholder="Banner"
+            onchange="viewImage(event)"
+            required
+          />
+        </div>
+
+        <div class="me-2 mb-2">
+          <img
+            src=""
+            alt="Image"
+            style="width: 300px; height: auto; display: none"
+            class="rounded p-1"
+            id="imgView"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary h-25">Add Banner</button>
+      </div>
+    </form>
+    <table
+      class="table table-fluid table-hover table-bordered pt-3"
+      id="myTable"
+      style="text-align: center"
+    >
+      <!-- style="text-align: center" -->
+      <thead>
+        <tr class="bg-dark text-white">
+          <th scope="col" style="text-align: center">No</th>
+          <th scope="col" style="text-align: center">Name</th>
+          <th scope="col" style="text-align: center">Banner</th>
+          <th scope="col" style="text-align: center">Delete</th>
+        </tr>
+      </thead>
+      <% var No=1 %>
+      <tbody>
+        <!-- < locals.coupons.forEach(coupon=>{%> -->
+        <tr>
+          <th scope="row">1</th>
+          <td>FLAT500</td>
+          <td>
+            <img
+              style="width: 142.8px; height: 52px"
+              src="https://i.pinimg.com/736x/9f/c2/5b/9fc25b1219200a94d4f090cc87318387.jpg"
+              alt=""
+            />
+            %>
+          </td>
+          <td>
+            <!-- < if (user.access) {%> -->
+            <button
+              class="btn btn-outline-danger"
+              onclick="deleteCoupon('<=coupon._id%>','<=coupon.name%>')"
+            >
+              Delete
+            </button>
+            <!-- <}%> -->
+          </td>
+        </tr>
+        <!-- <})%> -->
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- onclick="return confirm('Do you want to Block user.firstname user.lastname  ?')" -->
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"
+></script>
+
+<script>
+  function viewImage(event) {
+    document.getElementById("imgView").style.display = "block";
+    document.getElementById("imgView").src = URL.createObjectURL(
+      event.target.files[0]
+    );
+  }
+</script>
+
+<script>
+  $("#bannerForm").validate({
+    rules: {
+      name: {
+        required: true,
+      },
+      banner: {
+        required: true,
+      },
+    },
+    messages: {
+      name: {
+        required: "Enter a name",
+      },
+      banner: {
+        required: "Choose a banner",
+      },
+    },
+
+    submitHandler: function (form) {
+      form.submit();
+    },
+  });
+</script>
+
+<script>
+  function deleteCoupon(couponId, couponName) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You are going to delete ${couponName}!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "/admin/deleteCoupon",
+          data: {
+            couponId,
+          },
+          method: "post",
+          success: (response) => {
+            var toastMixin = Swal.mixin({
+              toast: true,
+              icon: "success",
+              title: "General Title",
+              animation: false,
+              position: "top-right",
+              showConfirmButton: false,
+              timer: 1500,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            toastMixin.fire({
+              animation: true,
+              title: `${couponName} has been deleted`,
+            });
+            const timeOut = setTimeout(reloadPage, 1500);
+
+            function reloadPage() {
+              location.reload();
+              clearTimeout(timeOut);
+            }
+          },
+        });
+      }
+    });
+  }
+</script>
