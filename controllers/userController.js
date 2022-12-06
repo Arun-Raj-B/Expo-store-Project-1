@@ -574,4 +574,19 @@ module.exports = {
       res.json({ return: true });
     });
   },
+
+  getAboutPage: async (req, res) => {
+    let user = req.session.user;
+    let cartCount = 0;
+    let wishlistCount = 0;
+    if (user) {
+      cartCount = await userHelper.getCartCount(req.session.user._id);
+      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    }
+    res.render("users/aboutUs", {
+      user,
+      cartCount,
+      wishlistCount,
+    });
+  },
 };

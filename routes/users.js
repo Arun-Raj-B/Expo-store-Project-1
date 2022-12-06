@@ -83,5 +83,6 @@ router.post("/editEmail", userController.postEditEmail);
 router.post("/editMobile", userController.postEditMobile);
 router.post("/checkCoupon", userController.postCheckCoupon);
 router.post("/returnOrder", userController.postReturnOrder);
+router.get("/about", userController.getAboutPage);
 
 module.exports = router;
