@@ -580,4 +580,11 @@ module.exports = {
       }
     });
   },
+
+  postDeleteBanner: (req, res) => {
+    adminHelper.deleteBanner(req.body).then((response) => {
+      console.log(response);
+      res.json({ deleted: "success" });
+    });
+  },
 };

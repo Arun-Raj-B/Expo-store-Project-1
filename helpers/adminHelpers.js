@@ -227,4 +227,15 @@ module.exports = {
       resolve(banners);
     });
   },
+
+  deleteBanner: (banner) => {
+    return new Promise((resolve, reject) => {
+      db.get()
+        .collection(collection.BANNER_COLLECTION)
+        .deleteOne({ _id: objectId(banner.bannerId) })
+        .then((response) => {
+          resolve(response);
+        });
+    });
+  },
 };

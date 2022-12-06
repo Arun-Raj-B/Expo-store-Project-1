@@ -82,4 +82,6 @@ router
   .get(adminMiddlewear.verifyLogin, adminController.getAddBanner)
   .post(adminController.postAddBanner);
 
+router.post("/deleteBanner", adminController.postDeleteBanner);
+
 module.exports = router;

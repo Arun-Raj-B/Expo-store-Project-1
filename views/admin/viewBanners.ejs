@@ -85,7 +85,7 @@
             <!-- < if (user.access) {%> -->
             <button
               class="btn btn-outline-danger"
-              onclick="deleteCoupon('<=coupon._id%>','<=coupon.name%>')"
+              onclick="deleteBanner('<%=banner._id  %>','<%=banner.name %>')"
             >
               Delete
             </button>
@@ -139,10 +139,10 @@
 </script>
 
 <script>
-  function deleteCoupon(couponId, couponName) {
+  function deleteBanner(bannerId, bannerName) {
     Swal.fire({
       title: "Are you sure?",
-      text: `You are going to delete ${couponName}!`,
+      text: `You are going to delete ${bannerName}!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -151,9 +151,9 @@
     }).then((result) => {
       if (result.isConfirmed) {
         $.ajax({
-          url: "/admin/deleteCoupon",
+          url: "/admin/deleteBanner",
           data: {
-            couponId,
+            bannerId,
           },
           method: "post",
           success: (response) => {
@@ -173,7 +173,7 @@
             });
             toastMixin.fire({
               animation: true,
-              title: `${couponName} has been deleted`,
+              title: `${bannerName} has been deleted`,
             });
             const timeOut = setTimeout(reloadPage, 1500);
 
