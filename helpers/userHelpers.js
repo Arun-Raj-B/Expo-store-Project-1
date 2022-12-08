@@ -488,11 +488,13 @@ module.exports = {
       item: ObjectId(proId),
       quantity: 1,
     };
+    // console.log(proObj);
     return new Promise(async (resolve, reject) => {
       const userCart = await db
         .get()
         .collection(collection.CART_COLLECTION)
         .findOne({ user: objectId(userId) });
+      console.log(userCart);
       // const cartId = userCart._id;
       if (userCart) {
         let prodExist = userCart.products.findIndex(
