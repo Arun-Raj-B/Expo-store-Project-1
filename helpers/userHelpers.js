@@ -686,53 +686,60 @@ module.exports = {
   },
 
   getSingleOrder: (orderId) => {
-    return new Promise(async (resolve, reject) => {
-      let order = await db
-        .get()
+    return new Promise((resolve, reject) => {
+      db.get()
         .collection(collection.ORDER_COLLECTION)
-        .findOne({ _id: objectId(orderId) });
-      // console.log(order);
-      resolve(order);
+        .findOne({ _id: objectId(orderId) })
+        .then((order) => {
+          resolve(order);
+        })
+        .catch((err) => {
+          reject();
+        });
     });
   },
 
   getOrderProducts: (orderId) => {
     return new Promise(async (resolve, reject) => {
-      let orderItems = await db
-        .get()
-        .collection(collection.ORDER_COLLECTION)
-        .aggregate([
-          {
-            $match: { _id: objectId(orderId) },
-          },
-          {
-            $unwind: "$products",
-          },
-          {
-            $project: {
-              item: "$products.item",
-              quantity: "$products.quantity",
+      try {
+        let orderItems = await db
+          .get()
+          .collection(collection.ORDER_COLLECTION)
+          .aggregate([
+            {
+              $match: { _id: objectId(orderId) },
             },
-          },
-          {
-            $lookup: {
-              from: collection.PRODUCT_COLLECTION,
-              localField: "item",
-              foreignField: "_id",
-              as: "product",
+            {
+              $unwind: "$products",
             },
-          },
-          {
-            $project: {
-              item: 1,
-              quantity: 1,
-              product: { $arrayElemAt: ["$product", 0] },
+            {
+              $project: {
+                item: "$products.item",
+                quantity: "$products.quantity",
+              },
             },
-          },
-        ])
-        .toArray();
-      console.log(orderItems);
-      resolve(orderItems);
+            {
+              $lookup: {
+                from: collection.PRODUCT_COLLECTION,
+                localField: "item",
+                foreignField: "_id",
+                as: "product",
+              },
+            },
+            {
+              $project: {
+                item: 1,
+                quantity: 1,
+                product: { $arrayElemAt: ["$product", 0] },
+              },
+            },
+          ])
+          .toArray();
+        console.log(orderItems);
+        resolve(orderItems);
+      } catch (err) {
+        reject();
+      }
     });
   },
 

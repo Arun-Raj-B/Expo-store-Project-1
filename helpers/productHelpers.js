@@ -63,6 +63,9 @@ module.exports = {
         .then((product) => {
           console.log(product);
           resolve(product);
+        })
+        .catch((err) => {
+          reject(err);
         });
     });
   },
@@ -179,6 +182,9 @@ module.exports = {
         .then((category) => {
           console.log(category);
           resolve(category);
+        })
+        .catch(() => {
+          reject();
         });
     });
   },

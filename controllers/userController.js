@@ -289,17 +289,22 @@ module.exports = {
 
     const proId = req.params.id;
     console.log(proId);
-    productHelper.getOneProduct(proId).then((prod) => {
-      console.log(prod);
-      // const product = prod._id.toString();
-      // console.log(product);
-      res.render("users/singleProduct", {
-        user,
-        cartCount,
-        wishlistCount,
-        prod,
+    productHelper
+      .getOneProduct(proId)
+      .then((prod) => {
+        console.log(prod);
+        // const product = prod._id.toString();
+        // console.log(product);
+        res.render("users/singleProduct", {
+          user,
+          cartCount,
+          wishlistCount,
+          prod,
+        });
+      })
+      .catch(() => {
+        res.render("users/404", { layout: "layouts/404Layout" }); 
       });
-    });
   },
 
   postChangeCartProductQuantity: (req, res, next) => {

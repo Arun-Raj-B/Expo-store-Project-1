@@ -222,22 +222,26 @@ module.exports = {
   },
 
   getEditProduct: async (req, res) => {
-    let requests = await adminUserHelper.cancelRequests();
-    const reqNo = requests.length;
-    const returns = await adminHelper.allReturnRequests();
-    const returnsNo = returns.length;
-    let adminData = req.session.admin;
-    let proId = req.params.id;
-    let product = await productHelper.getOneProduct(proId);
-    let categories = await productHelper.getAllCategories();
-    res.render("admin/editProduct", {
-      admin: true,
-      product,
-      adminData,
-      reqNo,
-      categories,
-      returnsNo,
-    });
+    try {
+      let requests = await adminUserHelper.cancelRequests();
+      const reqNo = requests.length;
+      const returns = await adminHelper.allReturnRequests();
+      const returnsNo = returns.length;
+      let adminData = req.session.admin;
+      let proId = req.params.id;
+      let product = await productHelper.getOneProduct(proId);
+      let categories = await productHelper.getAllCategories();
+      res.render("admin/editProduct", {
+        admin: true,
+        product,
+        adminData,
+        reqNo,
+        categories,
+        returnsNo,
+      });
+    } catch (err) {
+      res.render("users/404", { layout: "layouts/404Layout" });
+    }
   },
 
   postEditProduct: (req, res) => {
@@ -398,20 +402,24 @@ module.exports = {
   },
 
   getEditCategory: async (req, res) => {
-    let requests = await adminUserHelper.cancelRequests();
-    const reqNo = requests.length;
-    const returns = await adminHelper.allReturnRequests();
-    const returnsNo = returns.length;
-    const adminData = req.session.admin;
-    const catId = req.params.id;
-    const category = await productHelper.getOneCategory(catId);
-    res.render("admin/editCategory", {
-      admin: true,
-      adminData,
-      category,
-      reqNo,
-      returnsNo,
-    });
+    try {
+      let requests = await adminUserHelper.cancelRequests();
+      const reqNo = requests.length;
+      const returns = await adminHelper.allReturnRequests();
+      const returnsNo = returns.length;
+      const adminData = req.session.admin;
+      const catId = req.params.id;
+      const category = await productHelper.getOneCategory(catId);
+      res.render("admin/editCategory", {
+        admin: true,
+        adminData,
+        category,
+        reqNo,
+        returnsNo,
+      });
+    } catch (err) {
+      res.render("users/404", { layout: "layouts/404Layout" });
+    }
   },
 
   postEditCategory: (req, res) => {
@@ -466,22 +474,28 @@ module.exports = {
   },
 
   getViewOrderProducts: async (req, res) => {
-    let requests = await adminUserHelper.cancelRequests();
-    const reqNo = requests.length;
-    const returns = await adminHelper.allReturnRequests();
-    const returnsNo = returns.length;
-    const adminData = req.session.admin;
-    let order = await userHelper.getSingleOrder(req.params.id);
-    let products = await userHelper.getOrderProducts(req.params.id);
-    res.render("admin/viewOrderProducts", {
-      admin: true,
-      requests,
-      adminData,
-      reqNo,
-      products,
-      order,
-      returnsNo,
-    });
+    try {
+      let requests = await adminUserHelper.cancelRequests();
+      const reqNo = requests.length;
+      const returns = await adminHelper.allReturnRequests();
+      const returnsNo = returns.length;
+      const adminData = req.session.admin;
+      const orderId = req.params.id;
+      let order = await userHelper.getSingleOrder(orderId);
+      let products = await userHelper.getOrderProducts(orderId);
+      console.log("THis is wokring");
+      res.render("admin/viewOrderProducts", {
+        admin: true,
+        requests,
+        adminData,
+        reqNo,
+        products,
+        order,
+        returnsNo,
+      });
+    } catch (err) {
+      res.render("users/404", { layout: "layouts/404Layout" });
+    }
   },
 
   getCoupons: async (req, res) => {
