@@ -7,17 +7,19 @@
         <div class="col"><h4>OrderId : <%=order._id %></div>
         <div class="col text-end">
           <div>
-            <% if (order.status!= "Cancelled"&&order.status!="Shipped"&&order.status!="Delivered"&&order.status !== "Refund complete"&&order.status !== "Requested return") { %> 
-              <% if (order.status == "Cancel requested"||order.status == "Cancelled") {%>
-                <button class="btn btn-outline-danger"><%=order.status  %> </button>
-                <% } else {%> 
-              <button class="btn btn-outline-danger" id="cancel" onclick="cancelOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Cancel Order</button>
-              <% } %> 
-              <% } %>
-              <% if (order.status == "Delivered"){ %> 
-                <button class="btn btn-outline-danger" id="return" onclick="returnOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Return Order</button>
+            <% if (order.status!= "Return accepted") {%>
+              <% if (order.status!= "Cancelled"&&order.status!="Shipped"&&order.status!="Delivered"&&order.status !== "Refund complete"&&order.status !== "Requested return") { %> 
+                <% if (order.status == "Cancel requested"||order.status == "Cancelled") {%>
+                  <button class="btn btn-outline-danger"><%=order.status  %> </button>
+                  <% } else {%> 
+                <button class="btn btn-outline-danger" id="cancel" onclick="cancelOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Cancel Order</button>
                 <% } %> 
-                <button class="btn btn-outline-success" onclick="downloadInvoice()">Download invoice</button>
+                <% } %>
+                <% if (order.status == "Delivered"){ %> 
+                  <button class="btn btn-outline-danger" id="return" onclick="returnOrder('<%=order._id %>','<%=order.deliveryDetails.mobile%>')">Return Order</button>
+                  <% } %> 
+                  <button class="btn btn-outline-success" onclick="downloadInvoice()">Download invoice</button>
+              <% } %>  
           </div>
         </div>
         <div class="pb-2"></div>
