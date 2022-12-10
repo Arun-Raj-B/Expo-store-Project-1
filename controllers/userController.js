@@ -303,7 +303,7 @@ module.exports = {
         });
       })
       .catch(() => {
-        res.render("users/404", { layout: "layouts/404Layout" }); 
+        res.render("users/404", { layout: "layouts/404Layout" });
       });
   },
 
@@ -407,22 +407,26 @@ module.exports = {
   },
 
   getViewOrderProducts: async (req, res) => {
-    let user = req.session.user;
-    let cartCount = 0;
-    let wishlistCount = 0;
-    if (user) {
-      cartCount = await userHelper.getCartCount(req.session.user._id);
-      wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+    try {
+      let user = req.session.user;
+      let cartCount = 0;
+      let wishlistCount = 0;
+      if (user) {
+        cartCount = await userHelper.getCartCount(req.session.user._id);
+        wishlistCount = await userHelper.getWishlistCount(req.session.user._id);
+      }
+      let order = await userHelper.getSingleOrder(req.params.id);
+      let products = await userHelper.getOrderProducts(req.params.id);
+      res.render("users/orderProducts", {
+        user,
+        cartCount,
+        wishlistCount,
+        products,
+        order,
+      });
+    } catch (err) {
+      res.render("users/404", { layout: "layouts/404Layout" });
     }
-    let order = await userHelper.getSingleOrder(req.params.id);
-    let products = await userHelper.getOrderProducts(req.params.id);
-    res.render("users/orderProducts", {
-      user,
-      cartCount,
-      wishlistCount,
-      products,
-      order,
-    });
   },
 
   postCancelOrder: (req, res) => {
