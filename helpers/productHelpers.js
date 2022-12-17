@@ -101,7 +101,10 @@ module.exports = {
 
   addCategory: (cat) => {
     return new Promise(async (resolve, reject) => {
-      const category = cat.category;
+      function capitalizeFirstLetter(name) {
+        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+      }
+      const category = capitalizeFirstLetter(cat.category);
       const subctgryArray = cat.subcategory.split(",");
       let subctgry = [];
       subctgryArray.forEach((sub) => {
